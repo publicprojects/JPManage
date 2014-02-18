@@ -1,9 +1,10 @@
 package controllers;
 
-import play.mvc.Controller;
-
-public class Manage extends Controller {
-	public static void index(){
-		render();
-	}
+/**
+ * Created by chaoqing on 14-2-18.
+ */
+public class Manage extends  Application {
+    public static void index(){
+        render();
+    }
 }
