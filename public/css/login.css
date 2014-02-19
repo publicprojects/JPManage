@@ -127,6 +127,18 @@ Login page
   font-size: 11px;
 }
 
+.kei{
+    font-size: 3em;
+    color: #fff;
+}
+.sei{
+    font-size: 3em;
+    color: #357aff;
+}
+.jp{
+    color: #fff;
+}
+
 @media (max-width: 480px) {
   /***
   Login page

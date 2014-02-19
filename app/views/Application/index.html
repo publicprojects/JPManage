@@ -11,71 +11,67 @@
 <!-- END GLOBAL MANDATORY STYLES -->
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link href="/public/css/login.css" rel="stylesheet" type="text/css"/>
-<!-- END PAGE LEVEL STYLES -->
-<link rel="shortcut icon" href="/public/image/favicon.ico" />
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 <body class="login">
 <!-- BEGIN LOGO -->
-<div class="logo">
-    <img src="/public/image/logo-big.png" alt="" />
+<div class="logo" style="width: auto">
+    <span class="kei">Kei</span>
+    <span class="sei">Sei</span>
+    <span class="jp">青岛胶平食品有限公司内控系统</span>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
 <div class="content">
     <!-- BEGIN LOGIN FORM -->
     <form class="form-vertical login-form" action="index.html">
-        <h3 class="form-title">Login to your account</h3>
+        <h3 class="form-title">管理员登录</h3>
         <div class="alert alert-error hide">
             <button class="close" data-dismiss="alert"></button>
-            <span>Enter any username and password.</span>
+            <span>请输入账号和密码</span>
         </div>
         <div class="control-group">
             <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-            <label class="control-label visible-ie8 visible-ie9">Username</label>
+            <label class="control-label visible-ie8 visible-ie9">账号</label>
             <div class="controls">
                 <div class="input-icon left">
                     <i class="icon-user"></i>
-                    <input class="m-wrap placeholder-no-fix" type="text" placeholder="Username" name="username"/>
+                    <input class="m-wrap placeholder-no-fix" type="text" placeholder="登录账号" name="username"/>
                 </div>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label visible-ie8 visible-ie9">Password</label>
+            <label class="control-label visible-ie8 visible-ie9">密码</label>
             <div class="controls">
                 <div class="input-icon left">
                     <i class="icon-lock"></i>
-                    <input class="m-wrap placeholder-no-fix" type="password" placeholder="Password" name="password"/>
+                    <input class="m-wrap placeholder-no-fix" type="password" placeholder="登录密码" name="password"/>
                 </div>
             </div>
         </div>
-        <div class="form-actions">
+        <div class="form-actions" style="padding-bottom: 5px">
             <label class="checkbox">
-                <input type="checkbox" name="remember" value="1"/> Remember me
-            </label>
-            <button type="submit" class="btn green pull-right">
-                Login <i class="m-icon-swapright m-icon-white"></i>
-            </button>
+                <input type="checkbox" name="remember" value="1"/>记住密码？ </label>
+            <button type="submit" class="btn green pull-right"> 登录 <i class="m-icon-swapright m-icon-white"></i></button>
         </div>
         <div class="forget-password">
-            <h4>Forgot your password ?</h4>
+            <h4>忘记密码？</h4>
             <p>
-                no worries, click <a href="javascript:;" class="" id="forget-password">here</a>
-                to reset your password.
-            </p>
+                    不用担心，点击 <a href="javascript:;" class="" id="forget-password">这里</a>
+                        重设密码     </p>
         </div>
-        <div class="create-account">
+        <!--<div class="create-account">
             <p>
                 Don't have an account yet ?&nbsp;
                 <a href="javascript:;" id="register-btn" class="">Create an account</a>
             </p>
-        </div>
+        </div>-->
     </form>
     <!-- END LOGIN FORM -->
     <!-- BEGIN FORGOT PASSWORD FORM -->
     <form class="form-vertical forget-form" action="index.html">
-        <h3 class="">Forget Password ?</h3>
+        <h3 class="">忘记密码？</h3>
         <p>Enter your e-mail address below to reset your password.</p>
         <div class="control-group">
             <div class="controls">
@@ -146,8 +142,7 @@
         </div>
         <div class="form-actions">
             <button id="register-back-btn" type="button" class="btn">
-                <i class="m-icon-swapleft"></i>  Back
-            </button>
+                <i class="m-icon-swapleft"></i>     返回  </button>
             <button type="submit" id="register-submit-btn" class="btn green pull-right">
                 Sign Up <i class="m-icon-swapright m-icon-white"></i>
             </button>
@@ -157,9 +152,7 @@
 </div>
 <!-- END LOGIN -->
 <!-- BEGIN COPYRIGHT -->
-<div class="copyright">
-    2013 &copy; Metronic. Admin Dashboard Template.
-</div>
+<div class="copyright" style="font-size: 12px"> 2014 &copy; 京成 | Keisei <div>
 <!-- END COPYRIGHT -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
@@ -191,4 +184,4 @@
     });
 </script>
 <!-- END JAVASCRIPTS -->
-<script type="text/javascript">  var _gaq = _gaq || [];  _gaq.push(['_setAccount', 'UA-37564768-1']);  _gaq.push(['_setDomainName', 'keenthemes.com']);  _gaq.push(['_setAllowLinker', true]);  _gaq.push(['_trackPageview']);  (function() {    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);  })();</script></body>
+</body>

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 import play.db.jpa.Model;
 @Entity
-@Table(name="t_manager_roles")
+@Table(name="manager_roles")
 public class ManagerRole extends Model {
 	public String name;
 	@Column(name="last_update_date")

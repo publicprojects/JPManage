@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 @Entity
-@Table(name="t_users")
+@Table(name="managers")
 public class Managers extends GenericModel {
 	private static final long serialVersionUID = 1L;
 	@Id

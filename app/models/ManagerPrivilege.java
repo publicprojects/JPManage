@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 import play.db.jpa.Model;
 @Entity
-@Table(name="t_manager_privileges")
+@Table(name="manager_privileges")
 public class ManagerPrivilege extends Model {
 	public String name;
 	public String value;
