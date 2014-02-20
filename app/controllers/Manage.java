@@ -7,4 +7,8 @@ public class Manage extends  Application {
     public static void index(){
         render();
     }
+
+    public static void html(String html_name){
+        render("/Manage/"+html_name+".html");
+    }
 }

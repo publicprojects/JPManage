@@ -30,8 +30,6 @@ public class Managers extends GenericModel {
 	public String userPass;
 	@Column(name="user_pass_salt")
 	public String userPassSalt;
-    @Column(name = "user_type")
-    public Integer userType;//0 - boss 1 - worker
 
     @ManyToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name = "t_roles_managers", inverseJoinColumns = @JoinColumn(name = "role_id"), joinColumns = @JoinColumn(name = "manager_id"))

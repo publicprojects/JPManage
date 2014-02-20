@@ -4,8 +4,8 @@
 
 # Home page
 GET     /                                       Application.index
-GET     /m                                      Manage.index
-
+GET     /manager/signIn                         Application.signIn
+GET     /manager/{html_name}/html               Manage.html
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
