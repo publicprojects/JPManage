@@ -648,7 +648,7 @@ var Index = function () {
 
             $('#dashboard-report-range').daterangepicker({
                 ranges: {
-                    'Today': ['today', 'today'],
+                    'Today': ['今天', '今天'],
                     'Yesterday': ['yesterday', 'yesterday'],
                     'Last 7 Days': [Date.today().add({
                             days: -6
@@ -673,9 +673,9 @@ var Index = function () {
                 minDate: '01/01/2012',
                 maxDate: '12/31/2014',
                 locale: {
-                    applyLabel: 'Submit',
-                    fromLabel: 'From',
-                    toLabel: 'To',
+                    applyLabel: '确定',
+                    fromLabel: '从',
+                    toLabel: '至',
                     customRangeLabel: 'Custom Range',
                     daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
                     monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -695,15 +695,15 @@ var Index = function () {
                     });
                     App.scrollTo();
                 }, 1000);
-                $('#dashboard-report-range span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
-
+//                $('#dashboard-report-range span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
+                $('#dashboard-report-range span').html(start.toString('yyyy-MM-dd') + ' - ' + end.toString('yyyy-MM-dd'));
             });
 
             $('#dashboard-report-range').show();
 
             $('#dashboard-report-range span').html(Date.today().add({
                 days: -29
-            }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
+            }).toString('yyyy-MM-dd') + '至 ' + Date.today().toString('yyyy-MM-dd'));
         },
 
         initIntro: function () {
