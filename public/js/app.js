@@ -659,7 +659,7 @@ var App = function () {
 
         // handle theme colors
         var setColor = function (color) {
-            $('#style_color').attr("href", "/public/css/themes/" + color + ".css");
+            $('#style_color').attr("href", "/public/assets/css/themes/" + color + ".css");
             $.cookie('style_color', color);                
         }
 

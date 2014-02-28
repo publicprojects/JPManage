@@ -8,9 +8,11 @@ import play.libs.Images;
 import play.libs.Time;
 import play.mvc.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import models.*;
+import utils.DateUtils;
 import utils.IpMacAddress;
 import utils.PropertiesUtils;
 
@@ -66,11 +68,10 @@ public class Application extends Controller {
 
     private static void setCook(boolean remember, String cookname,String cookvalue) {
         if (remember) {
-            Date expiration = new Date();
             String duration = Play.configuration.getProperty(
-                    "secure.rememberme.duration", "30d");
-            expiration.setTime(expiration.getTime()
-                    + Time.parseDuration(duration) * 1000);
+                    "cookie.length", "30");
+            Date expiration = DateUtils.getDaysNear(Integer.decode(duration));
+            duration+="d";
             response.setCookie(cookname,
                     Crypto.sign(cookvalue + "-" + expiration.getTime()) + "-"
                             + cookvalue + "-" + expiration.getTime(), duration);
@@ -84,7 +85,7 @@ public class Application extends Controller {
 //        code = code.toUpperCase();
         session.clear();
         String msg = "";//"验证码错误!";
-//        if (code.equals(Cache.get(randomID))) {
+        System.out.print(rememberme+" remember");
         Managers m = Managers.validateUser(username, password);
         if (m != null) {
             setCook(true, "authUser", username);

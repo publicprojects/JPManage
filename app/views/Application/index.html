@@ -36,7 +36,7 @@
             <div class="controls">
                 <div class="input-icon left">
                     <i class="icon-user"></i>
-                    <input class="m-wrap placeholder-no-fix" type="text" placeholder="登录账号" name="username"/>
+                    <input class="m-wrap placeholder-no-fix" value="${account}" type="text" placeholder="登录账号" name="username"/>
                 </div>
             </div>
         </div>
@@ -45,18 +45,18 @@
             <div class="controls">
                 <div class="input-icon left">
                     <i class="icon-lock"></i>
-                    <input class="m-wrap placeholder-no-fix" type="password" placeholder="登录密码" name="password"/>
+                    <input class="m-wrap placeholder-no-fix" type="password" value="${pwd}" placeholder="登录密码" name="password"/>
                 </div>
             </div>
         </div>
         <div class="form-actions" style="padding-bottom: 5px">
-            <label class="checkbox">
-                <input type="checkbox" name="rememberme" value="1"/>记住密码？ </label>
+            <label class="checkbox remember">
+                <i class="icon-check${pwd==null?'-empty':''}" style="font-size: 18px;vertical-align: middle;color: #0ba11b"></i> <span style="margin-left: 5px">记住密码？</span>
+                <input type="checkbox" name="rememberme" ${pwd!=null?'checked':''} value="1" style="display: none"/></label>
             <button type="submit" class="btn green pull-right"> 登录 <i class="m-icon-swapright m-icon-white"></i></button>
         </div>
         <div class="forget-password">
             <h4>忘记密码？</h4>
-            <p> *{不用担心，点击 <a href="javascript:;" class="" id="forget-password">这里</a>}*
                     请联系管理员，重设密码     </p>
         </div>
     </form>
@@ -68,29 +68,26 @@
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
 <script src="/public/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="/public/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-<script src="/public/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
 <script src="/public/js/bootstrap.min.js" type="text/javascript"></script>
 <!--[if lt IE 9]>
 <script src="/public/js/excanvas.min.js"></script>
 <script src="/public/js/respond.min.js"></script>
 <![endif]-->
-<script src="/public/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="/public/js/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="/public/js/jquery.cookie.min.js" type="text/javascript"></script>
-<script src="/public/js/jquery.uniform.min.js" type="text/javascript" ></script>
-<!-- END CORE PLUGINS -->
-<!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="/public/js/jquery.validate.min.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="/public/js/app.js" type="text/javascript"></script>
 <script src="/public/js/login.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
     jQuery(document).ready(function() {
-        App.init();
+        $("label.remember").click(function(){
+            var check=$(this).find("input[type=checkbox]");
+            var i=$(this).find("i");
+            if(check.prop("checked")){
+                check.prop("checked",false);
+                i.removeClass("icon-check").addClass("icon-check-empty");
+            } else{
+                check.prop("checked",true);
+                i.removeClass("icon-check-empty").addClass("icon-check");
+            }
+        });
         Login.init();
     });
 </script>
