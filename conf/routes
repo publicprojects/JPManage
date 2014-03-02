@@ -6,7 +6,8 @@
 GET     /                                       Application.index
 GET     /manager/signIn                         Application.signIn
 GET     /manager/signOut                        Application.signout
-GET     /manager/{html_name}/html               Manage.html
+GET     /map/{name}/xhtml                       HtmlMap.html
+POST    /manager/getDataTable/{type}            Manage.queryData
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

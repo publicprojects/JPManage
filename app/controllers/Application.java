@@ -21,6 +21,8 @@ public class Application extends Controller {
     final static String LOGIN_USER_ID = "login-user-id";
     final static String LOGIN_USER = "login-user";
 
+    final static int MANAGERS=0;
+
     public static void index() {
         PropertiesUtils pro = PropertiesUtils.instance();
         boolean iplimit =Boolean.parseBoolean(Play.configuration.getProperty("ip.limit"));
@@ -85,7 +87,6 @@ public class Application extends Controller {
 //        code = code.toUpperCase();
         session.clear();
         String msg = "";//"验证码错误!";
-        System.out.print(rememberme+" remember");
         Managers m = Managers.validateUser(username, password);
         if (m != null) {
             setCook(true, "authUser", username);

@@ -13,6 +13,8 @@ import play.db.jpa.Model;
 @Table(name="manager_privileges")
 public class ManagerPrivilege extends Model {
 	public String name;
+    public String background;
+    public String description;
 	public String value;
 	public String url;
 	public String icon;

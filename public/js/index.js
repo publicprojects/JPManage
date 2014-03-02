@@ -1,8 +1,6 @@
+var dataTable;
 var Index = function () {
-
-
     return {
-
         //main function to initiate the module
         init: function () {
 
@@ -13,6 +11,33 @@ var Index = function () {
                     map.width(map.parent().width());
                 });
             });
+        },
+        initNavBar:function(){
+            $(".page-sidebar-menu li a").click(function(e){
+                e.preventDefault();
+                var li=$(this).parent("li");
+                if(li.hasClass("active")){
+                    return;
+                }
+                $(".page-sidebar-menu li.active").removeClass("active");
+                li.addClass("active");
+                getHtml($(this).attr("href"));
+                var title=$(this).find("span.title").html();
+                if(!li.hasClass("start")){
+                    $(".breadcrumb li a.current").html(title);
+                }else{
+                    $(".breadcrumb li a.current").html("");
+                }
+                $(".page-title").html(title);
+                var des=$(this).attr("data-description");
+                $(".page-title small").html(des);
+            });
+            function getHtml(url){
+                $.get(url,function(data){
+                    $(".changeable-content").html(data);
+                });
+            }
+            $(".page-sidebar-menu li.start a").click();
         },
 
         initJQVMAP: function () {
@@ -126,7 +151,7 @@ var Index = function () {
                         center: '',
                         right: 'prev,next,today,month,agendaWeek,agendaDay'
                     };
-                }               
+                }
             }
 
             $('#calendar').fullCalendar('destroy'); // destroy the calendar
@@ -134,42 +159,50 @@ var Index = function () {
                 disableDragging: false,
                 header: h,
                 editable: true,
-                events: [{
-                        title: 'All Day Event',                        
+                events: [
+                    {
+                        title: 'All Day Event',
                         start: new Date(y, m, 1),
                         backgroundColor: App.getLayoutColorCode('yellow')
-                    }, {
+                    },
+                    {
                         title: 'Long Event',
                         start: new Date(y, m, d - 5),
                         end: new Date(y, m, d - 2),
                         backgroundColor: App.getLayoutColorCode('green')
-                    }, {
+                    },
+                    {
                         title: 'Repeating Event',
                         start: new Date(y, m, d - 3, 16, 0),
                         allDay: false,
                         backgroundColor: App.getLayoutColorCode('red')
-                    }, {
+                    },
+                    {
                         title: 'Repeating Event',
                         start: new Date(y, m, d + 4, 16, 0),
                         allDay: false,
                         backgroundColor: App.getLayoutColorCode('green')
-                    }, {
+                    },
+                    {
                         title: 'Meeting',
                         start: new Date(y, m, d, 10, 30),
                         allDay: false,
-                    }, {
+                    },
+                    {
                         title: 'Lunch',
                         start: new Date(y, m, d, 12, 0),
                         end: new Date(y, m, d, 14, 0),
                         backgroundColor: App.getLayoutColorCode('grey'),
                         allDay: false,
-                    }, {
+                    },
+                    {
                         title: 'Birthday Party',
                         start: new Date(y, m, d + 1, 19, 0),
                         end: new Date(y, m, d + 1, 22, 30),
                         backgroundColor: App.getLayoutColorCode('purple'),
                         allDay: false,
-                    }, {
+                    },
+                    {
                         title: 'Click for Google',
                         start: new Date(y, m, 28),
                         end: new Date(y, m, 29),
@@ -294,10 +327,12 @@ var Index = function () {
                 $('#site_statistics_loading').hide();
                 $('#site_statistics_content').show();
 
-                var plot_statistics = $.plot($("#site_statistics"), [{
+                var plot_statistics = $.plot($("#site_statistics"), [
+                    {
                         data: pageviews,
                         label: "Unique Visits"
-                    }, {
+                    },
+                    {
                         data: visitors,
                         label: "Page Views"
                     }
@@ -308,9 +343,11 @@ var Index = function () {
                             lineWidth: 2,
                             fill: true,
                             fillColor: {
-                                colors: [{
+                                colors: [
+                                    {
                                         opacity: 0.05
-                                    }, {
+                                    },
+                                    {
                                         opacity: 0.01
                                     }
                                 ]
@@ -357,55 +394,57 @@ var Index = function () {
                         previousPoint = null;
                     }
                 });
-            }               
+            }
 
             if ($('#load_statistics').size() != 0) {
-                 //server load
+                //server load
                 $('#load_statistics_loading').hide();
                 $('#load_statistics_content').show();
-        
+
                 var updateInterval = 30;
                 var plot_statistics = $.plot($("#load_statistics"), [getRandomData()], {
-                series: {
-                    shadowSize: 1
-                },
-                lines: {
-                    show: true,
-                    lineWidth: 0.2,
-                    fill: true,
-                    fillColor: {
-                        colors: [{
-                                opacity: 0.1
-                            }, {
-                                opacity: 1
-                            }
-                        ]
+                    series: {
+                        shadowSize: 1
+                    },
+                    lines: {
+                        show: true,
+                        lineWidth: 0.2,
+                        fill: true,
+                        fillColor: {
+                            colors: [
+                                {
+                                    opacity: 0.1
+                                },
+                                {
+                                    opacity: 1
+                                }
+                            ]
+                        }
+                    },
+                    yaxis: {
+                        min: 0,
+                        max: 100,
+                        tickFormatter: function (v) {
+                            return v + "%";
+                        }
+                    },
+                    xaxis: {
+                        show: false
+                    },
+                    colors: ["#e14e3d"],
+                    grid: {
+                        tickColor: "#a8a3a3",
+                        borderWidth: 0
                     }
-                },
-                yaxis: {
-                    min: 0,
-                    max: 100,
-                    tickFormatter: function (v) {
-                        return v + "%";
-                    }
-                },
-                xaxis: {
-                    show: false
-                },
-                colors: ["#e14e3d"],
-                grid: {
-                    tickColor: "#a8a3a3",
-                    borderWidth: 0
-                }
                 });
-                
+
                 function statisticsUpdate() {
-                plot_statistics.setData([getRandomData()]);
-                plot_statistics.draw();
-                setTimeout(statisticsUpdate, updateInterval);
-                
+                    plot_statistics.setData([getRandomData()]);
+                    plot_statistics.draw();
+                    setTimeout(statisticsUpdate, updateInterval);
+
                 }
-                
+
                 statisticsUpdate();
 
                 $('#load_statistics').bind("mouseleave", function () {
@@ -475,43 +514,46 @@ var Index = function () {
                 ];
 
                 var plot_activities = $.plot(
-                    $("#site_activities"), [{
-                        data: activities,
-                        color: "rgba(107,207,123, 0.9)",
-                        shadowSize: 0,
-                        bars: {
-                            show: true,
-                            lineWidth: 0,
-                            fill: true,
-                            fillColor: {
-                                colors: [{
-                                        opacity: 1
-                                    }, {
-                                        opacity: 1
-                                    }
-                                ]
+                    $("#site_activities"), [
+                        {
+                            data: activities,
+                            color: "rgba(107,207,123, 0.9)",
+                            shadowSize: 0,
+                            bars: {
+                                show: true,
+                                lineWidth: 0,
+                                fill: true,
+                                fillColor: {
+                                    colors: [
+                                        {
+                                            opacity: 1
+                                        },
+                                        {
+                                            opacity: 1
+                                        }
+                                    ]
+                                }
                             }
                         }
-                    }
-                ], {
-                    series: {
-                        bars: {
-                            show: true,
-                            barWidth: 0.9
+                    ], {
+                        series: {
+                            bars: {
+                                show: true,
+                                barWidth: 0.9
+                            }
+                        },
+                        grid: {
+                            show: false,
+                            hoverable: true,
+                            clickable: false,
+                            autoHighlight: true,
+                            borderWidth: 0
+                        },
+                        yaxis: {
+                            min: 0,
+                            max: 20
                         }
-                    },
-                    grid: {
-                        show: false,
-                        hoverable: true,
-                        clickable: false,
-                        autoHighlight: true,
-                        borderWidth: 0
-                    },
-                    yaxis: {
-                        min: 0,
-                        max: 20
-                    }
-                });
+                    });
 
                 $("#site_activities").bind("plothover", function (event, pos, item) {
                     $("#x").text(pos.x.toFixed(2));
@@ -534,7 +576,7 @@ var Index = function () {
         },
 
         initMiniCharts: function () {
-             
+
             $('.easy-pie-chart .number.transactions').easyPieChart({
                 animate: 1000,
                 size: 75,
@@ -548,7 +590,7 @@ var Index = function () {
                 lineWidth: 3,
                 barColor: App.getLayoutColorCode('green')
             });
-             
+
             $('.easy-pie-chart .number.bounce').easyPieChart({
                 animate: 1000,
                 size: 75,
@@ -556,33 +598,33 @@ var Index = function () {
                 barColor: App.getLayoutColorCode('red')
             });
 
-            $('.easy-pie-chart-reload').click(function(){
-                $('.easy-pie-chart .number').each(function() {
-                    var newValue = Math.floor(100*Math.random());
+            $('.easy-pie-chart-reload').click(function () {
+                $('.easy-pie-chart .number').each(function () {
+                    var newValue = Math.floor(100 * Math.random());
                     $(this).data('easyPieChart').update(newValue);
                     $('span', this).text(newValue);
                 });
             });
-               
-            $("#sparkline_bar").sparkline([8,9,10,11,10,10,12,10,10,11,9,12,11,10,9,11,13,13,12], {
-                type: 'bar',
-                width: '100',
-                barWidth: 5,
-                height: '55',
-                barColor: '#35aa47',
-                negBarColor: '#e02222'}
+
+            $("#sparkline_bar").sparkline([8, 9, 10, 11, 10, 10, 12, 10, 10, 11, 9, 12, 11, 10, 9, 11, 13, 13, 12], {
+                    type: 'bar',
+                    width: '100',
+                    barWidth: 5,
+                    height: '55',
+                    barColor: '#35aa47',
+                    negBarColor: '#e02222'}
             );
 
-            $("#sparkline_bar2").sparkline([9,11,12,13,12,13,10,14,13,11,11,12,11,11,10,12,11,10], {
-                type: 'bar',
-                width: '100',
-                barWidth: 5,
-                height: '55',
-                barColor: '#ffb848',
-                negBarColor: '#e02222'}
+            $("#sparkline_bar2").sparkline([9, 11, 12, 13, 12, 13, 10, 14, 13, 11, 11, 12, 11, 11, 10, 12, 11, 10], {
+                    type: 'bar',
+                    width: '100',
+                    barWidth: 5,
+                    height: '55',
+                    barColor: '#ffb848',
+                    negBarColor: '#e02222'}
             );
 
-            $("#sparkline_line").sparkline([9,10,9,10,10,11,12,10,10,11,11,12,11,10,12,11,10,12], {
+            $("#sparkline_line").sparkline([9, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12], {
                 type: 'line',
                 width: '100',
                 height: '55',
@@ -601,7 +643,7 @@ var Index = function () {
 
             var handleClick = function (e) {
                 e.preventDefault();
-                
+
                 var text = input.val();
                 if (text.length == 0) {
                     return;
@@ -630,10 +672,10 @@ var Index = function () {
             }
 
             /*
-            $('.scroller', cont).slimScroll({
-                scrollTo: list.height()
-            });
-            */
+             $('.scroller', cont).slimScroll({
+             scrollTo: list.height()
+             });
+             */
 
             btn.click(handleClick);
             input.keypress(function (e) {
@@ -643,61 +685,98 @@ var Index = function () {
                 }
             });
         },
-
+        initClock: function () {
+                var day = "";
+                var month = "";
+                var ampm = "";
+                var ampmhour = "";
+                var myweekday = "";
+                var year = "";
+                var myHours = "";
+                var myMinutes = "";
+                var mySeconds = "";
+                var weekday = "";
+                var mydate = new Date();
+                myweekday = mydate.getDay();
+                var mymonth = parseInt(mydate.getMonth() + 1) < 10 ? "0" + (mydate.getMonth() + 1) : mydate.getMonth() + 1;
+                var myday = mydate.getDate();
+                var myyear = mydate.getYear();
+                myHours = mydate.getHours();
+                myMinutes = mydate.getMinutes();
+                myMinutes = myMinutes<10?"0"+myMinutes:myMinutes;
+                mySeconds = parseInt(mydate.getSeconds()) < 10 ? "0" + mydate.getSeconds() : mydate.getSeconds();
+                year = (myyear > 200) ? myyear : 1900 + myyear;
+                if (myweekday == 0)
+                    weekday = " 星期日 ";
+                else if (myweekday == 1)
+                    weekday = " 星期一 ";
+                else if (myweekday == 2)
+                    weekday = " 星期二 ";
+                else if (myweekday == 3)
+                    weekday = " 星期三 ";
+                else if (myweekday == 4)
+                    weekday = " 星期四 ";
+                else if (myweekday == 5)
+                    weekday = " 星期五 ";
+                else if (myweekday == 6)
+                    weekday = " 星期六 ";
+                var text = year + "年" + mymonth + "月" + myday + "日 " + myHours + ":" + myMinutes + ":" + mySeconds + " " + weekday;
+                $("#clock span").html(text);
+                setTimeout("Index.initClock()", 1000);
+        },
         initDashboardDaterange: function () {
-
             $('#dashboard-report-range').daterangepicker({
-                ranges: {
-                    'Today': ['今天', '今天'],
-                    'Yesterday': ['yesterday', 'yesterday'],
-                    'Last 7 Days': [Date.today().add({
+                    ranges: {
+                        'Today': ['今天', '今天'],
+                        'Yesterday': ['yesterday', 'yesterday'],
+                        'Last 7 Days': [Date.today().add({
                             days: -6
                         }), 'today'],
-                    'Last 30 Days': [Date.today().add({
+                        'Last 30 Days': [Date.today().add({
                             days: -29
                         }), 'today'],
-                    'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
-                    'Last Month': [Date.today().moveToFirstDayOfMonth().add({
+                        'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
+                        'Last Month': [Date.today().moveToFirstDayOfMonth().add({
                             months: -1
                         }), Date.today().moveToFirstDayOfMonth().add({
                             days: -1
                         })]
+                    },
+                    opens: (App.isRTL() ? 'right' : 'left'),
+                    format: 'MM/dd/yyyy',
+                    separator: ' to ',
+                    startDate: Date.today().add({
+                        days: -29
+                    }),
+                    endDate: Date.today(),
+                    minDate: '01/01/2012',
+                    maxDate: '12/31/2014',
+                    locale: {
+                        applyLabel: '确定',
+                        fromLabel: '从',
+                        toLabel: '至',
+                        customRangeLabel: 'Custom Range',
+                        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        firstDay: 1
+                    },
+                    showWeekNumbers: true,
+                    buttonClasses: ['btn-danger']
                 },
-                opens: (App.isRTL() ? 'right' : 'left'),
-                format: 'MM/dd/yyyy',
-                separator: ' to ',
-                startDate: Date.today().add({
-                    days: -29
-                }),
-                endDate: Date.today(),
-                minDate: '01/01/2012',
-                maxDate: '12/31/2014',
-                locale: {
-                    applyLabel: '确定',
-                    fromLabel: '从',
-                    toLabel: '至',
-                    customRangeLabel: 'Custom Range',
-                    daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    firstDay: 1
-                },
-                showWeekNumbers: true,
-                buttonClasses: ['btn-danger']
-            },
 
-            function (start, end) {
-                App.blockUI(jQuery("#dashboard"));
-                setTimeout(function () {
-                    App.unblockUI(jQuery("#dashboard"));
-                    $.gritter.add({
-                        title: 'Dashboard',
-                        text: 'Dashboard date range updated.'
-                    });
-                    App.scrollTo();
-                }, 1000);
+                function (start, end) {
+                    App.blockUI(jQuery("#dashboard"));
+                    setTimeout(function () {
+                        App.unblockUI(jQuery("#dashboard"));
+                        $.gritter.add({
+                            title: 'Dashboard',
+                            text: 'Dashboard date range updated.'
+                        });
+                        App.scrollTo();
+                    }, 1000);
 //                $('#dashboard-report-range span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
-                $('#dashboard-report-range span').html(start.toString('yyyy-MM-dd') + ' - ' + end.toString('yyyy-MM-dd'));
-            });
+                    $('#dashboard-report-range span').html(start.toString('yyyy-MM-dd') + ' - ' + end.toString('yyyy-MM-dd'));
+                });
 
             $('#dashboard-report-range').show();
 
