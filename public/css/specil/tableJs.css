@@ -98,10 +98,6 @@ table.tableJS thead{
     color:#444;
 }
 
-.pagination ul>li>a {
-    height: 38px;
-}
-
 img.imgTooltip {
     position: absolute;
     z-index: 5;
@@ -112,4 +108,8 @@ img.imgTooltip {
 
 .checkbox-th {
     width: 15px;
+}
+
+.table .btn{
+    font-family: "Microsoft Yahei" !important;
 }

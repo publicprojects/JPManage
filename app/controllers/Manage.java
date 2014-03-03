@@ -6,9 +6,11 @@ import models.ManagerRole;
 import models.Managers;
 import utils.JSONBuilder;
 import utils.JsonResponse;
+import utils.Pagination;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chaoqing on 14-2-18.
@@ -110,12 +112,16 @@ public class Manage extends  Application {
         }
     }
 
-    public static void queryData(int type){
-        Gson json= JSONBuilder.build(List.class);
+    public static void queryData(int type,int current,String [] key,String [] val){
+        Pagination page= Pagination.getInstance();
         switch (type){
-            case MANAGERS:
-                List<Managers> managers=ManageManagers.getManagers(0);
-                renderJSON(json.toJson(managers));
+            case TYPE_MANAGERS:
+                Map<Object, Object> managers=ManageManagers.getManagers(page,current,key,val);
+                renderJSON(managers);
+                break;
+            case TYPE_ROLES:
+                Map<Object, Object> roles=ManageRoles.getRoles(page,current,key,val);
+                renderJSON(roles);
                 break;
         }
     }

@@ -21,7 +21,8 @@ public class Application extends Controller {
     final static String LOGIN_USER_ID = "login-user-id";
     final static String LOGIN_USER = "login-user";
 
-    final static int MANAGERS=0;
+    final static int TYPE_MANAGERS=0;
+    final static int TYPE_ROLES=1;
 
     public static void index() {
         PropertiesUtils pro = PropertiesUtils.instance();

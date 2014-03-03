@@ -24,7 +24,7 @@
     function adjustHeight(){
         function getHeight(){
             var ph=$(".tableJs-container").next().outerHeight();
-            return $(".main").outerHeight()-$(".search-box").outerHeight()-ph;
+            return $(".page-content").outerHeight()-$(".page-title").outerHeight()-$(".breadcrumb").outerHeight()-ph;
         }
         var h=getHeight();
         $(".tableJs-container").css({"min-height":h,"height":h});
@@ -145,7 +145,7 @@
             $(opt.container).html($("<div class='tableJs-container'></div>").append(table));
             imgTooltip();
             if (opt.data.page) {
-                page = getPagination(opt.data.page.currentPage,
+                var page = getPagination(opt.data.page.currentPage,
                     opt.data.page.totalPage, opt.data.page.totalRecord,
                     opt.id);
                 $(opt.container).append(page);
@@ -278,9 +278,7 @@
                         list[i] = "&nbsp;";
                     }
                     if (title[j].type == "No") {
-                        $(
-                            "<td>"
-                                + ((page.currentPage - 1)
+                        $("<td>" + ((page.currentPage - 1)
                                 * page.displayCountOfPerPage + (i + 1))
                                 + "</td>").appendTo(tr_);
                     } else if (title[j].type == "checkbox") {
@@ -338,9 +336,9 @@
                             var d = title[j].data[k];
                             var hr = d.href;
                             if (hr && hr.indexOf("?") != -1) {
-                                bf = hr.substr(0, hr.indexOf("?") + 1);
-                                af = "";
-                                para = hr.substr(hr.indexOf("?") + 1);
+                                var bf = hr.substr(0, hr.indexOf("?") + 1);
+                                var af = "";
+                                var para = hr.substr(hr.indexOf("?") + 1);
                                 para = para.split("&");
                                 for (var m = 0; m < para.length; m++) {
                                     if (para[m] in list[i]) {
@@ -369,11 +367,11 @@
                                 : " data-backdrop=\"" + d.backdrop + "\" ";
                             var onclick = typeof (d.onclick) == 'undefined' ? ""
                                 : " onclick=\"" + d.onclick + "\" ";
-                            var cn = typeof (d.className) == 'undefined' ? "btn-info"
+                            var cn = typeof (d.className) == 'undefined' ? ""
                                 : d.className;
                             ops += " <a href=\"" + hr + "\" role=\"button\" "
-                                + onclick + drop + " class=\"btn " + cn
-                                + " btn-mini\" " + tog + tar + ">" + d.name
+                                + onclick + drop + " class=\"btn mini " + cn
+                                + " \" " + tog + tar + ">" + d.name
                                 + "</a>";
                         }
                         $("<td>" + ops + "</td>").appendTo(tr_);
@@ -389,7 +387,7 @@
                             str = "";
                         }
                         if (title[j].type == "join") {
-                            join = title[j].data;
+                            var join = title[j].data;
                             if (join && typeof (join) == "object") {
                                 for (var n = 0; n < join.length; n++) {
                                     str += join[n].type
@@ -420,10 +418,10 @@
             + id
             + "_pagination' current="
             + current
-            + ">"
-            + "<ul class=\"pagination\"><li><a href=\"javascript:void(0)\" id='pagination_pre' >上一页</a></li>"
+            + " class='dataTables_paginate paging_bootstrap pagination'>"
+            + "<ul><li class='prev'><a href=\"javascript:void(0)\" id='pagination_pre' >上一页</a></li>"
             + "<li class='active'><a href=\"javascript:void(0)\" style=\"color:#333;"
-            + "cursor: default;background:#eee;border-color:#ccc;\"><i class='glyphicon glyphicon-list-alt'></i> 总数据 <b id='"
+            + "cursor: default;background:#eee;border-color:#ccc;\"><i class='icon-list-alt'></i> 总数据 <b id='"
             + id
             + "_pagination_totalRecord'>"
             + totalRecord
@@ -443,14 +441,14 @@
     function pageClick() {
         $("a#pagination_pre").click(
             function () {
-                if ($(this).parent().attr("class") != "disabled")
+                if (!$(this).parent().hasClass("disabled"))
                     TableJS.prePage($(
                         "div#" + TableJS.opts.id + "_pagination").attr(
                             "current"));
             });
         $("a#pagination_next").click(
             function () {
-                if ($(this).parent().attr("class") != "disabled")
+                if (!$(this).parent().hasClass("disabled"))
                     TableJS.nextPage($(
                         "div#" + TableJS.opts.id + "_pagination").attr(
                             "current"));
