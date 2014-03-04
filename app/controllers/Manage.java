@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import models.ManagerPrivilege;
 import models.ManagerRole;
 import models.Managers;
+import play.db.jpa.Model;
 import utils.JSONBuilder;
 import utils.JsonResponse;
 import utils.Pagination;
@@ -124,5 +125,34 @@ public class Manage extends  Application {
                 renderJSON(roles);
                 break;
         }
+    }
+
+    public static void createData(int type){
+        switch (type){
+            case TYPE_MANAGERS:
+                Managers data=params.get("data",Managers.class);
+                Managers temp=Managers.find("userAccount=?",data.userAccount).first();
+                if(temp!=null){
+                    renderJSON(new JsonResponse(-1,"管理员账号["+data.userAccount+"]已经存在，请重新设置"));
+                    return;
+                }
+                data.generatorPass(data.userPass);
+                data.save();
+                renderJSON(new JsonResponse(0,"管理员["+data.userAccount+"/"+data.userName+"]创建成功"));
+                break;
+        }
+    }
+
+    public static void delData(int type,Long id){
+        switch (type){
+            case TYPE_MANAGERS:
+                Managers manager=Managers.findById(id);
+                manager.delete();
+                renderJSON(new JsonResponse(0,"管理员["+manager.userAccount+"/"+manager.userName+"]已成功删除"));
+                break;
+        }
+    }
+    public static void delDataConfirm(int type,Long id){
+        render("HtmlMap/delDataConfirm.html",type,id);
     }
 }

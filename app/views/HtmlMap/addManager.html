@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3><i class="icon-plus-sign-alt" style="color: #0ba11b"></i> 创建管理员</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" method="post">
+        <div class="control-group">
+            <label class="control-label">姓名</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.userName" placeholder="管理员姓名" value="${data!=null?data.userName:''}" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">登录账号</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.userAccount" value="${data!=null?data.userAccount:''}" placeholder="管理员登录账号" />
+            </div>
+        </div>
+        #{if data==null}
+        <div class="control-group">
+            <label class="control-label">登录密码</label>
+            <div class="controls">
+                <input type="password" value="123456" name="data.userPass" readonly class="span3" placeholder="管理员登录密码" />
+                <span class="help-inline">管理员登录密码，默认123456</span>
+            </div>
+        </div>
+        #{/if}
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+       $("#ok").click(function(){
+           var uname=$("input[name='data.userName']");
+           var uact=$("input[name='data.userAccount']");
+           var upass=$("input[name='data.userPass']");
+           if(uname.val().isEmpty()){
+               uname.val("");
+               uname.focus();
+               return;
+           }
+
+           if(uact.val().isEmpty()){
+               uact.val("");
+               uact.focus();
+               return;
+           }
+
+           if(upass.length>0){
+               if(upass.val().isEmpty()){
+                   upass.val("");
+                   upass.focus();
+                   return;
+               }
+           }
+           $(".form-horizontal").ajaxSubmit({
+               url:"/manager/createData/0",
+               dataType:"json",
+               success:function(res){
+                   modalJs.response(res,'',function(){
+                       dataTable.loadData();
+                   });
+               },error:function(e){
+                   alert("error:"+e);
+                   modalJs.close();
+               }
+           });
+       }) ;
+    });
+</script>
+</body>
+</html>

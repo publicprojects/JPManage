@@ -92,7 +92,9 @@ public class Application extends Controller {
         if (m != null) {
             setCook(true, "authUser", username);
             setCook((rememberme == 1), "authPwd", password);
+            m.lastLoginPcIp=IpMacAddress.instance().getIpAddress(request);
             session.put(LOGIN_USER_ID, m.userId);
+            m.save();
             Manage.index();
         } else {
             msg = "用户名或密码错误!";

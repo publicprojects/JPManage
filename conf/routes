@@ -7,7 +7,11 @@ GET     /                                       Application.index
 GET     /manager/signIn                         Application.signIn
 GET     /manager/signOut                        Application.signout
 GET     /map/{name}/xhtml                       HtmlMap.html
+GET     /manager/delDataConfirm/{type}/{id}     Manage.delDataConfirm
 POST    /manager/getDataTable/{type}            Manage.queryData
+POST    /manager/createData/{type}              Manage.createData
+POST    /manager/delData/{type}/{id}            Manage.delData
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

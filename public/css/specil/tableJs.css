@@ -1,7 +1,7 @@
 #hide {
     position: fixed;
     z-index: 9999;
-    background-color: #000;
+    background-color: #fff;
     opacity: 0.8;
     top: 0;
     right: 0;
@@ -43,17 +43,17 @@
 
 #loading .layer-content {
     text-align: center;
+    padding: 5px;
 }
 
 #loading .layer-content span {
-    margin: 0 auto;
     width: 70px;
     vertical-align: middle;
     white-space: nowrap;
     max-width: 70px;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-block;
+    display: block;
     margin-left: -90px;
     text-align: center;
     color: #0590B3
@@ -63,6 +63,7 @@
     margin: 0 auto;
     vertical-align: middle;
     max-height: 100px;
+    display:block;
 }
 
 ul.pagination_margin {
@@ -93,8 +94,6 @@ table.tableJS tr td img {
 }
 table.tableJS thead{
     background: #eee;
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#ededed));
-    background: -moz-linear-gradient(top, #fff, #ededed);
     color:#444;
 }
 

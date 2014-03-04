@@ -68,45 +68,4 @@ public class Managers extends GenericModel {
         this.userPass = Encryption.instance().getEncryptedChar(pass, salt);
         this.userPassSalt = Encryption.instance().byteToHexString(salt);
     }
-
-    public void setLoginIpAddr(Http.Request request) {
-        String ipAddress = null;
-        Http.Header header=null;
-        header=request.headers.get("x-forwarded-for");
-        if(header!=null)
-        {
-            ipAddress = header.value();
-        }
-        if (ipAddress == null || ipAddress.length() == 0
-                || "unknown".equalsIgnoreCase(ipAddress)) {
-            header=request.headers.get("Proxy-Client-IP");
-            if(header!=null)
-                ipAddress = header.value();
-        }
-        if (ipAddress == null || ipAddress.length() == 0
-                || "unknown".equalsIgnoreCase(ipAddress)) {
-            header=request.headers.get("WL-Proxy-Client-IP");
-            if(header!=null)
-                ipAddress = header.value();
-        }
-        if (ipAddress == null || ipAddress.length() == 0
-                || "unknown".equalsIgnoreCase(ipAddress)) {
-            ipAddress = request.remoteAddress;
-            if (ipAddress.equals("127.0.0.1")) {
-                InetAddress inet = null;
-                try {
-                    inet = InetAddress.getLocalHost();
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-                ipAddress = inet.getHostAddress();
-            }
-        }
-        if (ipAddress != null && ipAddress.length() > 15) {
-            if (ipAddress.indexOf(",") > 0) {
-                ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
-            }
-        }
-        this.lastLoginPcIp=ipAddress;
-    }
 }
