@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        #{if data==null}
+        <i class="icon-plus-sign-alt" style="color: #0ba11b"></i> 创建角色
+        #{/if}
+        #{else}
+        <i class="icon-edit" style="color: #236aa1"></i> 编辑角色
+        #{/else}
+    </h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" method="post">
+        #{if data!=null}
+          <input type="hidden" name="data.id" value="${data.id}">
+        #{/if}
+        <div class="control-group">
+            <label class="control-label">角色名称</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.name" placeholder="角色名称" value="${data!=null?data.name:''}" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+       $("#ok").click(function(){
+           var uname=$("input[name='data.name']");
+           if(uname.val().isEmpty()){
+               uname.val("");
+               uname.focus();
+               return;
+           }
+           var url="${data==null?'/manager/createData/1':'/manager/updatePerData/1'}";
+           $(".form-horizontal").ajaxSubmit({
+               url:url,
+               dataType:"json",
+               success:function(res){
+                   modalJs.response(res,'',function(){
+                       dataTable.loadData();
+                   });
+               },error:function(e){
+                   alert("error:"+e);
+                   modalJs.close();
+               }
+           });
+       }) ;
+    });
+</script>
+</body>
+</html>

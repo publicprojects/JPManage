@@ -17,7 +17,7 @@ public class Managers extends GenericModel {
 	@Id
 	@GeneratedValue
 	@Column(name="user_id")
-	public Integer userId;
+	public Long userId;
 	@Column(name="last_login_pc_ip")
 	public String lastLoginPcIp;
 	@Column(name="last_login_pc_name")

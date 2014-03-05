@@ -15,15 +15,15 @@ $(function(){
         name:"操作",
         data:[{
             name:"<i class='icon-edit'></i> 修改",
-            href:"/schoolres/5/data/{userId}",
+            href:"/manager/getDataById/0/{userId}",
             className:"blue"
         },{
             name:"<b>&times;</b> 删除",
-            href:"/schoolres/5/delConfirm/{userId}?shield_field=id="+$("#logid").val(),
+            href:"/manager/delDataConfirm/0/{userId}?shield_field=userId="+$("#logid").val(),
             className:"red"
         },{
             name:"分配角色",
-            href:"/schoolres/assignRole/{userId}?name={userAccount}",
+            href:"/manager/assignRoles/{userId}",
             className:"blue"
         }],
         type:"operator"
@@ -34,4 +34,7 @@ $(function(){
         url:"/manager/getDataTable/0",
         urlPara:{}
     });
+    $(".tool-bar span.btn").click(function(){
+        TableJS.modal($(this).attr("data-href"));
+    })
 });

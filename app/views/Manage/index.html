@@ -347,13 +347,13 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
 <script src="/public/js/jquery.uniform.min.js" type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<script src="/public/js/jquery.vmap.js" type="text/javascript"></script>
-<script src="/public/js/jquery.vmap.russia.js" type="text/javascript"></script>
-<script src="/public/js/jquery.vmap.world.js" type="text/javascript"></script>
-<script src="/public/js/jquery.vmap.europe.js" type="text/javascript"></script>
-<script src="/public/js/jquery.vmap.germany.js" type="text/javascript"></script>
-<script src="/public/js/jquery.vmap.usa.js" type="text/javascript"></script>
-<script src="/public/js/jquery.vmap.sampledata.js" type="text/javascript"></script>
+*{<script src="/public/js/jquery.vmap.js" type="text/javascript"></script>}*
+*{<script src="/public/js/jquery.vmap.russia.js" type="text/javascript"></script>}*
+*{<script src="/public/js/jquery.vmap.world.js" type="text/javascript"></script>}*
+*{<script src="/public/js/jquery.vmap.europe.js" type="text/javascript"></script>}*
+*{<script src="/public/js/jquery.vmap.germany.js" type="text/javascript"></script>}*
+*{<script src="/public/js/jquery.vmap.usa.js" type="text/javascript"></script>}*
+*{<script src="/public/js/jquery.vmap.sampledata.js" type="text/javascript"></script>}*
 <script src="/public/js/jquery.flot.js" type="text/javascript"></script>
 <script src="/public/js/jquery.flot.resize.js" type="text/javascript"></script>
 <script src="/public/js/jquery.pulsate.min.js" type="text/javascript"></script>
@@ -374,9 +374,9 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
     jQuery(document).ready(function () {
         App.init(); // initlayout and core plugins
         Index.init();
-        Index.initJQVMAP(); // init index page's custom scripts
-        Index.initCalendar(); // init index page's custom scripts
-        Index.initCharts(); // init index page's custom scripts
+       // Index.initJQVMAP(); // init index page's custom scripts
+       // Index.initCalendar(); // init index page's custom scripts
+       // Index.initCharts(); // init index page's custom scripts
         Index.initClock();
         Index.initNavBar();
 //        Index.initChat();

@@ -11,6 +11,9 @@ GET     /manager/delDataConfirm/{type}/{id}     Manage.delDataConfirm
 POST    /manager/getDataTable/{type}            Manage.queryData
 POST    /manager/createData/{type}              Manage.createData
 POST    /manager/delData/{type}/{id}            Manage.delData
+GET     /manager/getDataById/{type}/{id}        Manage.getPerDataById
+POST    /manager/updatePerData/{type}           Manage.updatePerData
+GET     /manager/assignRoles/{id}               Manage.assignRoles
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

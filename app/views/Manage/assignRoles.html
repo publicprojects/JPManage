@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <title>角色分配</title>
+    <style>
+        .has label,.not-has label{
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 3px 5px;
+        }
+        .has label input,.not-has label input{
+            vertical-align: top;
+        }
+        .has label{
+            background-color: #b1cca6;
+        }
+        .not-has label{
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>为账户<span style="color: #5b8dff">${account}</span>分配角色</h3>
+</div>
+<div class="modal-body">
+    <div class="has">
+    #{list has,as:'p'}
+    <label><input type="checkbox" value="${p.id}"> ${p.name}</label>
+    #{/list}
+    </div>
+    <div class="not-has">
+    #{list notHas,as:'p'}
+    <label><input type="checkbox" value="${p.id}"> ${p.name}</label>
+    #{/list}
+    </div>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+</body>
+</html>
