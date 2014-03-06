@@ -23,6 +23,7 @@ public class Application extends Controller {
 
     public final static int TYPE_MANAGERS=0;
     public final static int TYPE_ROLES=1;
+    public final static int TYPE_PRIVILEGE=2;
 
     public static void index() {
         boolean iplimit =Boolean.parseBoolean(Play.configuration.getProperty("ip.limit"));

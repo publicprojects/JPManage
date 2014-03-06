@@ -24,13 +24,13 @@
     function adjustHeight(){
         function getHeight(){
             var ph=$(".tableJs-container").next().outerHeight();
-            return $(".page-content").outerHeight()-$(".page-title").outerHeight()-$(".breadcrumb").outerHeight()-ph;
+            return $(".page-content").innerHeight()-$(".page-title").height()-$(".breadcrumb").height()-0;
         }
         var h=getHeight();
         $(".tableJs-container").css({"min-height":h,"height":h});
         $(window).resize(function(){
-            var h=getHeight();
-            $(".tableJs-container").css({"min-height":h,"height":h});
+            var h_=getHeight();
+            $(".tableJs-container").css({"min-height":h_,"height":h_});
         });
     }
 
@@ -48,8 +48,7 @@
                     e.preventDefault();
                     $.get(url,
                         function (data) {
-                            $(
-                                '<div class="modal hide fade">'
+                            $( '<div class="modal hide fade">'
                                     + data + '</div>').modal({
                                     backdrop: "static"
                                 });

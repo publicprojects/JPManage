@@ -3,35 +3,38 @@
  */
 $(function(){
     var cols=[{
-        name:"角色名称",
+        name:"权限名称",
         field:"name"
     },{
-        name:"创建时间",
-        field:"createAt"
+        name:"权限英文",
+        field:"value"
     },{
-        name:"最后更新时间",
-        field:"updateAt"
+        name:"权限连接地址",
+        field:"url"
+    },{
+        name:"权限图标",
+        field:"icon",
+        type:"style"
+    },{
+        name:"权限描述",
+        field:"description"
     },{
         name:"操作",
         data:[{
             name:"<i class='icon-edit'></i> 修改",
-            href:"/manager/getDataById/1/{id}",
+            href:"/manager/getDataById/2/{id}",
             className:"blue"
         },{
             name:"<b>&times;</b> 删除",
-            href:"/manager/delDataConfirm/1/{id}",
+            href:"/manager/delDataConfirm/2/{id}",
             className:"red"
-        },{
-            name:"分配权限",
-            href:"/manager/assignPrivileges/{id}",
-            className:"blue"
         }],
         type:"operator"
     }];
     dataTable=TableJS.init({
         titles:cols,
         container:".dataTable-container",
-        url:"/manager/getDataTable/1",
+        url:"/manager/getDataTable/2",
         urlPara:{}
     });
     $(".tool-bar span.btn").click(function(){

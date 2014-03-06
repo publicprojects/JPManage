@@ -14,6 +14,9 @@ POST    /manager/delData/{type}/{id}            Manage.delData
 GET     /manager/getDataById/{type}/{id}        Manage.getPerDataById
 POST    /manager/updatePerData/{type}           Manage.updatePerData
 GET     /manager/assignRoles/{id}               Manage.assignRoles
+POST    /manager/assignRolesDo/{id}             Manage.assignRolesDo
+GET     /manager/assignPrivileges/{id}          Manage.assignPrivileges
+POST    /manager/assignPrivilegesDo/{id}        Manage.assignPrivilegesDo
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

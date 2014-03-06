@@ -2,7 +2,7 @@
 <html>
 <head>
     <script src="/public/js/specil/modal.js"></script>
-    <title>角色分配</title>
+    <title>权限分配</title>
     <style>
         .has label,.not-has label{
             border: 1px solid #ccc;
@@ -25,7 +25,7 @@
 <body>
 <div class="modal-header">
     <button data-dismiss="modal" class="close" type="button"></button>
-    <h3>为账户<span style="color: #5b8dff">${account}</span>分配角色</h3>
+    <h3>为账户<span style="color: #5b8dff">${name}</span>分配权限</h3>
 </div>
 <div class="modal-body">
     <div class="has">
@@ -55,13 +55,13 @@
             });
             $.ajax({
                type:"post",
-                url:"/manager/assignRolesDo/${id}",
+                url:"/manager/assignPrivilegesDo/${id}",
                 data:{add:add.join(";"),remove:remove.join(";")},
                 dataType:"json",
                 success:function(res){
-                    modalJs.response(res,'角色分配完成');
+                    modalJs.response(res,'权限分配完成');
                 },error:function(e){
-                    modalJs.response({response:'角色分配失败,错误信息：'+e,responseCode:-1},"错误");
+                    modalJs.response({response:'权限分配失败,错误信息：'+e,responseCode:-1},"错误");
                 }
             });
         });

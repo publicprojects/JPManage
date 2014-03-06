@@ -77,8 +77,9 @@ public class Manage extends Application {
         }
     }
 
-    public static void assignPrivileges(Long id, String name) {
+    public static void assignPrivileges(Long id) {
         ManagerRole role = ManagerRole.findById(id);
+        String name=role.name;
         List<ManagerPrivilege> has = role.privileges;
         List<ManagerPrivilege> notHas = new ArrayList<ManagerPrivilege>();
         List<ManagerPrivilege> all = ManagerPrivilege.findAll();
@@ -127,6 +128,10 @@ public class Manage extends Application {
                 Map<Object, Object> roles = ManageRoles.getRoles(page, current, key, val);
                 renderJSON(roles);
                 break;
+            case TYPE_PRIVILEGE:
+                Map<Object, Object> privis = ManagePrivileges.getManagerPrivileges(page, current, key, val);
+                renderJSON(privis);
+                break;
         }
     }
 
@@ -154,6 +159,16 @@ public class Manage extends Application {
                 role.save();
                 renderJSON(new JsonResponse(0, "角色[" + role.name + "]创建成功"));
                 break;
+            case TYPE_PRIVILEGE:
+                ManagerPrivilege privi=params.get("data",ManagerPrivilege.class);
+                ManagerPrivilege privi_=ManagerPrivilege.find("name=?",privi.name).first();
+                if(privi_!=null){
+                    renderJSON(new JsonResponse(-1, "权限名称[" + privi.name + "]已经存在，请重新设置"));
+                    return;
+                }
+                privi.save();
+                renderJSON(new JsonResponse(0, "权限[" + privi.name + "]创建成功"));
+                break;
         }
     }
 
@@ -169,6 +184,11 @@ public class Manage extends Application {
                 role.delete();
                 renderJSON(new JsonResponse(0, "角色[" + role.name + "]已成功删除"));
                 break;
+            case TYPE_PRIVILEGE:
+                ManagerPrivilege privi=ManagerPrivilege.findById(id);
+                privi.delete();
+                renderJSON(new JsonResponse(0, "权限[" + privi.name + "]已成功删除"));
+                break;
         }
     }
 
@@ -180,6 +200,9 @@ public class Manage extends Application {
                 break;
             case TYPE_ROLES:
                 data=ManagerRole.findById(id);
+                break;
+            case TYPE_PRIVILEGE:
+                data=ManagerPrivilege.findById(id);
                 break;
         }
         render("HtmlMap/delDataConfirm.html", type, id, data);
@@ -195,6 +218,10 @@ public class Manage extends Application {
             case TYPE_ROLES:
                 data=ManagerRole.findById(id);
                 render("/HtmlMap/addManagerRole.html",data);
+                break;
+            case TYPE_PRIVILEGE:
+                data=ManagerPrivilege.findById(id);
+                render("/HtmlMap/addManagerPrivilege.html",data);
                 break;
         }
     }
@@ -219,6 +246,16 @@ public class Manage extends Application {
                 }
                 role.save();
                 renderJSON(new JsonResponse(0,"角色修改成功。"));
+                break;
+            case TYPE_PRIVILEGE:
+                ManagerPrivilege privi=params.get("data",ManagerPrivilege.class);
+                ManagerPrivilege privi_=ManagerPrivilege.find("id!=? and name=?",privi.id,privi.name).first();
+                if(privi_!=null){
+                    renderJSON(new JsonResponse(-1,"权限[<b>"+privi.name+"</b>]已经存在。"));
+                    return;
+                }
+                privi.save();
+                renderJSON(new JsonResponse(0,"权限修改成功。"));
                 break;
         }
     }
