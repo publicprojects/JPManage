@@ -17,6 +17,7 @@ GET     /manager/assignRoles/{id}               Manage.assignRoles
 POST    /manager/assignRolesDo/{id}             Manage.assignRolesDo
 GET     /manager/assignPrivileges/{id}          Manage.assignPrivileges
 POST    /manager/assignPrivilegesDo/{id}        Manage.assignPrivilegesDo
+POST    /manager/controllers/get                Manage.getControllers
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

@@ -21,7 +21,7 @@ public class ManageRoles extends Application {
             count=(int)ManagerRole.count();
             page.setTotalRecord(count);
             page.setCurrentPage(current);
-            list=ManagerRole.findAll();
+            list=ManagerRole.all().from(page.getStartRow()).fetch(page.getDisplayCountOfPerPage());
         }
         else{
             count=(int)ManagerRole.count(keys,val_);

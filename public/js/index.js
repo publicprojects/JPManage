@@ -21,6 +21,7 @@ var Index = function () {
                 }
                 $(".page-sidebar-menu li.active").removeClass("active");
                 li.addClass("active");
+                var des=$(this).attr("data-description");
                 getHtml($(this).attr("href"));
                 var title=$(this).find("span.title").html();
                 if(!li.hasClass("start")){
@@ -28,12 +29,13 @@ var Index = function () {
                 }else{
                     $(".breadcrumb li a.current").html("");
                 }
-                $(".page-title").html(title);
-                var des=$(this).attr("data-description");
+                $(".page-title span").html(title);
                 $(".page-title small").html(des);
             });
             function getHtml(url){
+                var lay=TableJS.layer();
                 $.get(url,function(data){
+                    $("#"+lay).remove();
                     $(".changeable-content").html(data);
                 });
             }

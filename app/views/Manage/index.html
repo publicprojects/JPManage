@@ -68,7 +68,7 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
     }
 
     .dashboard-stat .details {
-        padding-right: 9px !important;
+        padding-right: 8px !important;
     }
 
     .dashboard-stat .visual {
@@ -140,90 +140,21 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
             <div class="sidebar-toggler hidden-phone"></div>
         </li>
         <li class="start">
-            <a href="/map/controllers/xhtml">
+            <a href="/map/controllers/xhtml" data-description="让工作一目了然">
                 <i class="icon-home"></i>
                 <span class="title">控制台</span>
                 <span class="selected"></span>
             </a>
         </li>
-        <li class="">
-            <a href="index.html" data-description="">
-                <i class="icon-calendar"></i>
-                <span class="title">生产日报</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="/map/managers/xhtml">
-                <i class="icon-group"></i>
-                <span class="title">管理员</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="/map/managerRoles/xhtml">
-                <i class="icon-user"></i>
-                <span class="title">角色</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="/map/managerPrivileges/xhtml">
-                <i class="icon-magic"></i>
-                <span class="title">权限</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="index.html">
-                <i class="icon-bullhorn"></i>
-                <span class="title">生产通知单</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="index.html">
-                <i class="icon-check"></i>
-                <span class="title">人员考核</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="index.html">
-                <i class="icon-truck" style="color:#287ccc;"> </i>
-                <span class="title">成品出入库</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="index.html">
-                <i class="icon-truck" style="color:#cc6128;"></i>
-                <span class="title">原料出入库</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="index.html">
-                <i class="icon-truck" style="color:#1dcc21;"></i>
-                <span class="title">辅料出入库</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-        <li class="">
-            <a href="index.html">
-                <i class="icon-beaker"></i>
-                <span class="title">成品质检</span>
-                <span class="selected"></span>
-            </a>
-        </li>
-
-        <li class="">
-            <a href="index.html">
-                <i class="icon-legal"></i>
-                <span class="title">订单合同</span>
-                <span class="selected"></span>
-            </a>
-        </li>
+        #{list privis,as:'p'}
+            <li class="">
+                <a href="${p.url}" id="nav_${p.id}" data-description="${p.description}">
+                    <i class="${p.icon.substring(1)}"></i>
+                    <span class="title">${p.name}</span>
+                    <span class="selected"></span>
+                </a>
+            </li>
+        #{/list}
     </ul>
 </div>
 <!-- END SIDEBAR -->
@@ -280,13 +211,14 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
                 </div>
                 <!-- END BEGIN STYLE CUSTOMIZER -->
                 <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-                <h3 class="page-title"> 控制台
-                    <small>controllers</small>
+                <h3 class="page-title">
+                    <span>控制台</span>
+                    <small></small>
                 </h3>
                 <ul class="breadcrumb">
                     <li>
                         <i class="icon-home"></i>
-                        <a href="index.html" class="parent">控制台</a>
+                        <a href="/map/controllers/xhtml" class="parent">控制台</a>
                         <i class="icon-angle-right"></i>
                     </li>
                     <li><a href="javascript:void(0)" class="current"></a></li>
@@ -321,7 +253,7 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
 <!-- BEGIN FOOTER -->
 <div class="footer">
     <div class="footer-inner">
-        2013 &copy; Metronic by keenthemes.
+        2014 &copy; 青岛胶平食品有限公司内控系统 by Keisei.
     </div>
     <div class="footer-tools">
 			<span class="go-top">
@@ -379,6 +311,14 @@ Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-templa
        // Index.initCharts(); // init index page's custom scripts
         Index.initClock();
         Index.initNavBar();
+        $(".breadcrumb a.parent").click(function(e){
+            e.preventDefault();
+            var lay=TableJS.layer();
+            $.get($(this).attr("href"),function(data){
+                $("#"+lay).remove();
+                $(".changeable-content").html(data);
+            });
+        });
 //        Index.initChat();
 //        Index.initMiniCharts();
 //        Index.initDashboardDaterange();

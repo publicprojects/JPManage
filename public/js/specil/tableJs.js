@@ -13,7 +13,9 @@
             return getLayer(txt, style);
         },
         modal: function (url, drop) {
+            var lay=TableJS.layer();
             $.get(url, function (data) {
+                $("#"+lay).remove();
                 $('<div class="modal hide fade">' + data + '</div>').modal({
                     backdrop: (!drop ? "static" : drop)
                 });
@@ -22,16 +24,16 @@
     }
 
     function adjustHeight(){
-        function getHeight(){
-            var ph=$(".tableJs-container").next().outerHeight();
-            return $(".page-content").innerHeight()-$(".page-title").height()-$(".breadcrumb").height()-0;
-        }
-        var h=getHeight();
-        $(".tableJs-container").css({"min-height":h,"height":h});
-        $(window).resize(function(){
-            var h_=getHeight();
-            $(".tableJs-container").css({"min-height":h_,"height":h_});
-        });
+//        function getHeight(){
+//            var ph=$(".tableJs-container").next().outerHeight();
+//            return $(".page-content").innerHeight()-$(".page-title").height()-$(".breadcrumb").height()-0;
+//        }
+//        var h=getHeight();
+//        $(".tableJs-container").css({"min-height":h,"height":h});
+//        $(window).resize(function(){
+//            var h_=getHeight();
+//            $(".tableJs-container").css({"min-height":h_,"height":h_});
+//        });
     }
 
     function defaultComplete() {

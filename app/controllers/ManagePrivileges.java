@@ -20,7 +20,7 @@ public class ManagePrivileges extends Application {
             count=(int)ManagerPrivilege.count();
             page.setTotalRecord(count);
             page.setCurrentPage(current);
-            list=ManagerPrivilege.findAll();
+            list=ManagerPrivilege.all().from(page.getStartRow()).fetch(page.getDisplayCountOfPerPage());
         }
         else{
             count=(int)ManagerPrivilege.count(keys,val_);

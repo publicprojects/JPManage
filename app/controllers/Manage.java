@@ -26,6 +26,11 @@ public class Manage extends Application {
             Application.index();
         }
         Managers manager = Managers.findById(Long.decode(uid));
+        List<ManagerPrivilege> privis=getPrivileges(manager);
+        render(manager, privis);
+    }
+
+    static List<ManagerPrivilege> getPrivileges(Managers manager){
         List<ManagerRole> roles = manager.roles;
         List<ManagerPrivilege> privis = new ArrayList<ManagerPrivilege>();
         for (ManagerRole role : roles) {
@@ -35,7 +40,17 @@ public class Manage extends Application {
                 }
             }
         }
-        render(manager, privis);
+        return privis;
+    }
+
+    public static void getControllers(){
+        String uid = session.get(LOGIN_USER_ID);
+        if (uid == null) {
+            renderJSON("");
+        }
+        Managers manager = Managers.findById(Long.decode(uid));
+        List<ManagerPrivilege> privis=getPrivileges(manager);
+        renderJSON(JSONBuilder.build(List.class).toJson(privis));
     }
 
     public static void assignRoles(Long id) {

@@ -21,7 +21,7 @@ public class ManageManagers extends Application {
             count=(int)Managers.count();
             page.setTotalRecord(count);
             page.setCurrentPage(current);
-            list=Managers.findAll();
+            list=Managers.all().from(page.getStartRow()).fetch(page.getDisplayCountOfPerPage());
         }
         else{
             count=(int)Managers.count(keys,val_);

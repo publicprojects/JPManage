@@ -21,6 +21,9 @@ public class Application extends Controller {
     final static String LOGIN_USER_ID = "login-user-id";
     final static String LOGIN_USER = "login-user";
 
+    final static String COOKIE_USER="authUser";
+    final static String COOKIE_PWD="authPwd";
+
     public final static int TYPE_MANAGERS=0;
     public final static int TYPE_ROLES=1;
     public final static int TYPE_PRIVILEGE=2;
@@ -35,8 +38,8 @@ public class Application extends Controller {
         }
         if (access) {
             String randomID = Codec.UUID();
-            String account = Application.getCookVal("authUser");
-            String pwd = Application.getCookVal("authPwd");
+            String account = Application.getCookVal(COOKIE_USER);
+            String pwd = Application.getCookVal(COOKIE_PWD);
             String msg = session.get(LOGIN_RESPONSE);
             render(randomID, account, pwd, msg);
         } else {
@@ -90,8 +93,12 @@ public class Application extends Controller {
         String msg = "";//"验证码错误!";
         Managers m = Managers.validateUser(username, password);
         if (m != null) {
-            setCook(true, "authUser", username);
-            setCook((rememberme == 1), "authPwd", password);
+            String account = Application.getCookVal(COOKIE_USER);
+            String pwd = Application.getCookVal(COOKIE_PWD);
+            if(account==null||pwd==null){
+                setCook(true, COOKIE_USER, username);
+                setCook((rememberme == 1), COOKIE_PWD, password);
+            }
             m.lastLoginPcIp=IpMacAddress.instance().getIpAddress(request);
             session.put(LOGIN_USER_ID, m.userId);
             m.save();
