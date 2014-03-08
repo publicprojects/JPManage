@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+    <style>
+        .input-prepend .add-on{
+            padding: 2px 5px!important;
+        }
+        .form-horizontal .control-group{
+            margin-bottom:15px!important;
+        }
+        .small{
+            padding: 5px 14px!important;
+        }
+        .control-group .controls select{
+            outline: 0;
+            font-family: "Microsoft Yahei"!important;
+        }
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        #{if data==null}
+        <i class="icon-plus-sign-alt" style="color: #0ba11b"></i> 创建订单合同
+        #{/if}
+        #{else}
+        <i class="icon-edit" style="color: #236aa1"></i> 编辑订单合同
+        #{/else}
+    </h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" method="post">
+        #{if data!=null}
+          <input type="hidden" name="data.id" value="${data.id}">
+        #{/if}
+            <div class="control-group">
+                <label class="control-label">合同号</label>
+                <div class="controls">
+                    <input type="text" class="span3" name="data.description" placeholder="合同号" value="${data!=null?data.description:''}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">批次号</label>
+                <div class="controls">
+                    <input type="text" class="span3" name="data.description" placeholder="批次号" value="${data!=null?data.description:''}" />
+                </div>
+            </div>
+        <div class="control-group">
+            <label class="control-label">商品/产量</label>
+            <div class="controls">
+                <div class="input-prepend">
+                    <span class="add-on">产量</span>
+                    <input type="text" class="span1"/>
+                    <select class="span2">
+                        <option>花生</option>
+                        <option>玉米</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+            <div class="control-group">
+                <label class="control-label">客户</label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <button class="btn blue small">新客户</button>
+                        <select class="span2">
+                            <option>客户1</option>
+                            <option>客户2</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">签发人</label>
+                <div class="controls">
+                    <input type="text" class="span3" name="data.url" placeholder="签发人" value="${data!=null?data.url:''}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">日期</label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on blue">订单日期</span>
+                        <input type="text" class="span1"/>
+                        <span class="add-on blue">商标日期</span>
+                        <input type="text" class="span1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">价格</label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on blue">单价</span>
+                        <input type="text" class="span1"/>
+                        <span class="add-on blue">总价</span>
+                        <input type="text" class="span1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">预计发货</label>
+                <div class="controls">
+                    <input type="text" class="span3" name="data.description" placeholder="预计发货日期" value="${data!=null?data.description:''}" />
+                </div>
+            </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+       $("#ok").click(function(){
+           var uname=$("input[name='data.name']");
+           if(uname.val().isEmpty()){
+               uname.val("");
+               uname.focus();
+               return;
+           }
+           var url="${data==null?'/manager/createData/2':'/manager/updatePerData/2'}";
+           $(".form-horizontal").ajaxSubmit({
+               url:url,
+               dataType:"json",
+               success:function(res){
+                   modalJs.response(res,'',function(){
+                       dataTable.loadData();
+                   });
+               },error:function(e){
+                   alert("error:"+e);
+                   modalJs.close();
+               }
+           });
+       }) ;
+    });
+</script>
+</body>
+</html>
