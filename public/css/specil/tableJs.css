@@ -92,6 +92,9 @@ table.tableJS tr td img {
     max-height: 24px;
     max-width: 300px;
 }
+table.tableJS thead th{
+    font-size: 12px!important;
+}
 table.tableJS thead{
     background: #eee;
     color:#444;
