@@ -4,6 +4,7 @@
     <script src="/public/js/specil/modal.js"></script>
     <script src="/public/js/jquery.form.min.js"></script>
     <title></title>
+    <link href="/public/css/specil/form-table.css" rel="stylesheet"/>
     <style>
         .input-prepend .add-on{
             padding: 2px 5px!important;
@@ -37,7 +38,57 @@
         #{if data!=null}
           <input type="hidden" name="data.id" value="${data.id}">
         #{/if}
-            <div class="control-group">
+            <table border="1">
+                <thead>
+                <tr>
+                    <th colspan="4">基本资料</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>客户</th>
+                        <td><span class="btn blue newCustomer" style="padding: 5px 10px;" ><i class="icon-plus"></i> 新客户</span><select style="width: 102px"><option>客户1</option></select></td>
+                        <th>批次号</th>
+                        <td><input type="text"/></td>
+                    </tr>
+                     <tr>
+                         <th>接单日期</th>
+                         <td><input type="text" readonly></td>
+                         <th>合同单号</th>
+                         <td><input type="text"></td>
+                     </tr>
+                     <tr>
+                         <th>签发人</th>
+                         <td><input type="text"/></td>
+                         <th>预计发货</th>
+                         <td><input type="text" readonly/></td>
+                     </tr>
+                </tbody>
+            </table>
+            <table border="1" class="horizontal">
+                <thead>
+                    <tr>
+                        <th colspan="5">详细信息</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>订购产品</th>
+                    <th>订购量</th>
+                    <th>商标日期</th>
+                    <th>单价</th>
+                    <th>总价</th>
+                </tr>
+                <tr>
+                    <td><select><option>花生</option></select></td>
+                    <td><input type="text"/></td>
+                    <td><input type="text" readonly/></td>
+                    <td><input type="text"></td>
+                    <td><input type="text" /></td>
+                </tr>
+                </tbody>
+            </table>
+           *{ <div class="control-group">
                 <label class="control-label">合同号</label>
                 <div class="controls">
                     <input type="text" class="span3" name="data.description" placeholder="合同号" value="${data!=null?data.description:''}" />
@@ -108,7 +159,7 @@
                 <div class="controls">
                     <input type="text" class="span3" name="data.description" placeholder="预计发货日期" value="${data!=null?data.description:''}" />
                 </div>
-            </div>
+            </div>}*
     </form>
 </div>
 <div class="modal-footer">
