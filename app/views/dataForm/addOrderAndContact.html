@@ -17,15 +17,15 @@
         <i class="icon-plus-sign-alt" style="color: #0ba11b"></i> 创建订单合同
         #{/if}
         #{else}
-        <i class="icon-edit" style="color: #236aa1"></i> 编辑订单合同
+        <i class="icon-info" style="color: #236aa1"></i> 订单详情
         #{/else}
     </h3>
 </div>
 <div class="modal-body">
     <form class="form-horizontal" method="post">
-        #{if data!=null}
+*{        #{if data!=null}
           <input type="hidden" name="data.id" value="${data.id}">
-        #{/if}
+        #{/if}}*
             <table border="1" class="base">
                 <thead>
                 <tr>
@@ -35,19 +35,26 @@
                 <tbody>
                     <tr>
                         <th>客户</th>
-                        <td><span class="btn blue new-client" style="padding:5px 7px;" data-type="select"><i class="icon-plus"></i></span><input class="input-client" style="display: none;width:219px!important" name="order.client.clientName" disabled type="text"><select class="select-client" name="order.client.clientId"></select></td>
+                        <td>
+                            #{if data==null}
+                            <span class="btn blue new-client" style="padding:5px 7px;" data-type="select"><i class="icon-plus"></i></span><input class="input-client" style="display: none;width:219px!important" name="order.client.clientName" disabled type="text"><select class="select-client" name="order.client.clientId"></select>
+                            #{/if}
+                            #{else}
+                                <input class="input-client" style="width:245px!important" value="${data.client.clientName}" disabled type="text">
+                            #{/else}
+                        </td>
                         <th>签发人</th>
-                        <td><input type="text" name="order.orderIssuer"/></td>
+                        <td><input type="text" name="order.orderIssuer" ${data!=null?'value='+data.orderIssuer+" disabled":''}/></td>
                     </tr>
                     <tr>
                          <th>合同日期</th>
-                         <td><input type="text" readonly name="order.recordDate"/></td>
+                         <td><input type="text" readonly name="order.recordDate" ${data!=null?'value='+data.recordDate+' disabled ':''}/></td>
                          <th>合同单号</th>
-                         <td><input type="text" name="order.contractNo"></td>
+                         <td><input type="text" name="order.contractNo" ${data!=null?'value='+data.contractNo+' disabled':''}></td>
                      </tr>
                      <tr>
                          <th>备注</th>
-                         <td colspan="3" style="text-align: left"><textarea name="order.orderRemark"></textarea></td>
+                         <td colspan="3" style="text-align: left"><textarea name="order.orderRemark" ${data!=null?'disabled':''}>${data!=null?data.orderRemark:''}</textarea></td>
                      </tr>
 
                 </tbody>
@@ -55,10 +62,12 @@
             <table border="1" class="horizontal">
                 <thead>
                     <tr>
-                        <th colspan="8">详细信息 </th>
+                        <th colspan="${data==null?'8':'7'}">详细信息 </th>
                     </tr>
                     <tr class="details">
-                        <th style="width: 20px"><span class="btn purple new-tr" style="padding: 2px 6px;margin: 0;"><i class="icon-plus"></i></span></th>
+                        #{if data==null}
+                            <th style="width: 20px"><span class="btn purple new-tr" style="padding: 2px 6px;margin: 0;"><i class="icon-plus"></i></span></th>
+                        #{/if}
                         <th>批次号</th>
                         <th>订购产品</th>
                         <th>订购量</th>
@@ -69,19 +78,37 @@
                     </tr>
                 </thead>
                 <tbody>
+                #{if data==null}
                 <tr class="loading">
                     <td colspan="8"><img src="/public/assets/img/ajax-loading.gif" style="height:25px"><br>产品加载中... </td>
                 </tr>
+                #{/if}
+                #{else}
+                    #{list data.batchs,as:'b'}
+                    <tr>
+                    <td><input type="text" disabled value="${b.batchNo}"></td>
+                    <td><input type="text" disabled value="${b.product.productName}"></td>
+                    <td><input type="text" disabled value="${b.productCount}"></td>
+                    <td><input type="text" disabled value="${b.brandDate}"></td>
+                    <td><input type="text" disabled value="${b.deleverDate}"></td>
+                    <td><input type="text" disabled value="${b.priceUnit}"></td>
+                    <td><input type="text" disabled value="${b.priceTotle}"></td>
+                    </tr>
+                    #{/list}
+                #{/else}
                 </tbody>
             </table>
     </form>
 </div>
 <div class="modal-footer">
-    <span class="btn" id="cancel">取消</span>
+    <span class="btn ${data!=null?'purple':''}" id="cancel">${data==null?'取消':'确定'}</span>
+    #{if data==null}
     <span class="btn blue" id="ok">保存</span>
+    #{/if}
 </div>
 <script>
     $(function(){
+       $(".modal").addClass("orders");
        $("#ok").click(function(){
            var input=$(".base input");
            var check=true;
@@ -112,6 +139,8 @@
        }) ;
     });
 </script>
+#{if data==null}
 <script src="/public/js/manage/dataForm/addOrderAndContact.js"></script>
+#{/if}
 </body>
 </html>

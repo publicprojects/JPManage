@@ -1,13 +1,11 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.*;
 
 import play.db.jpa.Model;
-import utils.JSONBuilder;
+import utils.DateUtils;
 import utils.JsonResponse;
 import utils.Pagination;
 import controllers.ManageUtils;
@@ -23,7 +21,7 @@ public class Orders extends Model {
     @JoinColumn(name="client_id")
 	public Clients client;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
 	public List<Batchs> batchs;
 
 	@Column(name = "contract_no")
@@ -65,6 +63,15 @@ public class Orders extends Model {
         Clients c=data.client;
         if(c.clientId==null&&c.clientName!=null){
             c.save();
+        }
+        for(Batchs b:data.batchs){
+            Products pro=b.product;
+            if(pro.productId==null&&pro.productName!=null){
+                Products temp=Products.find("").first();
+                pro.createAt= DateUtils.getNowDate();
+                pro.save();
+            }
+            b.order=data;
         }
 		data.save();
 		return new JsonResponse(0, "订单[" + data.contractNo + "]已成功添加");

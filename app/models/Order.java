@@ -27,13 +27,6 @@ public class Order {
 		String validateResult = validateForm(order, batchs);
 		if (null == validateResult) {
 			order.batchs = Arrays.asList(batchs);
-            for(Batchs b:order.batchs){
-                Products pro=b.product;
-                if(pro.productId==null&&pro.productName!=null){
-                    pro.createAt= DateUtils.getNowDate();
-                    pro.save();
-                }
-            }
 			response = Orders.addOrder(order);
             createProductNotice(order);
 		} else {

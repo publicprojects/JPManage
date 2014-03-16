@@ -35,7 +35,7 @@ $(function(){
         tdDate(tr,index,"brandDate");
         tdDate(tr,index,"deleverDate");
         tdName(tr,index,"priceUnit");
-        tdName(tr,index,"priceTotal");
+        tdName(tr,index,"priceTotle");
         $("table.horizontal tbody").append(tr);
     }
     function td1(tr){

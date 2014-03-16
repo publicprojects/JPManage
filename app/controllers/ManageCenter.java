@@ -71,6 +71,10 @@ public class ManageCenter extends  Application {
                 data=Clients.findById(id);
                 render("/dataForm/addClient.html",data);
                 break;
+            case TYPE_ORDER:
+                data=Orders.findById(id);
+                render("/dataForm/addOrderAndContact.html",data);
+                break;
         }
     }
 

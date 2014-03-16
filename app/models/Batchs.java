@@ -20,7 +20,7 @@ import controllers.ManageUtils;
 @Table(name = "t_batchs")
 public class Batchs extends Model {
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="order_id")
 	public Orders order;
 

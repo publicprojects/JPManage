@@ -17,8 +17,8 @@ $(function(){
     },{
         name:"操作",
         data:[{
-            name:"<i class='icon-edit'></i> 修改",
-            href:"/manager/getDataById/1/{id}",
+            name:"<i class='icon-info'></i> 详情",
+            href:"/manageCenter/getDataById/5/{id}",
             className:"blue"
         },{
             name:"<b>&times;</b> 删除",
@@ -35,6 +35,6 @@ $(function(){
         noneDataTip:"暂无订单合同"
     });
     $(".tool-bar span.btn").click(function(){
-        TableJS.modal($(this).attr("data-href"),"orders");
+        TableJS.modal($(this).attr("data-href"));
     })
 });
