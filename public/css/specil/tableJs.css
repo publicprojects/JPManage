@@ -94,10 +94,22 @@ table.tableJS tr td img {
 }
 table.tableJS thead th{
     font-size: 12px!important;
+    font-weight: bold!important;
 }
 table.tableJS thead{
     background: #eee;
     color:#444;
+}
+
+input.jump-to-input{
+    width:70px;float:left;border-color:#ddd;border-left:none;padding:9px 5px
+}
+input.jump-to-input:focus{
+    border-color:#ddd;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.15);
 }
 
 img.imgTooltip {

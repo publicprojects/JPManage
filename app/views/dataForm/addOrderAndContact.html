@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+    <link href="/public/css/specil/order-table.css" rel="stylesheet"/>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        #{if data==null}
+        <i class="icon-plus-sign-alt" style="color: #0ba11b"></i> 创建订单合同
+        #{/if}
+        #{else}
+        <i class="icon-edit" style="color: #236aa1"></i> 编辑订单合同
+        #{/else}
+    </h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" method="post">
+        #{if data!=null}
+          <input type="hidden" name="data.id" value="${data.id}">
+        #{/if}
+            <table border="1" class="base">
+                <thead>
+                <tr>
+                    <th colspan="4">基本资料</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>客户</th>
+                        <td><span class="btn blue new-client" style="padding:5px 7px;" data-type="select"><i class="icon-plus"></i></span><input class="input-client" style="display: none;width:219px!important" name="order.client.clientName" disabled type="text"><select class="select-client" name="order.client.clientId"></select></td>
+                        <th>签发人</th>
+                        <td><input type="text" name="order.orderIssuer"/></td>
+                    </tr>
+                    <tr>
+                         <th>合同日期</th>
+                         <td><input type="text" readonly name="order.recordDate"/></td>
+                         <th>合同单号</th>
+                         <td><input type="text" name="order.contractNo"></td>
+                     </tr>
+                     <tr>
+                         <th>备注</th>
+                         <td colspan="3" style="text-align: left"><textarea name="order.orderRemark"></textarea></td>
+                     </tr>
+
+                </tbody>
+            </table>
+            <table border="1" class="horizontal">
+                <thead>
+                    <tr>
+                        <th colspan="8">详细信息 </th>
+                    </tr>
+                    <tr class="details">
+                        <th style="width: 20px"><span class="btn purple new-tr" style="padding: 2px 6px;margin: 0;"><i class="icon-plus"></i></span></th>
+                        <th>批次号</th>
+                        <th>订购产品</th>
+                        <th>订购量</th>
+                        <th>商标日期</th>
+                        <th>预计发货</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr class="loading">
+                    <td colspan="8"><img src="/public/assets/img/ajax-loading.gif" style="height:25px"><br>产品加载中... </td>
+                </tr>
+                </tbody>
+            </table>
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+       $("#ok").click(function(){
+           var input=$(".base input");
+           var check=true;
+           input.each(function(){
+               if(!$(this).prop("disabled"))
+               if($(this).val().isEmpty()){
+                   $(this).val("");
+                   $(this).focus();
+                   check=false;
+                   return false;
+               }
+           })
+           if(check){
+               var url="${data==null?'/manageCenter/createData/5':'/manageCenter/updatePerData/5'}";
+               $(".form-horizontal").ajaxSubmit({
+                   url:url,
+                   dataType:"json",
+                   success:function(res){
+                       modalJs.response(res,'',function(){
+                           dataTable.loadData();
+                       });
+                   },error:function(e){
+                       alert("error:"+e);
+                       modalJs.close();
+                   }
+               });
+           }
+       }) ;
+    });
+</script>
+<script src="/public/js/manage/dataForm/addOrderAndContact.js"></script>
+</body>
+</html>

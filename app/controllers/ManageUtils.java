@@ -4,7 +4,7 @@ package controllers;
  * Created by Administrator on 14-1-20.
  */
 public class ManageUtils {
-    static String genKeys(String[] key, boolean sp, String... value) {
+    public static String genKeys(String[] key, boolean sp, String... value) {
         if (key == null)
             return "";
         StringBuilder sbk = new StringBuilder();
@@ -41,7 +41,7 @@ public class ManageUtils {
                 .toString());
     }
 
-    static Object[] genVals(String[] val){
+    public static Object[] genVals(String[] val){
         if(val==null){
             return null;
         }

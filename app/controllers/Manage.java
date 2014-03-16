@@ -1,11 +1,9 @@
 package controllers;
 
-import com.google.gson.Gson;
 import models.ManagerPrivilege;
 import models.ManagerRole;
 import models.Managers;
 import play.db.jpa.GenericModel;
-import play.db.jpa.Model;
 import utils.DateUtils;
 import utils.JSONBuilder;
 import utils.JsonResponse;
@@ -220,7 +218,7 @@ public class Manage extends Application {
                 data=ManagerPrivilege.findById(id);
                 break;
         }
-        render("HtmlMap/delDataConfirm.html", type, id, data);
+        render("dataViews/delDataConfirm.html", type, id, data);
     }
 
     public static void getPerDataById(int type,Long id){
@@ -228,15 +226,15 @@ public class Manage extends Application {
         switch (type){
             case TYPE_MANAGERS:
                 data=Managers.findById(id);
-                render("/HtmlMap/addManager.html",data);
+                render("/dataForm/addManager.html",data);
                 break;
             case TYPE_ROLES:
                 data=ManagerRole.findById(id);
-                render("/HtmlMap/addManagerRole.html",data);
+                render("/dataForm/addManagerRole.html",data);
                 break;
             case TYPE_PRIVILEGE:
                 data=ManagerPrivilege.findById(id);
-                render("/HtmlMap/addManagerPrivilege.html",data);
+                render("/dataForm/addManagerPrivilege.html",data);
                 break;
         }
     }

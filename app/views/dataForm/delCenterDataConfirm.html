@@ -15,11 +15,11 @@
     <h3><i class="icon-warning-sign" style="color: #a1232a"></i> 删除数据</h3>
 </div>
 <div class="modal-body">
-    #{if type==0}
-           确定删除管理员 <b>${data.userAccount}/${data.userName}</b> ？
-    #{/if}
-    #{elseif type==1 }
-           确定删除角色 <b>${data.name}</b> ？
+#{if type==3 }
+    确定删除产品 <b>${data.productName}</b> ？
+#{/if}
+    #{elseif type==4}
+        确定删除客户信息 <b>${data.clientName}</b> ？
     #{/elseif}
 </div>
 <div class="modal-footer">
@@ -30,14 +30,14 @@
     $(function(){
         $("#ok").click(function(){
             $.ajax({
-               url:"/manager/delData/${type}/${id}",
-               type:"post",
-               dataType:"json",
-               success:function(res){
-                   modalJs.response(res,'删除管理员结果',function(){
-                      dataTable.loadData();
-                   });
-               }
+                url:"/manageCenter/delData/${type}/${id}",
+                type:"post",
+                dataType:"json",
+                success:function(res){
+                    modalJs.response(res,'删除结果',function(){
+                        dataTable.loadData();
+                    });
+                }
 
             });
         });

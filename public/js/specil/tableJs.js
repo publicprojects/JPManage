@@ -9,14 +9,15 @@
         loadData: loadData,
         nextPage: next,
         prePage: pre,
+        jump:jump,
         layer: function (txt, style) {
             return getLayer(txt, style);
         },
-        modal: function (url, drop) {
+        modal: function (url,clazz,drop) {
             var lay=TableJS.layer();
             $.get(url, function (data) {
                 $("#"+lay).remove();
-                $('<div class="modal hide fade">' + data + '</div>').modal({
+                $('<div class="modal hide fade '+(clazz?clazz:'')+'">' + data + '</div>').modal({
                     backdrop: (!drop ? "static" : drop)
                 });
             });
@@ -92,12 +93,20 @@
     function next(current) {
         var c = (parseInt(current) + 1);
         this.opts.urlPara.current = c;
+        this.currentPage=c;
         this.loadData();
     }
 
     function pre(current) {
         var c = (parseInt(current) - 1);
         this.opts.urlPara.current = c;
+        this.currentPage=c;
+        this.loadData();
+    }
+
+    function jump(current){
+        this.opts.urlPara.current = current;
+        this.currentPage=current;
         this.loadData();
     }
 
@@ -427,6 +436,8 @@
             + "_pagination_totalRecord'>"
             + totalRecord
             + "</b> 条</a></li>"
+            + "<li><input type='text' data-max='"+total+"' placeholder='跳转到页数' data-current='"+current+"' class='jump-to-input'/>" +
+             "<a href='javascript:void(0)' style='display:none' id='page-jump-to'>跳转到</a></li>"
             + "<li class='active'><a href=\"javascript:void(0)\" id='current_page' "
             + "style=\"color:#0088cc;background:#eee;border-color:#ccc;"
             + "cursor: default;\"><b id='"
@@ -454,5 +465,37 @@
                         "div#" + TableJS.opts.id + "_pagination").attr(
                             "current"));
             });
+        $("input.jump-to-input").keyup(function(e){
+            if(e.which==13){
+                $("a#page-jump-to").click();
+            }else{
+                jumpToInput(this);
+            }
+        }).bind("afterpaste",function(){
+            jumpToInput(this);
+        });
+        function jumpToInput(input){
+            if(input.value.length==1){
+                input.value=input.value.replace(/[^1-9]/g,'')
+            }else{
+                input.value=input.value.replace(/\D/g,'')
+            }
+            if(input.value>parseInt($(input).attr("data-max"))){
+                input.value=$(input).attr("data-max");
+            }
+            if(input.value==parseInt($(input).attr("data-current"))){
+                input.value="";
+            }
+        }
+        $("a#page-jump-to").click(function(){
+            var topage=$("input.jump-to-input");
+            var val=topage.val();
+            if(val.isEmpty()){
+                topage.focus();
+            }else{
+                topage.attr("data-current",val).blur().val("");
+                TableJS.jump(val);
+            }
+        });
     }
 })(this, document);

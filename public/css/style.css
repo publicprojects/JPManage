@@ -5205,11 +5205,11 @@ Bootstrap Datetimepickers Restyle(in v1.2.4)
 
 .datetimepicker table td {
   font-weight: 300 !important;
-  font-family: 'Open Sans' !important;
+  font-family: 'Microsoft Yahei','Open Sans' !important;
 }
 
 .datetimepicker table th {
-  font-family: 'Open Sans' !important;
+  font-family: 'Microsoft Yahei','Open Sans' !important;
   font-weight: 400 !important;
 }
 
@@ -5228,11 +5228,11 @@ Bootstrap Datepickers Restyle(in v1.2.4)
 
 .datepicker table td {
   font-weight: 300 !important;
-  font-family: 'Open Sans' !important;
+  font-family: 'Microsoft Yahei','Open Sans' !important;
 }
 
 .datepicker table th {
-  font-family: 'Open Sans' !important;
+  font-family:'Microsoft Yahei', 'Open Sans' !important;
   font-weight: 400 !important;
 }
 

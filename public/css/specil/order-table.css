@@ -1,20 +1,39 @@
 .modal-body form table{
     border-color: #555;
     width: 100%;
+    text-align: center;
 }
-.modal-body form table th{
-    width: 80px;
-    margin: 3px 5px;
+.input-prepend .add-on{
+    padding: 2px 5px!important;
 }
-.modal-body form table td{
-    width: 130px;
-    margin: 3px 5px;
+.form-horizontal .control-group{
+    margin-bottom:15px!important;
 }
-.modal-body form table input,.modal-body form table select{
-    width: 165px;
+.control-group .controls select{
+    outline: 0;
+    font-family: "Microsoft Yahei"!important;
 }
-.modal-body form table.horizontal input,.modal-body form table.horizontal select{
-    width:90px;
+.modal-body form table.horizontal input[type=text]{
+    max-width: 80px;
+}
+.modal-body form table.horizontal tr.details th{
+    font-size: 12px;
+    padding: 1px;
+}
+.modal.orders{
+    width:776px;
+    margin-left: -388px;
+}
+table.base tbody th{width:110px}
+table.base tbody td input{width: 245px!important}
+table.base tbody td select{width: 234px!important}
+table.base tbody textarea{
+    resize: none;
+    width:620px;
+    height:60px;
+}
+.modal-body form table input[type=checkbox]{
+    margin:0
 }
 .modal-body form table thead{
     background: #eee;
@@ -23,7 +42,7 @@
     padding: 5px 0;
     font-size: 16px;
 }
-.modal-body form table input{
+.modal-body form table input[type=text]{
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
     -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
@@ -32,7 +51,7 @@
     -o-transition: border linear .2s,box-shadow linear .2s;
     transition: border linear .2s,box-shadow linear .2s;
 }
-.modal-body form table input:focus{
+.modal-body form table input[type=text]:focus,table.base tbody textarea:focus{
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
     -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);

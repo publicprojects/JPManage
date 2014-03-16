@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <title>删除数据</title>
+    <style>
+        .modal-body b{
+            color:#da8328
+        }
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3><i class="icon-warning-sign" style="color: #a1232a"></i> 删除数据</h3>
+</div>
+<div class="modal-body">
+    #{if type==0}
+           确定删除管理员 <b>${data.userAccount}/${data.userName}</b> ？
+    #{/if}
+    #{elseif type==1 }
+           确定删除角色 <b>${data.name}</b> ？
+    #{/elseif}
+    #{elseif type==3 }
+           确定删除产品 <b>${data.productName}</b>？
+    #{/elseif}}
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn red" id="ok">确定删除</span>
+</div>
+<script>
+    $(function(){
+        $("#ok").click(function(){
+            $.ajax({
+               url:"/manager/delData/${type}/${id}",
+               type:"post",
+               dataType:"json",
+               success:function(res){
+                   modalJs.response(res,'删除结果',function(){
+                      dataTable.loadData();
+                   });
+               }
+
+            });
+        });
+    })
+</script>
+</body>
+</html>

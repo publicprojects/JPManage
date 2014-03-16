@@ -38,9 +38,14 @@ public class JSONBuilder {
     public static Gson build(final String...field){
         return build(field,null);
     }
+    public static Gson build(){
+        return builder().create();
+    }
+    public static GsonBuilder builder(){
+        return new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd");
+    }
 	public static Gson build(final String[] field,final Class<?>... skip){
-		Gson gson=new GsonBuilder().addSerializationExclusionStrategy(new ExclusionStrategy() {
-			
+		Gson gson=builder().addSerializationExclusionStrategy(new ExclusionStrategy() {
 			@Override
 			public boolean shouldSkipField(FieldAttributes f) {
                 if(field!=null)
@@ -51,7 +56,6 @@ public class JSONBuilder {
                 }
 				return false;
 			}
-			
 			@Override
 			public boolean shouldSkipClass(Class<?> cla) {
                 if(skip!=null)
@@ -62,7 +66,7 @@ public class JSONBuilder {
                 }
 				return false;
 			}
-		}).serializeNulls().setDateFormat("yyyy-MM-dd").create();
+		}).create();
 		return gson;
 	}
 }

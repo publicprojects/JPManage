@@ -6,7 +6,7 @@
 GET     /                                       Application.index
 GET     /manager/signIn                         Application.signIn
 GET     /manager/signOut                        Application.signout
-GET     /map/{name}/xhtml                       HtmlMap.html
+GET     /map/{dir}/{name}/xhtml                 HtmlMap.html
 GET     /manager/delDataConfirm/{type}/{id}     Manage.delDataConfirm
 POST    /manager/getDataTable/{type}            Manage.queryData
 POST    /manager/createData/{type}              Manage.createData
@@ -18,6 +18,15 @@ POST    /manager/assignRolesDo/{id}             Manage.assignRolesDo
 GET     /manager/assignPrivileges/{id}          Manage.assignPrivileges
 POST    /manager/assignPrivilegesDo/{id}        Manage.assignPrivilegesDo
 POST    /manager/controllers/get                Manage.getControllers
+
+
+POST    /manageCenter/queryData/{type}               ManageCenter.queryData
+POST    /manageCenter/queryData/noPage/{type}        ManageCenter.queryDataNoPage
+POST    /manageCenter/createData/{type}              ManageCenter.createData
+POST    /manageCenter/delData/{type}/{id}            ManageCenter.delData
+GET     /manageCenter/delDataConfirm/{type}/{id}     ManageCenter.delDataConfirm
+GET     /manageCenter/getDataById/{type}/{id}        ManageCenter.getDataById
+POST    /manageCenter/updateData/{type}              ManageCenter.updateData
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
