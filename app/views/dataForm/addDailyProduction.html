@@ -15,6 +15,41 @@
             outline: 0;
             font-family: "Microsoft Yahei"!important;
         }
+        .modal.dailyProduction{
+            width:776px;
+            margin-left: -388px;
+        }
+        .modal-body form table{
+            border-color: #555;
+            width: 100%;
+            text-align: center;
+        }
+        .modal-body form table thead{
+            background: #eee;
+        }
+        .modal-body form table thead th{
+            padding: 5px 0;
+            font-size: 16px;
+            width: 80px;
+        }
+        .modal-body form table input[type=text]{
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+            -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
+            -webkit-transition: border linear .2s,box-shadow linear .2s;
+            -moz-transition: border linear .2s,box-shadow linear .2s;
+            -o-transition: border linear .2s,box-shadow linear .2s;
+            transition: border linear .2s,box-shadow linear .2s;
+        }
+        .modal-body form table input[type=text]:focus,table.base tbody textarea:focus{
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+            -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
+            -webkit-transition: border linear .2s,box-shadow linear .2s;
+            -moz-transition: border linear .2s,box-shadow linear .2s;
+            -o-transition: border linear .2s,box-shadow linear .2s;
+            transition: border linear .2s,box-shadow linear .2s;
+        }
     </style>
 </head>
 <body>
@@ -34,7 +69,83 @@
         #{if data!=null}
           <input type="hidden" name="data.id" value="${data.id}">
         #{/if}
-            <div class="control-group">
+            <table border="1" class="base">
+                <thead>
+                <tr>
+                    <th colspan="6">基本信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>日期</th>
+                    <td>
+                    #{if data==null}
+                        <input class="input-client" style="" name="" disabled type="text">
+                    #{/if}
+                    #{else}
+                        <input class="input-client" style="width:245px!important" value="" disabled type="text">
+                    #{/else}
+                    </td>
+                    <th>批次</th>
+                    <td><select></select></td>
+                    <th>男工数</th>
+                    <td><input type="text"/></td>
+                </tr>
+                <tr>
+                    <th>成品数</th>
+                    <td><input type="text" readonly name="order.recordDate" ${data!=null?'value='+data.recordDate+' disabled ':''}/></td>
+                    <th>次品数</th>
+                    <td><input type="text" name="order.contractNo" ${data!=null?'value='+data.contractNo+' disabled':''}></td>
+                    <th>女工数</th>
+                    <td><input type="text"/></td>
+                </tr>
+                <tr>
+                    <th>备注</th>
+                    <td colspan="5" style="text-align: left"><textarea name="order.orderRemark" ${data!=null?'disabled':''}>${data!=null?data.orderRemark:''}</textarea></td>
+                </tr>
+
+                </tbody>
+            </table>
+            <table border="1" class="horizontal">
+                <thead>
+                <tr>
+                    <th colspan="${data==null?'8':'7'}">详细信息 </th>
+                </tr>
+                <tr class="details">
+                #{if data==null}
+                    <th style="width: 20px"><span class="btn purple new-tr" style="padding: 2px 6px;margin: 0;"><i class="icon-plus"></i></span></th>
+                #{/if}
+                    <th>批次号</th>
+                    <th>订购产品</th>
+                    <th>订购量</th>
+                    <th>商标日期</th>
+                    <th>预计发货</th>
+                    <th>单价</th>
+                    <th>总价</th>
+                </tr>
+                </thead>
+                <tbody>
+                #{if data==null}
+                <tr class="loading">
+                    <td colspan="8"><img src="/public/assets/img/ajax-loading.gif" style="height:25px"><br>产品加载中... </td>
+                </tr>
+                #{/if}
+                #{else}
+                    #{list data.batchs,as:'b'}
+                    <tr>
+                        <td><input type="text" disabled value="${b.batchNo}"></td>
+                        <td><input type="text" disabled value="${b.product.productName}"></td>
+                        <td><input type="text" disabled value="${b.productCount}"></td>
+                        <td><input type="text" disabled value="${b.brandDate}"></td>
+                        <td><input type="text" disabled value="${b.deleverDate}"></td>
+                        <td><input type="text" disabled value="${b.priceUnit}"></td>
+                        <td><input type="text" disabled value="${b.priceTotle}"></td>
+                    </tr>
+                    #{/list}
+                #{/else}
+                </tbody>
+            </table>
+          *{  <div class="control-group">
                 <label class="control-label">日期</label>
                 <div class="controls">
                     <input type="text" class="span3" name="data.description" placeholder="日期" value="${data!=null?data.description:''}" />
@@ -96,7 +207,7 @@
                         <option>内销</option>
                     </select>
                 </div>
-            </div>
+            </div>}*
 
     </form>
 </div>
@@ -106,6 +217,7 @@
 </div>
 <script>
     $(function(){
+        $(".modal").addClass("dailyProduction");
        $("#ok").click(function(){
            var uname=$("input[name='data.name']");
            if(uname.val().isEmpty()){

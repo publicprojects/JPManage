@@ -15,6 +15,7 @@ public class ManageCenter extends  Application {
     final static int TYPE_CLIENT=4;
     final static int TYPE_ORDER=5;
     final static int TYPE_NOTICE=6;
+    final static int TYPE_MATERIAL=7;
 
     public static void queryData( int type,int current, String[] key, String[] val){
         Pagination page=Pagination.getInstance();
@@ -31,6 +32,9 @@ public class ManageCenter extends  Application {
             case TYPE_NOTICE:
                 renderJSON(JSONBuilder.paginationList(page,ProduceNotice.queryData(page,current,key,val),"order","notice"));
                 break;
+            case TYPE_MATERIAL:
+                renderJSON(JSONBuilder.paginationList(page,Material.queryData(page,current,key,val)));
+                break;
         }
     }
     public static void queryDataNoPage(int type,String[] key,String[] val ){
@@ -40,6 +44,9 @@ public class ManageCenter extends  Application {
                 break;
             case TYPE_CLIENT:
                 renderJSON(JSONBuilder.build(List.class).toJson(Client.queryData(key,val)));
+                break;
+            case TYPE_MATERIAL:
+                renderJSON(Material.queryData(key,val));
                 break;
         }
     }
@@ -56,6 +63,10 @@ public class ManageCenter extends  Application {
             case TYPE_ORDER:
                 Orders order=params.get("order",Orders.class);
                 renderJSON(Order.createData(order,batchs));
+                break;
+            case TYPE_MATERIAL:
+                Materials material=params.get("data",Materials.class);
+                renderJSON(Material.createData(material));
                 break;
         }
     }
@@ -75,6 +86,10 @@ public class ManageCenter extends  Application {
                 data=Orders.findById(id);
                 render("/dataForm/addOrderAndContact.html",data);
                 break;
+            case TYPE_MATERIAL:
+                data=Materials.findById(id);
+                render("/dataForm/addMaterial.html",data);
+                break;
         }
     }
 
@@ -88,6 +103,10 @@ public class ManageCenter extends  Application {
                 Clients client=params.get("data",Clients.class);
                 renderJSON(Client.updateData(client));
                 break;
+            case TYPE_MATERIAL:
+                Materials materials=params.get("data",Materials.class);
+                renderJSON(Material.updateData(materials));
+                break;
         }
     }
 
@@ -98,6 +117,9 @@ public class ManageCenter extends  Application {
                 break;
             case TYPE_CLIENT:
                 renderJSON(Client.deleteData(id));
+                break;
+            case TYPE_MATERIAL:
+                renderJSON(Material.deleteData(id));
                 break;
         }
     }
@@ -110,6 +132,9 @@ public class ManageCenter extends  Application {
                 break;
             case TYPE_CLIENT:
                 data=Clients.findById(id);
+                break;
+            case TYPE_MATERIAL:
+                data=Materials.findById(id);
                 break;
         }
         render("/dataForm/delCenterDataConfirm.html",data,type,id);

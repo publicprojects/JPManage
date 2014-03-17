@@ -3,12 +3,6 @@
  */
 $(function(){
     var cols=[{
-        name:"原料",
-        field:"userName"
-    },{
-        name:"原料供应商",
-        field:"userAccount"
-    },{
         name:"日期",
         field:"lastLoginPcIp"
     },{
@@ -27,9 +21,6 @@ $(function(){
         name:"生产量",
         field:"userName"
     },{
-        name:"客户名称",
-        field:"userName"
-    },{
         name:"成品率",
         field:"userName"
     },{
@@ -37,12 +28,6 @@ $(function(){
         field:"userName"
     },{
         name:"次品量",
-        field:"userName"
-    },{
-        name:"男工数",
-        field:"userName"
-    },{
-        name:"女工数",
         field:"userName"
     },{
         name:"来源",

@@ -4,8 +4,8 @@
     <script src="/public/js/specil/modal.js"></script>
     <title>删除数据</title>
     <style>
-        .modal-body b{
-            color:#da8328
+        .modal-body b {
+            color: #da8328
         }
     </style>
 </head>
@@ -18,23 +18,26 @@
 #{if type==3 }
     确定删除产品 <b>${data.productName}</b> ？
 #{/if}
-    #{elseif type==4}
-        确定删除客户信息 <b>${data.clientName}</b> ？
-    #{/elseif}
+#{elseif type==4}
+    确定删除客户信息 <b>${data.clientName}</b> ？
+#{/elseif}
+#{elseif type==7}
+    确定删除原料信息 <b>${data.name}</b>？
+#{/elseif}
 </div>
 <div class="modal-footer">
     <span class="btn" id="cancel">取消</span>
     <span class="btn red" id="ok">确定删除</span>
 </div>
 <script>
-    $(function(){
-        $("#ok").click(function(){
+    $(function () {
+        $("#ok").click(function () {
             $.ajax({
-                url:"/manageCenter/delData/${type}/${id}",
-                type:"post",
-                dataType:"json",
-                success:function(res){
-                    modalJs.response(res,'删除结果',function(){
+                url: "/manageCenter/delData/${type}/${id}",
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    modalJs.response(res, '删除结果', function () {
                         dataTable.loadData();
                     });
                 }
