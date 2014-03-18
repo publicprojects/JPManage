@@ -291,6 +291,19 @@
                         $("<td>" + ((page.currentPage - 1)
                                 * page.displayCountOfPerPage + (i + 1))
                                 + "</td>").appendTo(tr_);
+                    }else if(title[j].type=="rate"){
+                        var format=title[j].data.format;
+                        function formatFloat(src, pos)
+                        {
+                            return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);
+                        }
+                        var fun=linkReplace(list[i],title[j].data.fun);
+                        var val_ = eval(fun);
+                        val_=formatFloat(val_,2);
+                        if(format=="%"){
+                            val_=val_*100+"%";
+                        }
+                        $("<td></td>").append(val_).appendTo(tr_);
                     } else if (title[j].type == "checkbox") {
                         var val_ = eval("list[i]." + title[j].field);
                         $("<td></td>").append($("<input type='checkbox' value='" + val_ + "' name='check-" + title[j].field + "'/>").click(function () {

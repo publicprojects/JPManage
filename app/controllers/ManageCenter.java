@@ -16,6 +16,8 @@ public class ManageCenter extends  Application {
     final static int TYPE_ORDER=5;
     final static int TYPE_NOTICE=6;
     final static int TYPE_MATERIAL=7;
+    final static int TYPE_DAILY_PRODUCTION=8;
+    final static int TYPE_PRODUCE_BATCH=9;
 
     public static void queryData( int type,int current, String[] key, String[] val){
         Pagination page=Pagination.getInstance();
@@ -35,6 +37,9 @@ public class ManageCenter extends  Application {
             case TYPE_MATERIAL:
                 renderJSON(JSONBuilder.paginationList(page,Material.queryData(page,current,key,val)));
                 break;
+            case TYPE_DAILY_PRODUCTION:
+                renderJSON(JSONBuilder.paginationList(page,ProduceRecord.queryData(page,current,key,val),List.class));
+                break;
         }
     }
     public static void queryDataNoPage(int type,String[] key,String[] val ){
@@ -48,9 +53,12 @@ public class ManageCenter extends  Application {
             case TYPE_MATERIAL:
                 renderJSON(Material.queryData(key,val));
                 break;
+            case TYPE_PRODUCE_BATCH:
+                renderJSON(JSONBuilder.build("notice","order").toJson(Batch.queryData(key,val)));
+                break;
         }
     }
-    public static void createData(int type,Batchs[] batchs){
+    public static void createData(int type,Batchs[] batchs,MaterialRecords[] materialRecord){
         switch (type){
             case TYPE_PRODUCT:
                 Products data=params.get("data",Products.class);
@@ -67,6 +75,10 @@ public class ManageCenter extends  Application {
             case TYPE_MATERIAL:
                 Materials material=params.get("data",Materials.class);
                 renderJSON(Material.createData(material));
+                break;
+            case TYPE_DAILY_PRODUCTION:
+                ProduceRecords produceRecords=params.get("data",ProduceRecords.class);
+                renderJSON(ProduceRecord.createData(produceRecords,materialRecord));
                 break;
         }
     }

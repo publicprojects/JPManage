@@ -4,35 +4,22 @@
 $(function(){
     var cols=[{
         name:"日期",
-        field:"lastLoginPcIp"
-    },{
-        name:"实用量",
-        field:"userName"
-    },{
-        name:"领取量",
-        field:"userName"
+        field:"produceDate"
     },{
         name:"成品量",
-        field:"userName"
+        field:"productCount"
     },{
-        name:"产品量",
-        field:"userName"
-    },{
-        name:"生产量",
-        field:"userName"
-    },{
+        type:"rate",
         name:"成品率",
-        field:"userName"
-    },{
-        name:"次品率",
-        field:"userName"
+        data:{"fun":"{productCount}/({productCount}+{defectiveCount})",format:"%"}
     },{
         name:"次品量",
-        field:"userName"
+        field:"defectiveCount"
     },{
-        name:"来源",
-        field:"userName"
-    },{
+        type:"rate",
+        name:"次品率",
+        data:{"fun":"{defectiveCount}/({productCount}+{defectiveCount})",format:"%"}
+    },{name:"男工数",field:"maleCount"},{name:"女工数",field:"femaleCount"},{
         name:"操作",
         data:[{
             name:"<i class='icon-edit'></i> 修改",
@@ -48,8 +35,7 @@ $(function(){
     dataTable=TableJS.init({
         titles:cols,
         container:".dataTable-container",
-//        url:"/manager/getDataTable/0",
-        data:[],
+        url:"/manageCenter/queryData/8",
         urlPara:{}
     });
     $(".tool-bar span.btn").click(function(){

@@ -5,12 +5,6 @@
     <script src="/public/js/jquery.form.min.js"></script>
     <title></title>
     <style>
-        .input-prepend .add-on{
-            padding: 2px 5px!important;
-        }
-        .form-horizontal .control-group{
-            margin-bottom:15px!important;
-        }
         .control-group .controls select{
             outline: 0;
             font-family: "Microsoft Yahei"!important;
@@ -21,8 +15,11 @@
         }
         .modal-body form table{
             border-color: #555;
-            width: 100%;
+            width: 100%!important;
             text-align: center;
+        }
+        .modal-body form table tbody td{
+            padding:1px;
         }
         .modal-body form table thead{
             background: #eee;
@@ -32,6 +29,17 @@
             font-size: 16px;
             width: 80px;
         }
+        .modal-body form table tbody th,.modal-body form table.horizontal thead tr.details th{
+            padding: 1px!important;
+            font-size: 14px!important;
+            width: 80px;
+        }
+        .modal-body form table textarea{
+            padding:4px 0;
+            text-indent: 0.5em;
+            resize: none;
+            width: 665px;
+        }
         .modal-body form table input[type=text]{
             -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
             -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
@@ -40,6 +48,26 @@
             -moz-transition: border linear .2s,box-shadow linear .2s;
             -o-transition: border linear .2s,box-shadow linear .2s;
             transition: border linear .2s,box-shadow linear .2s;
+            padding:4px 0;
+            text-indent: 0.5em;
+        }
+        .modal-body form table.base tbody td{
+            width:163px;
+        }
+        .modal-body form table.base input[type=text]{
+            width:163px;
+        }
+        .modal-body form table.base select{
+            width:165px;
+        }
+        .modal-body form table.horizontal input[type=text]{
+            width:177px;
+        }
+        .modal-body form table.horizontal select{
+            width:147px;
+         }
+        .modal-body form table.horizontal tbody td{
+            width:170px;
         }
         .modal-body form table input[type=text]:focus,table.base tbody textarea:focus{
             -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
@@ -80,28 +108,28 @@
                     <th>日期</th>
                     <td>
                     #{if data==null}
-                        <input class="input-client" style="" name="" disabled type="text">
+                        <input class="prouce-date"  name="data.produceDate" readonly type="text">
                     #{/if}
                     #{else}
-                        <input class="input-client" style="width:245px!important" value="" disabled type="text">
+                        <input class="produce-date"  value="" disabled type="text">
                     #{/else}
                     </td>
-                    <th>批次</th>
-                    <td><select></select></td>
+                    <th>批次号</th>
+                    <td><select class="select-batch" name="data.batch.id"></select></td>
                     <th>男工数</th>
-                    <td><input type="text"/></td>
+                    <td><input type="text" name="data.maleCount"/></td>
                 </tr>
                 <tr>
                     <th>成品数</th>
-                    <td><input type="text" readonly name="order.recordDate" ${data!=null?'value='+data.recordDate+' disabled ':''}/></td>
+                    <td><input type="text" name="data.productCount" ${data!=null?'value='+data.productCount+' disabled ':''}/></td>
                     <th>次品数</th>
-                    <td><input type="text" name="order.contractNo" ${data!=null?'value='+data.contractNo+' disabled':''}></td>
+                    <td><input type="text" name="data.defectiveCount" ${data!=null?'value='+data.defectiveCount+' disabled':''}></td>
                     <th>女工数</th>
-                    <td><input type="text"/></td>
+                    <td><input type="text" name="data.femaleCount"/></td>
                 </tr>
                 <tr>
                     <th>备注</th>
-                    <td colspan="5" style="text-align: left"><textarea name="order.orderRemark" ${data!=null?'disabled':''}>${data!=null?data.orderRemark:''}</textarea></td>
+                    <td colspan="5" style="text-align: left"><textarea name="data.remark" ${data!=null?'disabled':''}>${data!=null?data.remark:''}</textarea></td>
                 </tr>
 
                 </tbody>
@@ -113,21 +141,18 @@
                 </tr>
                 <tr class="details">
                 #{if data==null}
-                    <th style="width: 20px"><span class="btn purple new-tr" style="padding: 2px 6px;margin: 0;"><i class="icon-plus"></i></span></th>
+                    <th style="width: 20px"><span class="btn purple new-tr" style="padding: 5px 6px;margin: 0;"><i class="icon-plus"></i></span></th>
                 #{/if}
-                    <th>批次号</th>
-                    <th>订购产品</th>
-                    <th>订购量</th>
-                    <th>商标日期</th>
-                    <th>预计发货</th>
-                    <th>单价</th>
-                    <th>总价</th>
+                    <th>原料</th>
+                    <th>领取量</th>
+                    <th>实用量</th>
+                    <th>单位</th>
                 </tr>
                 </thead>
                 <tbody>
                 #{if data==null}
                 <tr class="loading">
-                    <td colspan="8"><img src="/public/assets/img/ajax-loading.gif" style="height:25px"><br>产品加载中... </td>
+                    <td colspan="5"><img src="/public/assets/img/ajax-loading.gif" style="height:25px"><br>原料加载中... </td>
                 </tr>
                 #{/if}
                 #{else}
@@ -145,69 +170,6 @@
                 #{/else}
                 </tbody>
             </table>
-          *{  <div class="control-group">
-                <label class="control-label">日期</label>
-                <div class="controls">
-                    <input type="text" class="span3" name="data.description" placeholder="日期" value="${data!=null?data.description:''}" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">单位</label>
-                <div class="controls">
-                    <input type="text" class="span3" name="data.description" placeholder="批次号" value="${data!=null?data.description:''}" />
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">原料</label>
-                <div class="controls">
-                    <select class="span3">
-                        <option>花生</option>
-                        <option>玉米</option>
-                    </select>
-                </div>
-            </div>
-        <div class="control-group">
-            <label class="control-label">原料量</label>
-            <div class="controls">
-                <div class="input-prepend">
-                    <span class="add-on">领取量</span>
-                    <input type="text" class="span1"/>
-                    <span class="add-on">实用量</span>
-                    <input type="text" class="span1"/>
-                </div>
-            </div>
-        </div>
-            <div class="control-group">
-                <label class="control-label">生产</label>
-                <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on">总量</span>
-                        <input type="text" class="span1"/>
-                        <span class="add-on">次品量</span>
-                        <input type="text" class="span1"/>
-                    </div>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">员工数</label>
-                <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on">男工</span>
-                        <input type="text" class="span1"/>
-                        <span class="add-on">女工</span>
-                        <input type="text" class="span1"/>
-                    </div>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">生产来源</label>
-                <div class="controls">
-                    <select class="span3">
-                        <option>外销</option>
-                        <option>内销</option>
-                    </select>
-                </div>
-            </div>}*
 
     </form>
 </div>
@@ -219,13 +181,18 @@
     $(function(){
         $(".modal").addClass("dailyProduction");
        $("#ok").click(function(){
-           var uname=$("input[name='data.name']");
-           if(uname.val().isEmpty()){
-               uname.val("");
-               uname.focus();
-               return;
-           }
-           var url="${data==null?'/manager/createData/2':'/manager/updatePerData/2'}";
+           var input=$(".base input");
+           var check=true;
+           input.each(function(){
+               if(!$(this).prop("disabled"))
+                   if($(this).val().isEmpty()){
+                       $(this).val("");
+                       $(this).focus();
+                       check=false;
+                       return false;
+                   }
+           })
+           var url="${data==null?'/manageCenter/createData/8':'/manageCenter/updatePerData/8'}";
            $(".form-horizontal").ajaxSubmit({
                url:url,
                dataType:"json",
@@ -241,5 +208,6 @@
        }) ;
     });
 </script>
+<script src="/public/js/manage/dataForm/addDailyProduction.js"></script>
 </body>
 </html>

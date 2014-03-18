@@ -4,10 +4,10 @@
 $(function(){
     var cols=[{
         name:"原料名称",
-        field:"materialName"
+        field:"name"
     },{
         name:"单价",
-        field:"materialPriceUnit"
+        field:"priceUnit"
     },{
         name:"添加日期",
         field:"createAt"

@@ -27,6 +27,9 @@ public class Batchs extends Model {
     @OneToOne(mappedBy = "batch")
     public ProduceNotices notice;
 
+    @OneToOne(mappedBy = "batch")
+    public ProduceRecords produceRecord;
+
 	@ManyToOne
     @JoinColumn(name="product_id")
 	public Products product;
@@ -49,7 +52,7 @@ public class Batchs extends Model {
     @Column(name="delever_date")
     public Date deleverDate;
 
-	public static Map<Object, Object> getBatchs(Pagination page, int current, String[] key, String[] val) {
+	public static List<Batchs> getBatchs(Pagination page, int current, String[] key, String[] val) {
 		String keys = ManageUtils.genKeys(key, true);
 		Object[] val_ = ManageUtils.genVals(val);
 		List<Batchs> list;
@@ -65,7 +68,19 @@ public class Batchs extends Model {
 			page.setCurrentPage(current);
 			list = Batchs.find(keys, val_).from(page.getStartRow()).fetch(page.getDisplayCountOfPerPage());
 		}
-		return JSONBuilder.paginationList(page, list);
+		return  list;
 	}
+
+    public static List<Batchs> getBatchs(String[] key,String []val){
+        String keys = ManageUtils.genKeys(key, true);
+        Object[] val_ = ManageUtils.genVals(val);
+        List<Batchs> list;
+        if (key == null) {
+            list = Batchs.findAll();
+        } else {
+            list = Batchs.find(keys, val_).fetch();
+        }
+        return list;
+    }
 
 }
