@@ -11,7 +11,7 @@ $(function(){
     },{
         name:"签发人",
         field:"orderIssuer"
-    },{
+    },{name:"订单来源",field:"orderSource",type:"convert",data:{"0":"外销","1":"内销"}},{
         name:"日期",
         field:"recordDate"
     },{

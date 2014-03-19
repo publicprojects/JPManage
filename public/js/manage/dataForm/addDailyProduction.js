@@ -5,6 +5,7 @@ $(function(){
     $("input[name='data.produceDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true});
     getMaterials();
     getBatchs();
+    getProducts();
     function dom(name){
         return $("<"+name+"/>");
     }
@@ -100,6 +101,36 @@ $(function(){
         })
     }
 
+    $("input[name='data.orderSource']").click(function(){
+        if($(this).val()==1){
+            $("select.select-batch").prop("disabled",true).hide();
+            $("th.batch-product").html("选择产品");
+            $("select.select-product").prop("disabled",false).show();
+        }else{
+            $("select.select-batch").prop("disabled",false).show();
+            $("th.batch-product").html("批次号");
+            $("select.select-product").prop("disabled",true).hide();
+        }
+    });
+
+    function getProducts(){
+        $.ajax({
+            url:"/manageCenter/queryData/noPage/3",
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                if(data){
+                    $("select.select-product").html("");
+                    for(var i in data){
+                        $("select.select-product").append("<option value='"+data[i].productId+"'>"+data[i].productName+"</option>");
+                    }
+                }
+            },
+            error:function(e){
+            }
+        })
+    }
+
     function getBatchs(){
         $.ajax({
             url:"/manageCenter/queryData/noPage/9",
@@ -107,7 +138,7 @@ $(function(){
             dataType:"json",
             success:function(data){
                 if(data){
-                    $("select.select-batch").html("<option value=''>无批次号(内销)</option>");
+                    $("select.select-batch").html("");
                     for(var i in data){
                         $("select.select-batch").append("<option value='"+data[i].id+"'>"+data[i].batchNo+"</option>");
                     }

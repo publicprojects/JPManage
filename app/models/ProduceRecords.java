@@ -28,7 +28,7 @@ public class ProduceRecords extends Model {
 	@OneToMany(mappedBy = "produceRecord", cascade = CascadeType.ALL)
 	public List<MaterialRecords> materialRecords;
 
-    @OneToOne(cascade={CascadeType.ALL})
+    @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name="batch_id")
     public Batchs batch;
 
@@ -38,10 +38,8 @@ public class ProduceRecords extends Model {
 	@Column(name = "product_count")
 	public Integer productCount;
 
-
 	@Column(name = "defective_count")
 	public Integer defectiveCount;
-
 
 	@Column(name = "male_count")
 	public Integer maleCount;
@@ -51,9 +49,6 @@ public class ProduceRecords extends Model {
 
 	@Column(name = "produce_date")
 	public Date produceDate;
-
-	@Column(name = "product_type")
-	public Integer productType;
 
 	@Column(name = "remark")
 	public String remark;
@@ -86,6 +81,17 @@ public class ProduceRecords extends Model {
 			}
 			m.produceRecord = data;
 		}
+        if(data.batch.id==null){
+            if(data.batch.product.productId!=null){
+                Batchs batch=Batchs.find("product_id=? and batchNo is null",data.batch.product.productId).first();
+                if(batch==null)
+                {
+                    data.batch.save();
+                }else {
+                    data.batch=batch;
+                }
+            }
+        }
 		data.save();
 		return new JsonResponse(0, "生产记录已成功添加");
 	}

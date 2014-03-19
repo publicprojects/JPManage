@@ -27,8 +27,8 @@ public class Batchs extends Model {
     @OneToOne(mappedBy = "batch")
     public ProduceNotices notice;
 
-    @OneToOne(mappedBy = "batch")
-    public ProduceRecords produceRecord;
+    @OneToMany(mappedBy = "batch")
+    public List<ProduceRecords> produceRecord;
 
 	@ManyToOne
     @JoinColumn(name="product_id")
@@ -51,6 +51,9 @@ public class Batchs extends Model {
 
     @Column(name="delever_date")
     public Date deleverDate;
+
+    @Column(name="order_source")
+    public Integer orderSource;//订单来源 0:外销 1:内销
 
 	public static List<Batchs> getBatchs(Pagination page, int current, String[] key, String[] val) {
 		String keys = ManageUtils.genKeys(key, true);

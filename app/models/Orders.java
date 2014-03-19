@@ -33,6 +33,9 @@ public class Orders extends Model {
 	@Column(name = "order_issuer")
 	public String orderIssuer;
 
+    @Column(name="order_source")
+    public Integer orderSource;//订单来源 0:外销 1:内销
+
 	@Column(name = "order_remark")
 	public String orderRemark;
 

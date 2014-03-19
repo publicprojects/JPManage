@@ -38,14 +38,14 @@ public class ManageCenter extends  Application {
                 renderJSON(JSONBuilder.paginationList(page,Material.queryData(page,current,key,val)));
                 break;
             case TYPE_DAILY_PRODUCTION:
-                renderJSON(JSONBuilder.paginationList(page,ProduceRecord.queryData(page,current,key,val),List.class));
+                renderJSON(JSONBuilder.paginationList(page,ProduceRecord.queryData(page,current,key,val),new String[]{"produceRecord","order","notice"},List.class));
                 break;
         }
     }
     public static void queryDataNoPage(int type,String[] key,String[] val ){
         switch (type){
             case TYPE_PRODUCT:
-                renderJSON(Product.queryData(key,val));
+                renderJSON(JSONBuilder.build(List.class).toJson(Product.queryData(key,val)));
                 break;
             case TYPE_CLIENT:
                 renderJSON(JSONBuilder.build(List.class).toJson(Client.queryData(key,val)));
@@ -54,7 +54,7 @@ public class ManageCenter extends  Application {
                 renderJSON(Material.queryData(key,val));
                 break;
             case TYPE_PRODUCE_BATCH:
-                renderJSON(JSONBuilder.build("notice","order").toJson(Batch.queryData(key,val)));
+                renderJSON(JSONBuilder.build("notice","order","produceRecord","batchs").toJson(Batch.queryData(key,val)));
                 break;
         }
     }

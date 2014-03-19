@@ -5,7 +5,7 @@ $(function(){
     var cols=[{
         name:"日期",
         field:"produceDate"
-    },{
+    },{name:"产品",field:"batch.product.productName"},{
         name:"成品量",
         field:"productCount"
     },{

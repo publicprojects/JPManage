@@ -4,11 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import play.db.jpa.GenericModel;
 import utils.DateUtils;
@@ -38,6 +34,9 @@ public class Products extends GenericModel {
 
 	@Column(name = "product_price")
 	public String productPrice;
+
+    @OneToMany(mappedBy = "product")
+    public List<Batchs> batchs;
 
 	/**
 	 * 添加查询成品信息

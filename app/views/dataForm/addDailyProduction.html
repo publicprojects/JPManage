@@ -3,82 +3,8 @@
 <head>
     <script src="/public/js/specil/modal.js"></script>
     <script src="/public/js/jquery.form.min.js"></script>
+    <link href="/public/css/specil/daily-production-table.css" rel="stylesheet"/>
     <title></title>
-    <style>
-        .control-group .controls select{
-            outline: 0;
-            font-family: "Microsoft Yahei"!important;
-        }
-        .modal.dailyProduction{
-            width:776px;
-            margin-left: -388px;
-        }
-        .modal-body form table{
-            border-color: #555;
-            width: 100%!important;
-            text-align: center;
-        }
-        .modal-body form table tbody td{
-            padding:1px;
-        }
-        .modal-body form table thead{
-            background: #eee;
-        }
-        .modal-body form table thead th{
-            padding: 5px 0;
-            font-size: 16px;
-            width: 80px;
-        }
-        .modal-body form table tbody th,.modal-body form table.horizontal thead tr.details th{
-            padding: 1px!important;
-            font-size: 14px!important;
-            width: 80px;
-        }
-        .modal-body form table textarea{
-            padding:4px 0;
-            text-indent: 0.5em;
-            resize: none;
-            width: 665px;
-        }
-        .modal-body form table input[type=text]{
-            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-            -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,0.1);
-            -webkit-transition: border linear .2s,box-shadow linear .2s;
-            -moz-transition: border linear .2s,box-shadow linear .2s;
-            -o-transition: border linear .2s,box-shadow linear .2s;
-            transition: border linear .2s,box-shadow linear .2s;
-            padding:4px 0;
-            text-indent: 0.5em;
-        }
-        .modal-body form table.base tbody td{
-            width:163px;
-        }
-        .modal-body form table.base input[type=text]{
-            width:163px;
-        }
-        .modal-body form table.base select{
-            width:165px;
-        }
-        .modal-body form table.horizontal input[type=text]{
-            width:177px;
-        }
-        .modal-body form table.horizontal select{
-            width:147px;
-         }
-        .modal-body form table.horizontal tbody td{
-            width:170px;
-        }
-        .modal-body form table input[type=text]:focus,table.base tbody textarea:focus{
-            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
-            -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
-            box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
-            -webkit-transition: border linear .2s,box-shadow linear .2s;
-            -moz-transition: border linear .2s,box-shadow linear .2s;
-            -o-transition: border linear .2s,box-shadow linear .2s;
-            transition: border linear .2s,box-shadow linear .2s;
-        }
-    </style>
 </head>
 <body>
 <div class="modal-header">
@@ -114,8 +40,10 @@
                         <input class="produce-date"  value="" disabled type="text">
                     #{/else}
                     </td>
-                    <th>批次号</th>
-                    <td><select class="select-batch" name="data.batch.id"></select></td>
+                    <th class="batch-product">批次号</th>
+                    <td><select class="select-batch" name="data.batch.id"></select>
+                        <select class="select-product" name="data.batch.product.productId" disabled style="display: none"></select>
+                    </td>
                     <th>男工数</th>
                     <td><input type="text" name="data.maleCount"/></td>
                 </tr>
@@ -128,8 +56,10 @@
                     <td><input type="text" name="data.femaleCount"/></td>
                 </tr>
                 <tr>
+                    <th>生产来源</th>
+                    <td><label><input type="radio" name="data.orderSource" value="0"  ${data!=null&&data.orderSource==0?'checked':data==null?'checked':''}/> 外销</label> <label><input type="radio" name="data.orderSource" value="1"  ${data!=null&&data.orderSource==1?'checked':''}/> 内销</label></td>
                     <th>备注</th>
-                    <td colspan="5" style="text-align: left"><textarea name="data.remark" ${data!=null?'disabled':''}>${data!=null?data.remark:''}</textarea></td>
+                    <td colspan="3" style="text-align: left"><textarea name="data.remark" ${data!=null?'disabled':''}>${data!=null?data.remark:''}</textarea></td>
                 </tr>
 
                 </tbody>

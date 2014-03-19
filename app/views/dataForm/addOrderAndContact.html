@@ -5,9 +5,6 @@
     <script src="/public/js/jquery.form.min.js"></script>
     <title></title>
     <link href="/public/css/specil/order-table.css" rel="stylesheet"/>
-    <style>
-
-    </style>
 </head>
 <body>
 <div class="modal-header">
@@ -53,8 +50,10 @@
                          <td><input type="text" name="order.contractNo" ${data!=null?'value='+data.contractNo+' disabled':''}></td>
                      </tr>
                      <tr>
+                         <th>订单来源</th>
+                         <td><label><input type="radio" name="order.orderSource" value="0" ${data!=null&&data.orderSource==0?'checked':''}/> 外销</label> <label><input type="radio" name="order.orderSource" value="1"  ${data!=null&&data.orderSource==1?'checked':''}/> 内销</label></td>
                          <th>备注</th>
-                         <td colspan="3" style="text-align: left"><textarea name="order.orderRemark" ${data!=null?'disabled':''}>${data!=null?data.orderRemark:''}</textarea></td>
+                         <td style="text-align: left"><textarea name="order.orderRemark" ${data!=null?'disabled':''}>${data!=null?data.orderRemark:''}</textarea></td>
                      </tr>
 
                 </tbody>
