@@ -37,29 +37,30 @@
                         <input class="prouce-date"  name="data.produceDate" readonly type="text">
                     #{/if}
                     #{else}
-                        <input class="produce-date"  value="" disabled type="text">
+                        <input class="produce-date"  value="${data.produceDate}" disabled type="text">
                     #{/else}
                     </td>
-                    <th class="batch-product">批次号</th>
-                    <td><select class="select-batch" name="data.batch.id"></select>
-                        <select class="select-product" name="data.batch.product.productId" disabled style="display: none"></select>
+                    <th class="batch-product">${data==null?'批次号':data!=null&&data.batch.orderSource==0?'批次号':'选择产品'}</th>
+                    <td>
+                        <select class="select-batch" ${data==null?'':'data-batch='+data.batch.id} name="data.batch.id" ${data==null?'':data!=null&&data.batch.orderSource==0?'':'disabled style=display:none'}></select>
+                        <select class="select-product" ${data==null?'':'data-product='+data.batch.product.productId} name="data.batch.product.productId" ${data==null?'disabled style=display:none':data!=null&&data.batch.orderSource!=0?'':'disabled style=display:none'} ></select>
                     </td>
                     <th>男工数</th>
-                    <td><input type="text" name="data.maleCount"/></td>
+                    <td><input type="text" placeholder="男员工数量" name="data.maleCount" value="${data!=null?data.maleCount:''}"></td>
                 </tr>
                 <tr>
                     <th>成品数</th>
-                    <td><input type="text" name="data.productCount" ${data!=null?'value='+data.productCount+' disabled ':''}/></td>
+                    <td><input type="text" name="data.productCount" ${data!=null?'value='+data.productCount:''}></td>
                     <th>次品数</th>
-                    <td><input type="text" name="data.defectiveCount" ${data!=null?'value='+data.defectiveCount+' disabled':''}></td>
+                    <td><input type="text" name="data.defectiveCount" ${data!=null?'value='+data.defectiveCount:''}></td>
                     <th>女工数</th>
-                    <td><input type="text" name="data.femaleCount"/></td>
+                    <td><input type="text" placeholder="女员工数量" name="data.femaleCount" value="${data!=null?data.femaleCount:''}"></td>
                 </tr>
                 <tr>
                     <th>生产来源</th>
-                    <td><label><input type="radio" name="data.orderSource" value="0"  ${data!=null&&data.orderSource==0?'checked':data==null?'checked':''}/> 外销</label> <label><input type="radio" name="data.orderSource" value="1"  ${data!=null&&data.orderSource==1?'checked':''}/> 内销</label></td>
+                    <td><label><input type="radio" name="data.batch.orderSource" value="0"  ${data!=null&&data.batch.orderSource==0?'checked':data!=null&&data.batch.batchNo!=null?'checked':data==null?'checked':''}/> 外销</label> <label><input type="radio" name="data.batch.orderSource" value="1"  ${data!=null&&data.batch.orderSource==1?'checked':data!=null&&data.batch.batchNo==null?'checked':''}/> 内销</label></td>
                     <th>备注</th>
-                    <td colspan="3" style="text-align: left"><textarea name="data.remark" ${data!=null?'disabled':''}>${data!=null?data.remark:''}</textarea></td>
+                    <td colspan="3" style="text-align: left"><textarea name="data.remark" placeholder="备注内容">${data!=null?data.remark:''}</textarea></td>
                 </tr>
 
                 </tbody>
@@ -70,9 +71,7 @@
                     <th colspan="${data==null?'8':'7'}">详细信息 </th>
                 </tr>
                 <tr class="details">
-                #{if data==null}
                     <th style="width: 20px"><span class="btn purple new-tr" style="padding: 5px 6px;margin: 0;"><i class="icon-plus"></i></span></th>
-                #{/if}
                     <th>原料</th>
                     <th>领取量</th>
                     <th>实用量</th>
@@ -86,15 +85,13 @@
                 </tr>
                 #{/if}
                 #{else}
-                    #{list data.batchs,as:'b'}
+                    #{list data.materialRecords,as:'b'}
                     <tr>
-                        <td><input type="text" disabled value="${b.batchNo}"></td>
-                        <td><input type="text" disabled value="${b.product.productName}"></td>
-                        <td><input type="text" disabled value="${b.productCount}"></td>
-                        <td><input type="text" disabled value="${b.brandDate}"></td>
-                        <td><input type="text" disabled value="${b.deleverDate}"></td>
-                        <td><input type="text" disabled value="${b.priceUnit}"></td>
-                        <td><input type="text" disabled value="${b.priceTotle}"></td>
+                        <td><span class="btn red delete" style="padding: 5px 6px;"><i class="icon-remove"></i></span></td>
+                        <td><select type="text" name="materialRecord[${b_index}].material.id" style="width: 170px"><option value="${b.material.id}">${b.material.name}</option></select></td>
+                        <td><input type="text" name="materialRecord[${b_index}].receiveCount" value="${b.receiveCount}"></td>
+                        <td><input type="text" name="materialRecord[${b_index}].useCount"  value="${b.useCount}"></td>
+                        <td><input type="text" name="materialRecord[${b_index}].unit"  value="${b.unit}"></td>
                     </tr>
                     #{/list}
                 #{/else}
@@ -107,9 +104,35 @@
     <span class="btn" id="cancel">取消</span>
     <span class="btn blue" id="ok">保存</span>
 </div>
+#{if data!=null}
 <script>
     $(function(){
-        $(".modal").addClass("dailyProduction");
+        var span=$("table.horizontal tbody tr span.btn.delete");
+        span.click(function(){
+            var tr=$(this).parent().parent();
+            tr.remove();
+            $("table.horizontal tbody tr").each(function(i){
+                var input=$(this).find("input");
+                input.each(function(){
+                    setName(this,i);
+                });
+                var select=$(this).find("select");
+                select.each(function(){
+                    setName(this,i);
+                });
+            });
+            function setName(obj,i){
+                var name=$(obj).attr("name");
+                name=name.substr(name.indexOf("."));
+                $(obj).attr("name","materialRecord["+i+"]"+name);
+            }
+        });
+    });
+</script>
+#{/if}
+<script>
+    $(function(){
+       $(".modal").addClass("dailyProduction");
        $("#ok").click(function(){
            var input=$(".base input");
            var check=true;
@@ -122,7 +145,7 @@
                        return false;
                    }
            })
-           var url="${data==null?'/manageCenter/createData/8':'/manageCenter/updatePerData/8'}";
+           var url="${data==null?'/manageCenter/createData/8':'/manageCenter/updateData/8'}";
            $(".form-horizontal").ajaxSubmit({
                url:url,
                dataType:"json",

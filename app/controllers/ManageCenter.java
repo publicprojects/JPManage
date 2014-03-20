@@ -102,10 +102,14 @@ public class ManageCenter extends  Application {
                 data=Materials.findById(id);
                 render("/dataForm/addMaterial.html",data);
                 break;
+            case TYPE_DAILY_PRODUCTION:
+                data=ProduceRecords.findById(id);
+                render("/dataForm/addDailyProduction.html",data);
+                break;
         }
     }
 
-    public static void updateData(int type){
+    public static void updateData(int type,MaterialRecords[] materialRecord){
         switch (type){
             case TYPE_PRODUCT:
                 Products data=params.get("data",Products.class);
@@ -118,6 +122,10 @@ public class ManageCenter extends  Application {
             case TYPE_MATERIAL:
                 Materials materials=params.get("data",Materials.class);
                 renderJSON(Material.updateData(materials));
+                break;
+            case TYPE_DAILY_PRODUCTION:
+                ProduceRecords produceRecords=params.get("data",ProduceRecords.class);
+                renderJSON(ProduceRecord.createData(produceRecords,materialRecord));
                 break;
         }
     }
@@ -133,6 +141,9 @@ public class ManageCenter extends  Application {
             case TYPE_MATERIAL:
                 renderJSON(Material.deleteData(id));
                 break;
+            case TYPE_DAILY_PRODUCTION:
+                renderJSON(ProduceRecord.delData(id));
+                break;
         }
     }
 
@@ -147,6 +158,9 @@ public class ManageCenter extends  Application {
                 break;
             case TYPE_MATERIAL:
                 data=Materials.findById(id);
+                break;
+            case TYPE_DAILY_PRODUCTION:
+                data=ProduceRecords.findById(id);
                 break;
         }
         render("/dataForm/delCenterDataConfirm.html",data,type,id);

@@ -28,7 +28,7 @@ public class ProduceRecords extends Model {
 	@OneToMany(mappedBy = "produceRecord", cascade = CascadeType.ALL)
 	public List<MaterialRecords> materialRecords;
 
-    @ManyToOne(cascade={CascadeType.ALL})
+    @ManyToOne(cascade={CascadeType.REFRESH})
     @JoinColumn(name="batch_id")
     public Batchs batch;
 
@@ -86,6 +86,7 @@ public class ProduceRecords extends Model {
                 Batchs batch=Batchs.find("product_id=? and batchNo is null",data.batch.product.productId).first();
                 if(batch==null)
                 {
+                    data.batch.orderSource=1;//内销
                     data.batch.save();
                 }else {
                     data.batch=batch;
@@ -93,6 +94,12 @@ public class ProduceRecords extends Model {
             }
         }
 		data.save();
-		return new JsonResponse(0, "生产记录已成功添加");
+		return new JsonResponse(0, "生产记录已更新成功");
 	}
+
+    public static JsonResponse deleteRecord(Long _id) {
+        ProduceRecords re = ProduceRecords.findById(_id);
+        re.delete();
+        return new JsonResponse(0, "[" + re.produceDate + "]的生产["+re.batch.product.productName+"]的日报已成功删除");
+    }
 }

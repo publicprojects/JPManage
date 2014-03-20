@@ -98,7 +98,11 @@ public class Materials extends Model{
      */
     public static JsonResponse deleteMaterial(Long _id) {
         Materials ma = Materials.findById(_id);
-        ma.delete();
+        try{
+            ma.delete();
+        }catch (Exception e){
+            return new JsonResponse(-1,"原料不可删除，可能该原料已经用于某次生产。");
+        }
         return new JsonResponse(0, "原料[" + ma.name + "]已成功删除");
     }
 }

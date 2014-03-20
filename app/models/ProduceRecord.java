@@ -24,6 +24,10 @@ public class ProduceRecord {
 		return (response);
 	}
 
+    public static JsonResponse delData(Long id){
+        return ProduceRecords.deleteRecord(id);
+    }
+
 	private static String validateForm(ProduceRecords produceRecord, MaterialRecords[] materialRecord) {
 		if (null == produceRecord)
 			return "添加失败";

@@ -22,12 +22,12 @@ $(function(){
     },{name:"男工数",field:"maleCount"},{name:"女工数",field:"femaleCount"},{
         name:"操作",
         data:[{
-            name:"<i class='icon-edit'></i> 修改",
-            href:"/manager/getDataById/0/{userId}",
+            name:"<i class='icon-edit'></i> 编辑",
+            href:"/manageCenter/getDataById/8/{id}",
             className:"blue"
         },{
             name:"<b>&times;</b> 删除",
-            href:"/manager/delDataConfirm/0/{userId}?shield_field=userId="+$("#logid").val(),
+            href:"/manageCenter/delDataConfirm/8/{id}",
             className:"red"
         }],
         type:"operator"

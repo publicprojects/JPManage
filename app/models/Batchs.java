@@ -55,6 +55,9 @@ public class Batchs extends Model {
     @Column(name="order_source")
     public Integer orderSource;//订单来源 0:外销 1:内销
 
+    @Column(name="is_complete")
+    public Integer isComplete;//批次生产是否完成 0:未完成 1:完成
+
 	public static List<Batchs> getBatchs(Pagination page, int current, String[] key, String[] val) {
 		String keys = ManageUtils.genKeys(key, true);
 		Object[] val_ = ManageUtils.genVals(val);
@@ -74,13 +77,18 @@ public class Batchs extends Model {
 		return  list;
 	}
 
-    public static List<Batchs> getBatchs(String[] key,String []val){
-        String keys = ManageUtils.genKeys(key, true);
+    public static List<Batchs> getBatchs(String[] key,String [] val){
+        String keys = ManageUtils.genKeys(key, true,val);
         Object[] val_ = ManageUtils.genVals(val);
         List<Batchs> list;
         if (key == null) {
             list = Batchs.findAll();
         } else {
+            for(int i=0;i<key.length;i++){
+                if("isComplete".equals(key[i])){
+                    val_[i]=Integer.parseInt(val[i]);
+                }
+            }
             list = Batchs.find(keys, val_).fetch();
         }
         return list;

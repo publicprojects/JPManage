@@ -91,7 +91,10 @@ $(function(){
             dataType:"json",
             success:function(data){
                 $("table.horizontal tr.loading").remove();
-                newTr(data);
+                if($("input[name='data.id']").length==0)
+                {
+                    newTr(data);
+                }
                 $(".new-tr").click(function(){
                     newTr(data);
                 })
@@ -101,7 +104,7 @@ $(function(){
         })
     }
 
-    $("input[name='data.orderSource']").click(function(){
+    $("input[name='data.batch.orderSource']").click(function(){
         if($(this).val()==1){
             $("select.select-batch").prop("disabled",true).hide();
             $("th.batch-product").html("选择产品");
@@ -120,9 +123,10 @@ $(function(){
             dataType:"json",
             success:function(data){
                 if(data){
-                    $("select.select-product").html("");
+                    var sp=$("select.select-product").html("");
+                    var dp=sp.attr("data-product");
                     for(var i in data){
-                        $("select.select-product").append("<option value='"+data[i].productId+"'>"+data[i].productName+"</option>");
+                        $("select.select-product").append("<option value='"+data[i].productId+"' "+(dp&&dp==data[i].productId?"selected":"")+" >"+data[i].productName+"</option>");
                     }
                 }
             },
@@ -136,11 +140,17 @@ $(function(){
             url:"/manageCenter/queryData/noPage/9",
             type:"post",
             dataType:"json",
+            data:{"key[0]":"notnullbatchNo","val[0]":"1","key[1]":"isComplete","val[1]":0},
             success:function(data){
                 if(data){
-                    $("select.select-batch").html("");
+                   var sb= $("select.select-batch").html("");
+                    var db=sb.attr("data-batch");
                     for(var i in data){
-                        $("select.select-batch").append("<option value='"+data[i].id+"'>"+data[i].batchNo+"</option>");
+                        var bno=data[i].batchNo;
+                        if(bno==null||bno=="null"){
+                            continue;
+                        }
+                        $("select.select-batch").append("<option value='"+data[i].id+"' "+(db&&db==data[i].id?"selected":"")+" >"+bno+"</option>");
                     }
                 }
             },
