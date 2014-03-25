@@ -43,6 +43,9 @@
                     <th class="batch-product">${data==null?'批次号':data!=null&&data.batch.orderSource==0?'批次号':'选择产品'}</th>
                     <td>
                         <select class="select-batch" ${data==null?'':'data-batch='+data.batch.id} name="data.batch.id" ${data==null?'':data!=null&&data.batch.orderSource==0?'':'disabled style=display:none'}></select>
+                        #{if data!=null&&data.batch.orderSource!=0}
+                             <input type="hidden" name="data.batch.id" value="${data.batch.id}" class="input-batch"/>
+                        #{/if}
                         <select class="select-product" ${data==null?'':'data-product='+data.batch.product.productId} name="data.batch.product.productId" ${data==null?'disabled style=display:none':data!=null&&data.batch.orderSource!=0?'':'disabled style=display:none'} ></select>
                     </td>
                     <th>男工数</th>
@@ -58,7 +61,7 @@
                 </tr>
                 <tr>
                     <th>生产来源</th>
-                    <td><label><input type="radio" name="data.batch.orderSource" value="0"  ${data!=null&&data.batch.orderSource==0?'checked':data!=null&&data.batch.batchNo!=null?'checked':data==null?'checked':''}/> 外销</label> <label><input type="radio" name="data.batch.orderSource" value="1"  ${data!=null&&data.batch.orderSource==1?'checked':data!=null&&data.batch.batchNo==null?'checked':''}/> 内销</label></td>
+                    <td><label><input type="radio" name="data.batch.orderSource" value="0"  ${data!=null&&data.batch.orderSource==0?'checked disabled':data!=null&&data.batch.batchNo!=null?'checked disabled':data==null?'checked disabled':'disabled'}/> 外销</label> <label><input type="radio" name="data.batch.orderSource" value="1"  ${data!=null&&data.batch.orderSource==1?'checked disabled':data!=null&&data.batch.batchNo==null?'checked disabled':'disabled'}/> 内销</label></td>
                     <th>备注</th>
                     <td colspan="3" style="text-align: left"><textarea name="data.remark" placeholder="备注内容">${data!=null?data.remark:''}</textarea></td>
                 </tr>
@@ -88,10 +91,10 @@
                     #{list data.materialRecords,as:'b'}
                     <tr>
                         <td><span class="btn red delete" style="padding: 5px 6px;"><i class="icon-remove"></i></span></td>
-                        <td><select type="text" name="materialRecord[${b_index}].material.id" style="width: 170px"><option value="${b.material.id}">${b.material.name}</option></select></td>
-                        <td><input type="text" name="materialRecord[${b_index}].receiveCount" value="${b.receiveCount}"></td>
-                        <td><input type="text" name="materialRecord[${b_index}].useCount"  value="${b.useCount}"></td>
-                        <td><input type="text" name="materialRecord[${b_index}].unit"  value="${b.unit}"></td>
+                        <td>*{<input name="materialRecord[${b_index-1}].id" type="hidden" value="${b.id}">}*<select type="text" name="materialRecord[${b_index-1}].material.id" style="width: 170px"><option value="${b.material.id}">${b.material.name}</option></select></td>
+                        <td><input type="text" name="materialRecord[${b_index-1}].receiveCount" value="${b.receiveCount}"></td>
+                        <td><input type="text" name="materialRecord[${b_index-1}].useCount"  value="${b.useCount}"></td>
+                        <td><input type="text" name="materialRecord[${b_index-1}].unit"  value="${b.unit}"></td>
                     </tr>
                     #{/list}
                 #{/else}

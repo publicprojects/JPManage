@@ -354,7 +354,7 @@
                         }
                         td_.appendTo(tr_);
                     } else if (title[j].type == "operator") {
-                        var ops = "";
+                        var td=$("<td/>");
                         titleLoop: for (var k = 0; k < title[j].data.length; k++) {
                             var d = title[j].data[k];
                             var hr = d.href;
@@ -392,12 +392,51 @@
                                 : " onclick=\"" + d.onclick + "\" ";
                             var cn = typeof (d.className) == 'undefined' ? ""
                                 : d.className;
-                            ops += " <a href=\"" + hr + "\" role=\"button\" "
-                                + onclick + drop + " class=\"btn mini " + cn
-                                + " \" " + tog + tar + ">" + d.name
-                                + "</a>";
+                            if(d.type=="modal"){
+                               td.append(" ").append($("<span/>").addClass("btn mini " +cn).html(d.name).click(function(){
+                                   var con="";
+                                   if(typeof(d.content)=="function"){
+                                       con= d.content();
+                                   }else{
+                                       con= d.content;
+                                   }
+                                   var foot="";
+                                   if(typeof(d.footer=="function")){
+                                       foot= d.footer();
+                                   }else{
+                                       foot= d.footer;
+                                   }
+                                   var modalDiv=$("<div/>").attr("id", d.id).addClass("modal hide fade" + (d.clazz? d.clazz:""));
+                                   var header=$("<div/>").addClass("modal-header").append($("<h3/>").html(d.title));
+                                   var body=$("<div/>").addClass("modal-body").append(con);
+                                   var footer=$("<div/>").addClass("modal-footer").append(foot);
+                                   modalDiv.append(header).append(body).append(footer).modal();
+                                   var h3=$("")
+//                                   $('<div id="'+ d.id+'" class="modal hide fade '+(d.clazz? d.clazz:'')+'"> <div class="modal-header"><h3>'+ d.title+
+//                                       '</h3></div><div class="modal-body">' + con + '</div><div class="modal-footer">'+ foot+'</div></div>').modal();
+                               }));//(d.options));
+                            } else if(d.type=="ajax"){
+                               td.append(" ").append($("<span/>").attr("data-href",hr).addClass("btn mini "+cn).html(d.name).click(function(){
+                                   var _this=$(this);
+                                   $.ajax({
+                                       type: d.ajaxType||"post",
+                                       url: _this.attr("data-href"),
+                                       dataType:"json",
+                                       success:function(data){
+                                           alert(data.response);
+                                           TableJS.loadData();
+                                       }
+                                   })
+                               }));
+                            }else{
+                                td.append(" <a href=\"" + hr + "\" role=\"button\" "
+                                    + onclick + drop + " class=\"btn mini " + cn
+                                    + " \" " + tog + tar + ">" + d.name
+                                    + "</a>");
+                            }
+
                         }
-                        $("<td>" + ops + "</td>").appendTo(tr_);
+                        td.appendTo(tr_);
                     } else {
                         var str;
                         try {

@@ -25,7 +25,7 @@ public class ProduceRecords extends Model {
 	@JoinColumn(name = "client_id")
 	public Clients client;
 
-	@OneToMany(mappedBy = "produceRecord", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "produceRecord",cascade = {CascadeType.REFRESH})
 	public List<MaterialRecords> materialRecords;
 
     @ManyToOne(cascade={CascadeType.REFRESH})
@@ -72,15 +72,21 @@ public class ProduceRecords extends Model {
 		return list;
 	}
 
-	public static JsonResponse addProduceRecord(ProduceRecords data) {
-		for (MaterialRecords m : data.materialRecords) {
-			Materials material = m.material;
-			if (material.id == null && material.name != null) {
-				material.createAt = DateUtils.getNowDate();
-				material.save();
-			}
-			m.produceRecord = data;
-		}
+	public static JsonResponse addProduceRecord(ProduceRecords data, MaterialRecords[] materialRecord) {
+        for (MaterialRecords mr :materialRecord) {
+            Materials material = mr.material;
+            if (material.id == null && material.name != null) {
+                Materials temp=Materials.find("name=?",material.name).first();
+                if(temp!=null){
+                    mr.material=temp;
+                }else{
+                    material.createAt = DateUtils.getNowDate();
+                    material.save();
+                }
+            }
+            mr.produceRecord = data;
+            mr.save();
+        }
         if(data.batch.id==null){
             if(data.batch.product.productId!=null){
                 Batchs batch=Batchs.find("product_id=? and batchNo is null",data.batch.product.productId).first();
@@ -92,6 +98,9 @@ public class ProduceRecords extends Model {
                     data.batch=batch;
                 }
             }
+        }
+        if(data.batch.id!=null&&data.batch.product.productId!=null){
+            data.batch.save();
         }
 		data.save();
 		return new JsonResponse(0, "生产记录已更新成功");

@@ -12,28 +12,9 @@ public class ProductsTransit {
 		return ProductsTransits.getProductsTransit(page, current, key, val);
 	}
 
-	public static JsonResponse createData(ProductsTransits data) {
-		JsonResponse response;
-		String validateResult = validateForm(data);
-		if (null == validateResult) {
-			response = ProductsTransits.addProductsTransit(data);
-		} else {
-			response = new JsonResponse(-1, validateResult);
-		}
+	public static JsonResponse createData(Long batchId,String remark) {
+        List<ProduceRecords> list=ProduceRecords.find("batch_id=?",batchId).fetch();
+		JsonResponse response = ProductsTransits.addProductsTransit(list,remark);
 		return response;
-	}
-
-	private static String validateForm(ProductsTransits data) {
-		if (null == data)
-			return "添加失败！";
-		if (null == data.product)
-			return "成品信息不能为空！";
-		if (null == data.client)
-			return "客户信息不能为空！";
-		if (null == data.batch)
-			return "批次信息不能为空！";
-		if (null == data.productCount)
-			return "成品数量不能为空！";
-		return null;
 	}
 }

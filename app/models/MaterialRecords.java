@@ -24,7 +24,7 @@ import controllers.ManageUtils;
 @Table(name = "t_material_record")
 public class MaterialRecords extends Model {
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.PERSIST})
 	@JoinColumn(name = "produce_record_id")
 	public ProduceRecords produceRecord;
 

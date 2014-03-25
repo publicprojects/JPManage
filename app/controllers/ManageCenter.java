@@ -3,6 +3,7 @@ package controllers;
 import models.*;
 import play.db.jpa.GenericModel;
 import utils.JSONBuilder;
+import utils.JsonResponse;
 import utils.Pagination;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class ManageCenter extends  Application {
     final static int TYPE_MATERIAL=7;
     final static int TYPE_DAILY_PRODUCTION=8;
     final static int TYPE_PRODUCE_BATCH=9;
+    final static int TYPE_PRODUCT_TRANSITS=10;
 
     public static void queryData( int type,int current, String[] key, String[] val){
         Pagination page=Pagination.getInstance();
@@ -39,6 +41,9 @@ public class ManageCenter extends  Application {
                 break;
             case TYPE_DAILY_PRODUCTION:
                 renderJSON(JSONBuilder.paginationList(page,ProduceRecord.queryData(page,current,key,val),new String[]{"produceRecord","order","notice"},List.class));
+                break;
+            case TYPE_PRODUCT_TRANSITS:
+                renderJSON(JSONBuilder.paginationList(page,ProductsTransit.queryData(page,current,key,val),new String[]{"order","notice"},List.class));
                 break;
         }
     }
@@ -164,5 +169,25 @@ public class ManageCenter extends  Application {
                 break;
         }
         render("/dataForm/delCenterDataConfirm.html",data,type,id);
+    }
+
+    public static void doProductionNotes(int type,Long noteId){
+        ProduceNotices produceNotices=ProduceNotices.findById(noteId);
+        switch (type){
+            case 0:
+                produceNotices.isHandle=0;
+                produceNotices.save();
+                renderJSON(new JsonResponse(0,"已完成处理，请开始生产。"));
+                break;
+            case 1:
+                Batchs batch=produceNotices.batch;
+                String remark=params.get("remark");
+                produceNotices.isHandle=1;
+                produceNotices.save();
+                ProductsTransit.createData(batch.id,remark);
+                renderJSON(new JsonResponse(0,"产品["+batch.product.productName+"]已提交到中转库，批次["+batch.batchNo+"]已完成生产。"));
+                break;
+        }
+
     }
 }

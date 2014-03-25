@@ -109,9 +109,11 @@ $(function(){
             $("select.select-batch").prop("disabled",true).hide();
             $("th.batch-product").html("选择产品");
             $("select.select-product").prop("disabled",false).show();
+            $("input[name='data.batch.id']").prop("disabled",false);
         }else{
             $("select.select-batch").prop("disabled",false).show();
             $("th.batch-product").html("批次号");
+            $("input[name='data.batch.id']").prop("disabled",true);
             $("select.select-product").prop("disabled",true).hide();
         }
     });

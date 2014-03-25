@@ -70,9 +70,13 @@ public class Orders extends Model {
         for(Batchs b:data.batchs){
             Products pro=b.product;
             if(pro.productId==null&&pro.productName!=null){
-                Products temp=Products.find("").first();
-                pro.createAt= DateUtils.getNowDate();
-                pro.save();
+                Products temp=Products.find("productName=?",pro.productName).first();
+                if(temp!=null){
+                    b.product=temp;
+                }else {
+                    pro.createAt= DateUtils.getNowDate();
+                    pro.save();
+                }
             }
             b.order=data;
         }

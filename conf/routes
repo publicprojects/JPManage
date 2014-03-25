@@ -27,6 +27,7 @@ POST    /manageCenter/delData/{type}/{id}            ManageCenter.delData
 GET     /manageCenter/delDataConfirm/{type}/{id}     ManageCenter.delDataConfirm
 GET     /manageCenter/getDataById/{type}/{id}        ManageCenter.getDataById
 POST    /manageCenter/updateData/{type}              ManageCenter.updateData
+POST    /manageCenter/produce/dealNotes/{noteId}/{type}      ManageCenter.doProductionNotes
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

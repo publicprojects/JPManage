@@ -56,7 +56,7 @@ public class Batchs extends Model {
     public Integer orderSource;//订单来源 0:外销 1:内销
 
     @Column(name="is_complete")
-    public Integer isComplete;//批次生产是否完成 0:未完成 1:完成
+    public Integer isComplete=0;//批次生产是否完成 0:未完成 1:完成
 
 	public static List<Batchs> getBatchs(Pagination page, int current, String[] key, String[] val) {
 		String keys = ManageUtils.genKeys(key, true);
