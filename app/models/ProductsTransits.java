@@ -67,7 +67,7 @@ public class ProductsTransits extends Model {
 		return list;
 	}
 
-	public static JsonResponse addProductsTransit(List<ProduceRecords> records,String remark) {
+	public static JsonResponse addProductsTransit(List<ProduceRecords> records,String remark,Long batchid) {
         int totalProductCount=0;
         int totalDefectiveCount=0;
         String unit=null;
@@ -95,7 +95,10 @@ public class ProductsTransits extends Model {
         data.defectiveCount=totalDefectiveCount;
         data.createAt= DateUtils.getNowDate();
         data.remark=remark;
+        data.batch=Batchs.findById(batchid);
+        data.batch.isComplete=1;
+        data.batch.save();
 		data.save();
-		return new JsonResponse(0, "[" + data.batch.batchNo + "]批次已完成生产，并成功提交到中转库");
+		return new JsonResponse(0, "产品["+data.batch.product.productName+"]成功提交到中转库，[" + data.batch.batchNo + "]批次已完成生产");
 	}
 }

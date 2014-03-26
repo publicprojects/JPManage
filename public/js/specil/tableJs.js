@@ -373,6 +373,24 @@
                                         if (eval("list[i]." + shield[1]) == shield[2]) {
                                             continue titleLoop;
                                         }
+                                    } else if (para[m].indexOf("shield_count") == 0) {
+                                        var shield = para[m].split("|");
+                                        shield[2] = shield[2] == "null" ? null : shield[2];
+                                        var ev=eval("list[i]."+shield[1])+shield[2];
+                                        var s=ev.split("");
+                                        if(s[1]=="="){
+                                            if(s[0]==s[2]){
+                                                continue titleLoop;
+                                            }
+                                        }else if(s[1]==">"){
+                                            if(s[0]>s[2]){
+                                                continue titleLoop;
+                                            }
+                                        }else if(s[1]=="<"){
+                                            if(s[0]<s[2]){
+                                                continue titleLoop;
+                                            }
+                                        }
                                     } else {
                                         af += "&" + para[m];
                                     }
@@ -393,8 +411,10 @@
                             var cn = typeof (d.className) == 'undefined' ? ""
                                 : d.className;
                             if(d.type=="modal"){
-                               td.append(" ").append($("<span/>").addClass("btn mini " +cn).html(d.name).click(function(){
+                               td.append(" ").append($("<span/>").attr("data-url",hr).addClass("btn mini " +cn).html(d.name).click(function(){
                                    var con="";
+                                   var _this=$(this);
+                                   $("#"+ d.id).remove();
                                    if(typeof(d.content)=="function"){
                                        con= d.content();
                                    }else{
@@ -406,15 +426,12 @@
                                    }else{
                                        foot= d.footer;
                                    }
-                                   var modalDiv=$("<div/>").attr("id", d.id).addClass("modal hide fade" + (d.clazz? d.clazz:""));
+                                   var modalDiv=$("<div/>").attr("id", d.id).attr("data-url",_this.attr("data-url")).addClass("modal hide fade" + (d.clazz? d.clazz:""));
                                    var header=$("<div/>").addClass("modal-header").append($("<h3/>").html(d.title));
                                    var body=$("<div/>").addClass("modal-body").append(con);
                                    var footer=$("<div/>").addClass("modal-footer").append(foot);
                                    modalDiv.append(header).append(body).append(footer).modal();
-                                   var h3=$("")
-//                                   $('<div id="'+ d.id+'" class="modal hide fade '+(d.clazz? d.clazz:'')+'"> <div class="modal-header"><h3>'+ d.title+
-//                                       '</h3></div><div class="modal-body">' + con + '</div><div class="modal-footer">'+ foot+'</div></div>').modal();
-                               }));//(d.options));
+                               }));
                             } else if(d.type=="ajax"){
                                td.append(" ").append($("<span/>").attr("data-href",hr).addClass("btn mini "+cn).html(d.name).click(function(){
                                    var _this=$(this);

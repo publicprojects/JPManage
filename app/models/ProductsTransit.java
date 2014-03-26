@@ -14,7 +14,7 @@ public class ProductsTransit {
 
 	public static JsonResponse createData(Long batchId,String remark) {
         List<ProduceRecords> list=ProduceRecords.find("batch_id=?",batchId).fetch();
-		JsonResponse response = ProductsTransits.addProductsTransit(list,remark);
+		JsonResponse response = ProductsTransits.addProductsTransit(list,remark,batchId);
 		return response;
 	}
 }

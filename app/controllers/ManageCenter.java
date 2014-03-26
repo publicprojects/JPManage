@@ -180,12 +180,11 @@ public class ManageCenter extends  Application {
                 renderJSON(new JsonResponse(0,"已完成处理，请开始生产。"));
                 break;
             case 1:
-                Batchs batch=produceNotices.batch;
-                String remark=params.get("remark");
                 produceNotices.isHandle=1;
                 produceNotices.save();
-                ProductsTransit.createData(batch.id,remark);
-                renderJSON(new JsonResponse(0,"产品["+batch.product.productName+"]已提交到中转库，批次["+batch.batchNo+"]已完成生产。"));
+                Batchs batch=produceNotices.batch;
+                String remark=params.get("remark");
+                renderJSON(ProductsTransit.createData(batch.id,remark));
                 break;
         }
 

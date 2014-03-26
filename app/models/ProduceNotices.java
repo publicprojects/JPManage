@@ -25,12 +25,12 @@ public class ProduceNotices extends Model {
 	public Batchs batch;
 
 	@Column(name = "is_handle")
-	public Integer isHandle;
+	public Integer isHandle=-1;
 
-	public ProduceNotices() {
-		// 表示未处理
-		this.isHandle = -1;
-	}
+//	public ProduceNotices() {
+//		// 表示未处理
+//		this.isHandle = -1;
+//	}
 
 	public static List<ProduceNotices> getProduceNotices(Pagination page, int current, String[] key, String[] val) {
 		String keys = ManageUtils.genKeys(key, true);
