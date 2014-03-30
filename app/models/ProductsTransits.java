@@ -45,7 +45,7 @@ public class ProductsTransits extends Model {
 	@Column(name = "remark")
 	public String remark;
 
-	@Column(name = "test_state")
+	@Column(name = "test_state",columnDefinition = "int")
 	public Integer testState;
 
 	public static List<ProductsTransits> getProductsTransit(Pagination page, int current, String[] key, String[] val) {
@@ -59,6 +59,13 @@ public class ProductsTransits extends Model {
 			page.setCurrentPage(current);
 			list = ProductsTransits.all().from(page.getStartRow()).fetch(page.getDisplayCountOfPerPage());
 		} else {
+            int i=0;
+            for(String k:key){
+                if("testState".equals(k)){
+                    val_[i]=Integer.parseInt(val[i]);
+                }
+                i++;
+            }
 			count = (int) ProductsTransits.count(keys, val_);
 			page.setTotalRecord(count);
 			page.setCurrentPage(current);
@@ -98,6 +105,7 @@ public class ProductsTransits extends Model {
         data.batch=Batchs.findById(batchid);
         data.batch.isComplete=1;
         data.batch.save();
+        data.testState=0;
 		data.save();
 		return new JsonResponse(0, "产品["+data.batch.product.productName+"]成功提交到中转库，[" + data.batch.batchNo + "]批次已完成生产");
 	}

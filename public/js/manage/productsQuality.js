@@ -13,24 +13,15 @@ $(function(){
     },{
         name:"次品数量",
         field:"defectiveCount"
-    },{
-        name:"单位",
-        field:"unit"
-    },{
-        name:"质检状态",
-        type:"convert",
-        field:"testState",
-        data:{"0":"未质检","1":"已质检","null":"未质检"}
     },
-        {
-            name:"操作",
+        {   name:"操作",
             data:[{
-                name:"<i class='icon-beaker'></i> 质检",
-                href:"/manageCenter/quality/1/{id}?shield_field=testState=1",
+                name:"<i class='icon-edit'></i> 化验原始记录",
+                href:"/manageQuality/direction/{batch.id}",
                 className:"red"
             },{
-                name:"<i class='icon-bar-chart'></i> 质检报告",
-                href:"/manageCenter/quality/1/{id}?shield_field=testState=0",
+                name:"<i class='icon-edit'></i> 出厂检验报告",
+                href:"/manageCenter/quality/1/{id}",
                 className:"blue"
             }],
             type:"operator"
@@ -39,7 +30,7 @@ $(function(){
         titles:cols,
         container:".dataTable-container",
         url:"/manageCenter/queryData/10",
-        urlPara:{}
+        urlPara:{"key[0]":"testState","val[0]":"0"}
     });
     $(".tool-bar span.btn").click(function(){
         TableJS.modal($(this).attr("data-href"));

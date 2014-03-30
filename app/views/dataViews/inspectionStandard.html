@@ -1,0 +1,36 @@
+<div class="tool-bar">
+    <span class="btn blue small" data-href="/map/dataForm/addInspectionStandard/xhtml"><i class="icon-plus"></i>  添加执行标准</span>
+</div>
+<div class="dataTable-container"></div>
+<script>
+    $(function(){
+        var cols=[{
+            name:"标准名称",
+            field:"name"
+        },{
+            name:"添加日期",
+            field:"createAt"
+        },{
+            name:"操作",
+            data:[{
+                name:"<i class='icon-edit'></i> 修改",
+                href:"/manageCenter/getDataById/12/{id}",
+                className:"blue"
+            },{
+                name:"<b>&times;</b> 删除",
+                href:"/manageCenter/delDataConfirm/12/{id}",
+                className:"red"
+            }],
+            type:"operator"
+        }];
+        dataTable=TableJS.init({
+            titles:cols,
+            container:".dataTable-container",
+            url:"/manageCenter/queryData/12",
+            urlPara:{}
+        });
+        $(".tool-bar span.btn").click(function(){
+            TableJS.modal($(this).attr("data-href"));
+        })
+    })
+</script>

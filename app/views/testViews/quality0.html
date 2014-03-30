@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+    <style>
+        .modal-body img{
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        <i class="icon-edit" style="color: #236aa1"></i>    化验原始记录  </h3>
+</div>
+<div class="modal-body">
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+       $("#ok").click(function(){
+           var uname=$("input[name='data.userName']");
+           var uact=$("input[name='data.userAccount']");
+           var upass=$("input[name='data.userPass']");
+           if(uname.val().isEmpty()){
+               uname.val("");
+               uname.focus();
+               return;
+           }
+
+           if(uact.val().isEmpty()){
+               uact.val("");
+               uact.focus();
+               return;
+           }
+
+           if(upass.length>0){
+               if(upass.val().isEmpty()){
+                   upass.val("");
+                   upass.focus();
+                   return;
+               }
+           }
+           var url="${data==null?'/manager/createData/0':'/manager/updatePerData/0'}";
+           $(".form-horizontal").ajaxSubmit({
+               url:url,
+               dataType:"json",
+               success:function(res){
+                   modalJs.response(res,'',function(){
+                       dataTable.loadData();
+                   });
+               },error:function(e){
+                   alert("error:"+e);
+                   modalJs.close();
+               }
+           });
+       }) ;
+    });
+</script>
+</body>
+</html>

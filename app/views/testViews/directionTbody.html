@@ -1,0 +1,109 @@
+<tr>
+    <td class="item-name">检验日期 #{if data!=null}<input type="hidden" name="data.id" value="${data.id}">#{/if}</td>
+    <td colspan="2"><input type="text" name="data.inspectDate" readonly value="${data!=null?data.inspectDate:''}"></td>
+    <td class="item-name">校核日期</td>
+    <td colspan="2"><input type="text" name="data.checkDate" readonly value="${data!=null?data.checkDate:''}"></td>
+</tr>
+<tr>
+    <th>样品名称</th>
+    <td><input readonly type="text" value="${batch.product.productName}"/></td>
+    <th>样品编号</th>
+    <td><input readonly type="text" value="${batch.batchNo}"></td>
+    <th>检验项目</th>
+    <td><input type="hidden" name="itemId" value="${item.id}">
+    <input readonly type="text" value="${item.name}">
+    <input type="hidden" name="batchId" value="${batch.id}">
+    </td>
+</tr>
+<tr>
+    <th>检验方法</th>
+    <td><input type="text" name="data.method" value="${data!=null?data.method:''}"></td>
+    <th>样品状态</th>
+    <td><input type="text" name="data.sampleStat" value="${data!=null?data.sampleStat:''}"></td>
+    <th>检验类别</th>
+    <td><input type="text" name="data.type" value="${data!=null?data.type:''}"></td>
+</tr>
+<tr>
+    <th>仪器名称</th>
+    <th>仪器型号</th>
+    <th>仪器编号</th>
+    <th>仪器精度</th>
+    <th>环境温度</th>
+    <th>环境湿度</th>
+</tr>
+%{for( i in 0..item.instrumentSize-1){
+}%
+<tr>
+    <td><input type="text" name="data.instrumentsArray[${i}].name" value="${data!=null&&data.instruments!=null?data.instruments[i].name:''}"></td>
+    <td><input type="text" name="data.instrumentsArray[${i}].model" value="${data!=null&&data.instruments!=null?data.instruments[i].model:''}"></td>
+    <td><input type="text" name="data.instrumentsArray[${i}].number" value="${data!=null&&data.instruments!=null?data.instruments[i].number:''}"></td>
+    <td><input type="text" name="data.instrumentsArray[${i}].accuracy" value="${data!=null&&data.instruments!=null?data.instruments[i].accuracy:''}"></td>
+    <td><input type="text" name="data.instrumentsArray[${i}].envirmentTemp" value="${data!=null&&data.instruments!=null?data.instruments[i].envirmentTemp:''}"></td>
+    <td><input type="text" name="data.instrumentsArray[${i}].envirmentHumidity" value="${data!=null&&data.instruments!=null?data.instruments[i].envirmentHumidity:''}"></td>
+</tr>
+%{
+}
+}%
+<tr>
+    <th colspan="2">项目\平行</th>
+    <th colspan="2">平行样1</th>
+    <th colspan="2">平行样2</th>
+</tr>
+#{list item.directionItems,as:'di'}
+<tr>
+    <td colspan="2" rowspan="${di.resultSize}" class="item-name">${di.name}<span class="item-unit">${di.unit}</span>
+    </td>
+    #{if di.splitSample==1}
+        <td colspan="4"><input type="text" value="${di.value}" readonly><input type="hidden"  name="data.samplesArray[0].item.id" value="${di.id}"></td>
+    #{/if}
+    #{else}
+        <td colspan="2"><input type="text" name="data.samplesArray[0].sample1" value="${data!=null&&data.samples!=null?data.samples[0].sample1:''}"></td>
+        <td colspan="2"><input type="text" name="data.samplesArray[0].sample2" value="${data!=null&&data.samples!=null?data.samples[0].sample2:''}"></td>
+    #{/else}
+
+</tr>
+#{if di.resultSize>1}
+%{for(i in 1 .. (di.resultSize-1)) {
+}%
+<tr>
+    #{if di.splitSample==1}
+    <td colspan="4"><input type="text" value="${di.value}" readonly> <input type="hidden"  name="data.samplesArray[${i}].item.id" value="${di.id}"></td>
+    #{/if}
+    #{else}
+    <td colspan="2"><input type="text" name="data.samplesArray[${i}].sample1" value="${data!=null&&data.samples!=null?data.samples[i].sample1:''}"></td>
+    <td colspan="2"><input type="text" name="data.samplesArray[${i}].sample2" value="${data!=null&&data.samples!=null?data.samples[i].sample2:''}"></td>
+    #{/else}
+</tr>
+%{ } }%
+#{/if}
+#{/list}
+<tr>
+    <td colspan="2" class="item-name">计算公式</td>
+    <td colspan="4"><input type="text" name="data.formula"></td>
+</tr>
+<tr>
+    <td colspan="2" class="item-name">结果值</td>
+    <td colspan="4"><input type="text" name="data.resultValue"></td>
+</tr>
+<tr>
+    <td colspan="2" class="item-name">平均值</td>
+    <td colspan="4"><input type="text" name="data.averageValue"></td>
+</tr>
+<tr>
+    <td colspan="2" class="item-name">样品执行标准要求</td>
+    <td colspan="4"><input type="text" name="data.standard"></td>
+</tr>
+<tr>
+    <td colspan="2" class="item-name">结论</td>
+    <td colspan="4"><input type="text" name="data.conclusions"></td>
+</tr>
+<tr>
+    <td colspan="2" class="item-name">备注</td>
+    <td colspan="4"><input type="text" name="data.remark"></td>
+</tr>
+<script>
+    $(function(){
+        $("input[name='data.inspectDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true,pickerPosition:"top"});
+        $("input[name='data.checkDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true,pickerPosition:'top'});
+    })
+</script>

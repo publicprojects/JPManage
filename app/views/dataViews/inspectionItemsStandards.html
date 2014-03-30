@@ -1,0 +1,43 @@
+<div class="tool-bar">
+    <span class="btn blue small" data-href="/map/dataForm/addInspectionItemStandard/xhtml"><i class="icon-plus"></i>  创建检验项标准</span>
+</div>
+<div class="dataTable-container"></div>
+<script>
+    $(function(){
+        var cols=[{
+            name:"检验项目名称",
+            field:"inspectionItem.name"
+        },{
+            name:"检验标准要求",
+            field:"standard",
+            width:"200px"
+        },{
+            name:"检验项目单位",
+            field:"inspectionItem.unit"
+        },{
+            name:"添加日期",
+            field:"createAt"
+        },{
+            name:"操作",
+            data:[{
+                name:"<i class='icon-edit'></i> 修改",
+                href:"/manageCenter/getDataById/14/{id}",
+                className:"blue"
+            },{
+                name:"<b>&times;</b> 删除",
+                href:"/manageCenter/delDataConfirm/14/{id}",
+                className:"red"
+            }],
+            type:"operator"
+        }];
+        dataTable=TableJS.init({
+            titles:cols,
+            container:".dataTable-container",
+            url:"/manageCenter/queryData/14",
+            urlPara:{}
+        });
+        $(".tool-bar span.btn").click(function(){
+            TableJS.modal($(this).attr("data-href"));
+        })
+    })
+</script>

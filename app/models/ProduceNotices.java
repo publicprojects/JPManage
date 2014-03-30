@@ -27,11 +27,6 @@ public class ProduceNotices extends Model {
 	@Column(name = "is_handle")
 	public Integer isHandle=-1;
 
-//	public ProduceNotices() {
-//		// 表示未处理
-//		this.isHandle = -1;
-//	}
-
 	public static List<ProduceNotices> getProduceNotices(Pagination page, int current, String[] key, String[] val) {
 		String keys = ManageUtils.genKeys(key, true);
 		Object[] val_ = ManageUtils.genVals(val);

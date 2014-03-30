@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.persistence.*;
 
+import models.quality.InspectionReport;
 import play.db.jpa.Model;
 import utils.JSONBuilder;
 import utils.Pagination;

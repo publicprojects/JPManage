@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+    <style>
+        .form-horizontal textarea{
+            resize: none;
+            min-height: 50px;
+        }
+        .form-horizontal .controls  label{
+            display: inline-block;
+            padding: 1px 5px;
+            border:1px solid #ccc;
+            background: #eee;
+        }
+        .form-horizontal .controls .has label{
+            background: #f6faff;
+        }
+        .form-horizontal .controls  label input{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        #{if data==null}
+        <i class="icon-plus-sign-alt" style="color: #0ba11b"></i>       新增出厂检验项   #{/if}
+        #{else}
+        <i class="icon-edit" style="color: #236aa1"></i> 编辑出厂检验项
+        #{/else}
+    </h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" method="post">
+        #{if data!=null}
+          <input type="hidden" name="data.id" value="${data.id}">
+        #{/if}
+        <div class="control-group">
+            <label class="control-label">检验项名称</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.name" placeholder="检验项名称" value="${data!=null?data.name:''}" />
+            </div>
+        </div>
+            <div class="control-group">
+                <label class="control-label">检验项单位</label>
+                <div class="controls">
+                    <input type="text" class="span3" name="data.unit" placeholder="检验项单位" value="${data!=null?data.unit:''}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">检验使用仪器数</label>
+                <div class="controls">
+                    <input type="text" class="span3" name="data.instrumentSize" placeholder="仪器数量" value="${data!=null?data.instrumentSize:''}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">原始记录表格地址</label>
+                <div class="controls">
+                    <input type="text" class="span3" name="data.url" placeholder="表格地址" value="${data!=null?data.url:''}" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">化验项</label>
+                <div class="controls">
+                    <div class="has">
+                    #{if data!=null}
+                        #{list data.directionItems,as:'p'}
+                            <label><input type="checkbox" checked value="${p.id}">  ${p.name} </label>
+                        #{/list}
+                    #{/if}
+                    </div>
+                    <div class="notHas">
+                    #{set notHas:data!=null?data.notHas():new models.quality.InspectionItem().notHas()/}
+                    #{list notHas,as:'p'}
+                        <label><input type="checkbox" value="${p.id}">  ${p.name} </label>
+                    #{/list}
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+       $("#ok").click(function(){
+           var uname=$("input[name='data.name']");
+           if(uname.val().isEmpty()){
+               uname.val("");
+               uname.focus();
+               return;
+           }
+           var url="${data==null?'/manageCenter/createData/13':'/manageCenter/updateData/13'}";
+           var data={};
+           var j=0;
+           $(".has input").each(function(){
+               if(!$(this).prop("checked")){
+                   data["remove["+j+"].id"]=$(this).val();
+                   j++;
+               }
+           });
+           $(".notHas input:checked").each(function(i){
+               data["add["+i+"].id"]=$(this).val();
+           });
+           $(".form-horizontal").ajaxSubmit({
+               url:url,
+               dataType:"json",
+               data:data,
+               success:function(res){
+                   modalJs.response(res,'',function(){
+                       dataTable.loadData();
+                   });
+               },error:function(e){
+                   alert("error:"+e);
+                   modalJs.close();
+               }
+           });
+       }) ;
+    });
+</script>
+</body>
+</html>

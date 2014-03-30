@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+    <style>
+        .modal-body table{
+            width:100%;
+            border-color:#555;
+        }
+        .modal-body table thead th{
+            font-size:20px;
+            padding:10px;
+        }
+        .modal-body table td{
+            min-height: 30px;
+            min-width: 100px;
+        }
+        .modal.direction{
+            width:900px;
+            margin-left: -450px;
+        }
+        .modal.direction .modal-body{
+            max-height: 700px;
+            padding: 5px;
+        }
+        .modal.direction.fade.in{
+            top:0;
+        }
+        .modal.direction .modal-header{
+            display:none;
+        }
+        table td{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        <i class="icon-edit" style="color: #236aa1"></i>   出厂检验报告</h3>
+</div>
+<div class="modal-body">
+    <table border="1">
+        <thead>
+          <tr>
+              <th colspan="7">青岛胶平食品有限公司产品出厂检验报告</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>样品名称</th><td colspan="2"></td><th class="produce">生产日期</th><td></td><th>样品批号</th><td></td>
+        </tr>
+        <tr>
+            <th rowspan="2">使用主要仪器设备</th><th>名称</th><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        <tr>
+            <th>精度</th><td></td><td></td><td></td></td><td></td><td></td>
+        </tr>
+        <tr><th>执行标准</th><td colspan="6"></td></tr>
+        <tr>
+            <th colspan="7">检验结果</th>
+        </tr>
+        <tr>
+            <th>序号</th><th>检验项目</th><th>单位</th><th colspan="2">标准要求</th><th>检验结果</th><th>单项结论</th>
+        </tr>
+        <tr>
+            <td>1</td><td>感官</td><td></td><td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td><td></td><td></td>
+        </tr>
+        <tr>
+            <td>2</td><td>水分</td><td>g/100g</td><td colspan="2"><=20</td><td></td><td></td>
+        </tr>
+        <tr>
+            <td>1</td><td>感官</td><td></td><td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td><td></td><td></td>
+        </tr>
+        <tr>
+            <td>2</td><td>水分</td><td>g/100g</td><td colspan="2"><=20</td><td></td><td></td>
+        </tr>
+        <tr>
+            <td>1</td><td>感官</td><td></td><td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td><td></td><td></td>
+        </tr>
+        <tr>
+            <td>2</td><td>水分</td><td>g/100g</td><td colspan="2"><=20</td><td></td><td></td>
+        </tr>
+        <tr>
+            <td>1</td><td>感官</td><td></td><td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td><td></td><td></td>
+        </tr>
+        <tr>
+            <td>2</td><td>水分</td><td>g/100g</td><td colspan="2"><=20</td><td></td><td></td>
+        </tr>
+        <tr><td>检验结论</td><td colspan="5"></td><td>日期</td></tr>
+        <tr><td>备注</td><td colspan="6"></td></tr>
+        <tr><td>检验员</td><td colspan="2"></td><td>校核员</td><td colspan="3"></td></tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+        $(".modal").addClass("direction");
+    });
+</script>
+</body>
+</html>

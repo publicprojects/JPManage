@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+    <style>
+        .form-horizontal textarea{
+            resize: none;
+            min-height: 50px;
+        }
+        .form-horizontal .controls  label{
+            display: inline-block;
+            padding: 1px 5px;
+            border:1px solid #ccc;
+            background: #eee;
+        }
+        .form-horizontal .controls .has label{
+            background: #f6faff;
+        }
+        .form-horizontal .controls  label input{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        #{if data==null}
+        <i class="icon-plus-sign-alt" style="color: #0ba11b"></i>       新增出厂检验项标准   #{/if}
+        #{else}
+        <i class="icon-edit" style="color: #236aa1"></i> 编辑出厂检验项标准
+        #{/else}
+    </h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" method="post">
+        #{if data!=null}
+          <input type="hidden" name="data.id" value="${data.id}">
+        #{/if}
+        <div class="control-group">
+            <label class="control-label">检验项名称</label>
+            <div class="controls">
+                <select class="span3" name="data.inspectionItem.id" data-id="${data!=null&&data.inspectionItem!=null?data.inspectionItem.id:''}"></select>
+            </div>
+        </div>
+            <div class="control-group">
+                <label class="control-label">检验产品</label>
+                <div class="controls">
+                    <div class="has">
+                        #{if data!=null}
+                        #{list data.products,as:'p'}
+                            <label><input type="checkbox" checked value="${p.productId}">  ${p.productName} </label>
+                        #{/list}
+                        #{/if}
+                    </div>
+                    <div class="notHas">
+                        #{set notHas:data!=null?data.notHas():new models.quality.InspectionItemStandard().notHas()/}
+                        #{list notHas,as:'p'}
+                            <label><input type="checkbox" value="${p.productId}">  ${p.productName} </label>
+                        #{/list}
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">检验标准要求</label>
+                <div class="controls">
+                    <textarea name="data.standard" class="span3" placeholder="检验项标准要求">${data!=null?data.standard:''}</textarea>
+                </div>
+            </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+        getInspectionItems();
+        function getInspectionItems(){
+            $.ajax({
+                url:"/manageCenter/queryData/noPage/13",
+                type:"post",
+                dataType:"json",
+                success:function(data){
+                    if(data){
+                        var sp=$("select[name='data.inspectionItem.id']");
+                        var dp=sp.attr("data-id");
+                        sp.html("");
+                        for(var i in data){
+                            sp.append("<option value='"+data[i].id+"' "+(dp&&dp==data[i].id?"selected":"")+" >"+data[i].name+"</option>");
+                        }
+                    }
+                },
+                error:function(e){
+                }
+            })
+        }
+       $("#ok").click(function(){
+           var uname=$("textarea[name='data.standard']");
+           if(uname.val().isEmpty()){
+               uname.val("");
+               uname.focus();
+               return;
+           }
+           var url="${data==null?'/manageCenter/createData/14':'/manageCenter/updateData/14'}";
+           var data={};
+           var j=0;
+           $(".has input").each(function(){
+               if(!$(this).prop("checked")){
+                   data["remove["+j+"].productId"]=$(this).val();
+                   j++;
+               }
+           });
+           $(".notHas input:checked").each(function(i){
+               data["add["+i+"].productId"]=$(this).val();
+           });
+           $(".form-horizontal").ajaxSubmit({
+               url:url,
+               dataType:"json",
+               data:data,
+               success:function(res){
+                   modalJs.response(res,'',function(){
+                       dataTable.loadData();
+                   });
+               },error:function(e){
+                   alert("error:"+e);
+                   modalJs.close();
+               }
+           });
+       }) ;
+    });
+</script>
+</body>
+</html>

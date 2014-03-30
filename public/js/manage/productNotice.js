@@ -26,7 +26,7 @@ $(function(){
             name:"操作",
             data:[{
                 name:"<i class='icon-bookmark'></i> 处理",
-                href:"/manageCenter/produce/dealNotes/{id}/0?shield_count|isHandle|>0",
+                href:"/manageCenter/produce/dealNotes/{id}/0?shield_count|isHandle|>-1",
                 className:"purple",
                 type:"ajax"
             },{

@@ -474,8 +474,12 @@
                                 }
                             }
                         }
+                        var overflow="";
+                        if(title[j].width){
+                            overflow="style='overflow:hidden;width:"+title[j].width+";text-overflow:ellipsis;white-space:nowrap;'"
+                        }
                         $(
-                            "<td title='" + title[j].name + ":" + str + "'>"
+                            "<td "+overflow+" title='" + title[j].name + ":" + str + "'>"
                                 + str + "</td>").appendTo(tr_);
                     }
                 }
@@ -486,8 +490,14 @@
         var retValue = strLink;
         var matchs = retValue.match(/\{.*?\}/gi);
         for (var i = 0; i < matchs.length; i++) {
-            retValue = retValue.replace(matchs[i], dataJson[matchs[i].replace(
-                /\{*\}*/gi, '')]);
+            var field=matchs[i].replace(/\{*\}*/gi, '');
+            var val="";
+            try{
+               val= eval("dataJson."+field);
+            }catch(e){
+               val=dataJson[field];
+            }
+            retValue = retValue.replace(matchs[i],val);
         }
         return retValue;
     }

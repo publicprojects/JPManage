@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+    <style>
+        .modal-body form.direction-form{
+            margin: 0;
+            padding: 0;
+        }
+        .modal-body table{
+            width:100%;
+            border-color:#555;
+        }
+        .modal-body table thead th{
+            font-size:20px;
+            padding:10px;
+        }
+        .modal-body table td{
+            height: 22px;
+            padding:1px 3px 1px 1px;
+            text-align: center;
+        }
+        .modal-body table td input[type=text]{
+            width:100%;
+            padding:3px 0;
+            margin:0;
+            text-indent: 0.5em;
+        }
+        .modal.direction{
+            width:900px;
+            margin-left: -450px;
+        }
+        .modal.direction .modal-body{
+            max-height: 650px;
+            min-height: 600px;
+            padding: 5px;
+        }
+        .modal.direction.fade.in{
+            top:0;
+        }
+        .modal.direction .modal-header{
+            display:none;
+        }
+        span.item-unit{
+            margin-left: 10px;
+            float: right;
+            font-weight: bold;
+        }
+        td.item-name{
+            max-width: 131px;
+            text-align: center;
+        }
+        .dropdown-menu li > a{
+            padding-top: 3px;
+            padding-left: 0;
+            text-align: left;
+            text-indent: 1em;
+        }
+        .select-item{
+            padding:3px;
+            background-color:#fff;
+            font-size:20px!important;
+        }
+        .btn-select-item a i{
+            display: none;
+        }
+        .btn-select-item.open a i{
+            display: inline-block;
+        }
+        .direction-item.tip{
+            color:blue;
+        }
+        .ok-tip{
+            color: #808080;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        <i class="icon-edit" style="color: #236aa1"></i>    化验原始记录  </h3>
+</div>
+<div class="modal-body">
+    <form class="direction-form" method="post">
+        #{if data!=null}
+        <input type="hidden" name="data.id" value="${data.id}">
+        #{/if}
+    <table border="1" class="direction-table">
+        <thead>
+          <tr>
+              <th colspan="6">青岛胶平食品有限公司化验室检验原始记录（<div class="btn-select-item btn-group">
+                  <a class="btn dropdown-toggle select-item" data-toggle="dropdown" href="#"> <span class="direction-item tip">请选择化验项</span> <i class="icon-angle-down"></i>
+                  </a>
+                  <ul class="dropdown-menu" style="min-width: 100px;">
+                      #{list standards,as:"d"}
+                        <li><a href="javascript:void(0)" data-id="${d.inspectionItem.id}">${d.inspectionItem.name}</a></li>
+                      #{/list}
+                  </ul>
+              </div>）</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+    <span class="ok-tip">注：只能保存当前化验项</span>
+</div>
+<script>
+    $(function(){
+        $(".modal").addClass("direction");
+        $(".dropdown-menu a").click(function(){
+            var a=$(this);
+            var itemId=a.attr("data-id");
+            $.get("/manageQuality/direction/tbody/"+itemId+"/${batchId}",function(html){
+                $("table.direction-table tbody").html(html);
+                $(".direction-item").text(a.text()).removeClass("tip");
+            });
+        });
+        $("#ok").click(function(){
+            $(".direction-form").ajaxSubmit({
+                url:"/manageQuality/direction/save",
+                dataType:"json",
+                success:function(res){
+                    modalJs.response(res,'原始记录保存完成');
+                },error:function(){
+                    alert("保存失败");
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.persistence.*;
 
+import models.quality.InspectionItem;
+import models.quality.InspectionItemStandard;
 import play.db.jpa.GenericModel;
 import utils.DateUtils;
 import utils.JSONBuilder;
@@ -37,6 +39,9 @@ public class Products extends GenericModel {
 
     @OneToMany(mappedBy = "product")
     public List<Batchs> batchs;
+
+    @ManyToMany(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST},mappedBy="products")
+    public List<InspectionItemStandard> standards;
 
 	/**
 	 * 添加查询成品信息
