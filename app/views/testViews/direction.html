@@ -22,6 +22,14 @@
             padding:1px 3px 1px 1px;
             text-align: center;
         }
+        .modal-body table td textarea{
+            padding: 3px 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            resize: none;
+            text-indent: 0.5em;
+        }
         .modal-body table td input[type=text]{
             width:100%;
             padding:3px 0;
@@ -76,6 +84,10 @@
             color: #808080;
             vertical-align: bottom;
         }
+        .netContent{
+            width: 60px;
+            background: #eee;;
+        }
     </style>
 </head>
 <body>
@@ -86,9 +98,6 @@
 </div>
 <div class="modal-body">
     <form class="direction-form" method="post">
-        #{if data!=null}
-        <input type="hidden" name="data.id" value="${data.id}">
-        #{/if}
     <table border="1" class="direction-table">
         <thead>
           <tr>
@@ -116,7 +125,8 @@
 <script>
     $(function(){
         $(".modal").addClass("direction");
-        $(".dropdown-menu a").click(function(){
+        $(".dropdown-menu a").click(function(e){
+            e.preventDefault();
             var a=$(this);
             var itemId=a.attr("data-id");
             $.get("/manageQuality/direction/tbody/"+itemId+"/${batchId}",function(html){

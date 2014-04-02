@@ -31,7 +31,7 @@ public class DirectionItem extends Model{
     public String value;
     @ManyToMany(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST},mappedBy="directionItems")
     public List<InspectionItem> inspectionItems;
-    @OneToMany
+    @OneToMany(mappedBy = "item",cascade = CascadeType.ALL)
     public List<DirectionItemSample> samples;
 
     public static List<DirectionItem> queryData(Pagination page, int current, String[] key, String[] val){

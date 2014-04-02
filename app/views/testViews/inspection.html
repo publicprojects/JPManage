@@ -5,34 +5,65 @@
     <script src="/public/js/jquery.form.min.js"></script>
     <title></title>
     <style>
-        .modal-body table{
-            width:100%;
-            border-color:#555;
+        .modal-body table {
+            width: 100%;
+            border-color: #555;
         }
-        .modal-body table thead th{
-            font-size:20px;
-            padding:10px;
-        }
+
         .modal-body table td{
-            min-height: 30px;
-            min-width: 100px;
+            height: 22px;
+            padding:1px 3px 1px 1px;
+            text-align: center;
         }
-        .modal.direction{
-            width:900px;
+        .modal-body table td textarea{
+            padding: 3px 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            resize: none;
+            text-indent: 0.5em;
+        }
+        .modal-body table td input[type=text]{
+            width:100%;
+            padding:3px 0;
+            margin:0;
+            text-indent: 0.5em;
+        }
+
+        .modal.direction {
+            width: 900px;
             margin-left: -450px;
         }
-        .modal.direction .modal-body{
+
+        .modal.direction .modal-body {
             max-height: 700px;
             padding: 5px;
         }
-        .modal.direction.fade.in{
-            top:0;
+
+        .modal.direction.fade.in {
+            top: 0;
         }
-        .modal.direction .modal-header{
-            display:none;
+
+        .modal.direction .modal-header {
+            display: none;
         }
-        table td{
+
+        table td {
             text-align: center;
+        }
+        .inspection-items{
+            display: inline-block;
+        }
+        .inspection-items label{
+            display: inline-block;
+            padding: 3px 5px;
+            margin: 3px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+            vertical-align: middle;
+        }
+        .inspection-items label input{
+            margin: 0;
         }
     </style>
 </head>
@@ -40,68 +71,150 @@
 <div class="modal-header">
     <button data-dismiss="modal" class="close" type="button"></button>
     <h3>
-        <i class="icon-edit" style="color: #236aa1"></i>   出厂检验报告</h3>
+        <i class="icon-edit" style="color: #236aa1"></i> 出厂检验报告</h3>
 </div>
 <div class="modal-body">
     <table border="1">
         <thead>
-          <tr>
-              <th colspan="7">青岛胶平食品有限公司产品出厂检验报告</th>
-          </tr>
+        <tr>
+            <th colspan="7">青岛胶平食品有限公司产品出厂检验报告</th>
+        </tr>
         </thead>
         <tbody>
         <tr>
-            <th>样品名称</th><td colspan="2"></td><th class="produce">生产日期</th><td></td><th>样品批号</th><td></td>
+            <th>样品名称</th>
+            <td colspan="2"><input readonly type="text" value="${batch.product.productName}"/></td>
+            <th>生产日期</th>
+            <td style="width: 150px"><input type="text" name="" readonly></td>
+            <th>样品批号</th>
+            <td><input readonly type="text" value="${batch.batchNo}"></td>
         </tr>
         <tr>
-            <th rowspan="2">使用主要仪器设备</th><th>名称</th><td></td><td></td><td></td><td></td><td></td>
+            <th rowspan="2">使用主要仪器设备</th>
+            <th>名称</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <th>精度</th><td></td><td></td><td></td></td><td></td><td></td>
+            <th>精度</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            </td>
+            <td></td>
+            <td></td>
         </tr>
-        <tr><th>执行标准</th><td colspan="6"></td></tr>
+        <tr>
+            <th>执行标准</th>
+            <td colspan="6"></td>
+        </tr>
         <tr>
             <th colspan="7">检验结果</th>
         </tr>
         <tr>
-            <th>序号</th><th>检验项目</th><th>单位</th><th colspan="2">标准要求</th><th>检验结果</th><th>单项结论</th>
+            <th>序号</th>
+            <th>检验项目</th>
+            <th>单位</th>
+            <th colspan="2">标准要求</th>
+            <th>检验结果</th>
+            <th>单项结论</th>
         </tr>
         <tr>
-            <td>1</td><td>感官</td><td></td><td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td><td></td><td></td>
+            <td>1</td>
+            <td>感官</td>
+            <td></td>
+            <td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td>2</td><td>水分</td><td>g/100g</td><td colspan="2"><=20</td><td></td><td></td>
+            <td>2</td>
+            <td>水分</td>
+            <td>g/100g</td>
+            <td colspan="2"><=20</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td>1</td><td>感官</td><td></td><td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td><td></td><td></td>
+            <td>1</td>
+            <td>感官</td>
+            <td></td>
+            <td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td>2</td><td>水分</td><td>g/100g</td><td colspan="2"><=20</td><td></td><td></td>
+            <td>2</td>
+            <td>水分</td>
+            <td>g/100g</td>
+            <td colspan="2"><=20</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td>1</td><td>感官</td><td></td><td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td><td></td><td></td>
+            <td>1</td>
+            <td>感官</td>
+            <td></td>
+            <td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td>2</td><td>水分</td><td>g/100g</td><td colspan="2"><=20</td><td></td><td></td>
+            <td>2</td>
+            <td>水分</td>
+            <td>g/100g</td>
+            <td colspan="2"><=20</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td>1</td><td>感官</td><td></td><td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td><td></td><td></td>
+            <td>1</td>
+            <td>感官</td>
+            <td></td>
+            <td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td>2</td><td>水分</td><td>g/100g</td><td colspan="2"><=20</td><td></td><td></td>
+            <td>2</td>
+            <td>水分</td>
+            <td>g/100g</td>
+            <td colspan="2"><=20</td>
+            <td></td>
+            <td></td>
         </tr>
-        <tr><td>检验结论</td><td colspan="5"></td><td>日期</td></tr>
-        <tr><td>备注</td><td colspan="6"></td></tr>
-        <tr><td>检验员</td><td colspan="2"></td><td>校核员</td><td colspan="3"></td></tr>
+        <tr>
+            <td>检验结论</td>
+            <td colspan="5"></td>
+            <td>日期</td>
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td colspan="6"></td>
+        </tr>
+        <tr>
+            <td>检验员</td>
+            <td colspan="2"></td>
+            <td>校核员</td>
+            <td colspan="3"></td>
+        </tr>
         </tbody>
     </table>
 </div>
 <div class="modal-footer">
+    <span class="inspection-items">
+        #{list standards,as:'s'}
+         <label><input type="checkbox" value="${s.id}"> ${s.inspectionItem.name}</label>
+        #{/list}
+    </span>
     <span class="btn" id="cancel">取消</span>
     <span class="btn blue" id="ok">保存</span>
 </div>
 <script>
-    $(function(){
+    $(function () {
         $(".modal").addClass("direction");
     });
 </script>

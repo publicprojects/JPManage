@@ -33,6 +33,8 @@ GET     /manageQuality/direction/{batchId}           ManageQuality.direction
 GET     /manageQuality/direction/tbody/{itemId}/{batchId}      ManageQuality.tbody
 POST    /manageQuality/direction/save                ManageQuality.saveDirection
 
+GET     /manageQuality/inspection/{batchId}           ManageQuality.inspection
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

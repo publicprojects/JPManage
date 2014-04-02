@@ -21,7 +21,7 @@ $(function(){
                 className:"red"
             },{
                 name:"<i class='icon-edit'></i> 出厂检验报告",
-                href:"/manageCenter/quality/1/{id}",
+                href:"/manageQuality/inspection/{batch.id}",
                 className:"blue"
             }],
             type:"operator"

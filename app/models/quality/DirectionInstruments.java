@@ -19,6 +19,11 @@ public class DirectionInstruments extends Model {
     @ManyToOne
     @JoinColumn(name="directions_id")
     public Directions directions;
+
+    @ManyToOne
+    @JoinColumn(name="directions_net_content_id")
+    public DirectionsNetcontent directionsNetcontent;
+
     /** 仪器名称 */
     @Column(name = "instrument_name")
     public String name;

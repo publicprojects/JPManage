@@ -1,0 +1,134 @@
+<tr>
+    <th style="width: 102px">检验员#{if data!=null}<input type="hidden" name="data.id" value="${data.id}">#{/if}</th>
+    <td colspan="2">
+        <input type="hidden" name="directionType" value="3">
+        <input type="text" style="width: 48%" name="data.inspector" placeholder="检验员"
+               value="${data!=null?data.inspector:''}"><input type="text" style="width: 50%" placeholder="检验日期"
+                                                              name="data.inspectDate" readonly
+                                                              value="${data!=null?data.inspectDate:''}">
+    </td>
+    <th>校核员</th>
+    <td colspan="2">
+        <input type="text" style="width: 48%" name="data.checkStaff" placeholder="校核员"
+               value="${data!=null?data.checkStaff:''}"><input type="text" style="width: 50%" placeholder="校核日期"
+                                                               name="data.checkDate" readonly
+                                                               value="${data!=null?data.checkDate:''}">
+    </td>
+</tr>
+<tr>
+    <th>样品名称</th>
+    <td><input readonly type="text" value="${batch.product.productName}"/></td>
+    <th>生产日期</th>
+    <td><input readonly type="text" name="data.produceDate" value="${data!=null?data.produceDate:null}"></td>
+    <th>检验项目</th>
+    <td><input type="hidden" name="itemId" value="${item.id}">
+        <input readonly type="text" value="${item.name}">
+        <input type="hidden" name="batchId" value="${batch.id}">
+    </td>
+</tr>
+<tr>
+    <th>抽样日期</th>
+    <td><input readonly type="text" name="data.sampleDate" value="${data!=null?data.sampleDate:null}"></td>
+    <th>生产车间</th>
+    <td colspan="3"><input name="data.workShop" type="text" value="${data!=null?data.workShop:null}"></td>
+</tr>
+<tr>
+    <th colspan="6">检验内容</th>
+</tr>
+<tr>
+    <td colspan="6" style="padding: 1px">
+        <table border="1">
+            <tbody>
+            <tr>
+                <th style="width: 100px">检验依据</th>
+                <td colspan="13">GB-4789-2-2010</td>
+            </tr>
+            <tr>
+                <th rowspan="2">接种\培养基</th>
+                <th colspan="3">LST</th>
+                <th colspan="3">BGLB/EC</th>
+                <th colspan="3">MCG</th>
+                <th colspan="3">生化鉴定</th>
+                <th rowspan="2">结果报告(个/g)</th>
+            </tr>
+            <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+
+                <th>I</th>
+                <th>MR</th>
+                <th>镜检</th>
+            </tr>
+            %{
+            for(int i in 0..5){
+            String mu="";
+            for(int j in 0..i){
+            mu+="0";
+            }
+            String inoculation=100/Integer.parseInt("1"+mu)+"";
+            }%
+            <tr>
+                <th>${inoculation}<input type="hidden" name="data.bacterialItemsT[${i}].inoculation"
+                                         value="${inoculation}"></th>
+                <td><input type="text" name="data.coliformItemsT[${i}].LSTA" value="${data!=null?data.coliformItems[i].LSTA:null}"></td>
+                <td><input type="text" name="data.coliformItemsT[${i}].LSTB" value="${data!=null?data.coliformItems[i].LSTB:null}"></td>
+                <td><input type="text" name="data.coliformItemsT[${i}].LSTC" value="${data!=null?data.coliformItems[i].LSTC:null}"></td>
+
+                <td><input type="text" name="data.coliformItemsT[${i}].BEA" value="${data!=null?data.coliformItems[i].BEA:null}"></td>
+                <td><input type="text" name="data.coliformItemsT[${i}].BEB" value="${data!=null?data.coliformItems[i].BEB:null}"></td>
+                <td><input type="text" name="data.coliformItemsT[${i}].BEC" value="${data!=null?data.coliformItems[i].BEC:null}"></td>
+
+                <td><input type="text" name="data.coliformItemsT[${i}].MCGA" value="${data!=null?data.coliformItems[i].MCGA:null}"></td>
+                <td><input type="text" name="data.coliformItemsT[${i}].MCGB" value="${data!=null?data.coliformItems[i].MCGB:null}"></td>
+                <td><input type="text" name="data.coliformItemsT[${i}].MCGC" value="${data!=null?data.coliformItems[i].MCGC:null}"></td>
+
+                <td><input type="text" name="data.coliformItemsT[${i}].IDI" value="${data!=null?data.coliformItems[i].IDI:null}"></td>
+                <td><input type="text" name="data.coliformItemsT[${i}].IDMR" value="${data!=null?data.coliformItems[i].IDMR:null}"></td>
+                <td><input type="text" name="data.coliformItemsT[${i}].IDMI" value="${data!=null?data.coliformItems[i].IDMI:null}"></td>
+            #{if i==0}
+                <td rowspan="7" style="width: 150px;"><textarea name="data.result">${data!=null?data.result:null}</textarea>
+                </td>#{/if}</tr>
+            %{ }}%
+            <tr>
+                <th>空白</th>
+                <td></td>
+                <td></td>
+                <td></td>
+
+                <td></td>
+                <td></td>
+                <td></td>
+
+                <td></td>
+                <td></td>
+                <td></td>
+
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+<tr>
+    <th>备注</th>
+    <td colspan="5"><input type="text" name="data.remark" value="${data!=null?data.remark:''}"></td>
+</tr>
+<script>
+    $(function () {
+        $("input[name='data.inspectDate']").datepicker({format: "yyyy-mm-dd", language: "zh-cn", "autoclose": true, pickerPosition: "top"});
+        $("input[name='data.checkDate']").datepicker({format: "yyyy-mm-dd", language: "zh-cn", "autoclose": true, pickerPosition: 'top'});
+        $("input[name='data.produceDate']").datepicker({format: "yyyy-mm-dd", language: "zh-cn", "autoclose": true, pickerPosition: 'top'});
+        $("input[name='data.sampleDate']").datepicker({format: "yyyy-mm-dd", language: "zh-cn", "autoclose": true, pickerPosition: 'top'});
+    })
+</script>

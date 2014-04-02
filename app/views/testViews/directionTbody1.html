@@ -1,18 +1,18 @@
 <tr>
     <td class="item-name">检验员#{if data!=null}<input type="hidden" name="data.id" value="${data.id}">#{/if}</td>
     <td colspan="2">
+        <input type="hidden" name="directionType" value="1">
         <input type="text" style="width: 48%" name="data.inspector" placeholder="检验员" value="${data!=null?data.inspector:''}"><input type="text" style="width: 50%" placeholder="检验日期" name="data.inspectDate" readonly value="${data!=null?data.inspectDate:''}">
     </td>
     <td class="item-name">校核员</td>
     <td colspan="2">
         <input type="text" style="width: 48%" name="data.checkStaff" placeholder="校核员" value="${data!=null?data.checkStaff:''}"><input type="text" style="width: 50%" placeholder="校核日期" name="data.checkDate" readonly value="${data!=null?data.checkDate:''}">
     </td>
-
 </tr>
 <tr>
     <th>样品名称</th>
     <td><input readonly type="text" value="${batch.product.productName}"/></td>
-    <th>样品编号</th>
+    <th>样品批次</th>
     <td><input readonly type="text" value="${batch.batchNo}"></td>
     <th>检验项目</th>
     <td><input type="hidden" name="itemId" value="${item.id}">
@@ -22,11 +22,19 @@
 </tr>
 <tr>
     <th>检验方法</th>
-    <td><input type="text" name="data.method" value="${data!=null?data.method:''}"></td>
-    <th>样品状态</th>
-    <td><input type="text" name="data.sampleStat" value="${data!=null?data.sampleStat:''}"></td>
+    <td><input type="text" name="data.inspectMethod" value="${data!=null?data.inspectMethod:null}"></td>
+    <th>标注净含量</th>
+    <td><input type="text" name="data.callOutContent" value="${data!=null?data.callOutContent:''}"></td>
     <th>检验类别</th>
     <td><input type="text" name="data.type" value="${data!=null?data.type:''}"></td>
+</tr>
+<tr>
+    <th>批量数</th>
+    <td><input type="text" name="data.method" value="${data!=null?data.batchCount:''}"></td>
+    <th>抽样数量</th>
+    <td><input type="text" name="data.sampleCount" value="${data!=null?data.sampleCount:''}"></td>
+    <th>抽样方法</th>
+    <td><input type="text" name="data.sampleMethod" value="${data!=null?data.sampleMethod:''}"></td>
 </tr>
 <tr>
     <th>仪器名称</th>
@@ -50,57 +58,34 @@
 }
 }%
 <tr>
-    <th colspan="2">项目\平行</th>
-    <th colspan="2">平行样1</th>
-    <th colspan="2">平行样2</th>
-</tr>
-#{set si:0/}
-#{list item.directionItems,as:'di'}
-<tr>
-    <td colspan="2" rowspan="${di.resultSize}" class="item-name">${di.name}<span class="item-unit">${di.unit}</span>
-        <input type="hidden"  name="data.samplesArray[${si}].item.id" value="${di.id}">
+    <td colspan="6" style="padding: 1px">
+        <table border="1">
+            <tbody>
+            <tr>
+                <th class="netContent">样品编号</th><th>总重</th><th>皮重</th><th>净含量</th><th>偏差</th>
+                <th class="netContent">样品编号</th><th>总重</th><th>皮重</th><th>净含量</th><th>偏差</th>
+            </tr>
+            #{set n:1/}
+            %{ for(int i in 0..9){ }%
+              <tr>
+                  <td class="netContent">${n++}  <input type="hidden" name="data.samplesT[${n-2}].number" value="${n-1}"></td><td><input type="text" name="data.samplesT[${n-2}].totalWeight" value="${data!=null?data.samples[n-2].totalWeight:''}"></td><td><input type="text" name="data.samplesT[${n-2}].tare" value="${data!=null?data.samples[n-2].tare:''}"></td><td><input type="text" name="data.samplesT[${n-2}].netContent" value="${data!=null?data.samples[n-2].netContent:''}"></td><td><input type="text" name="data.samplesT[${n-2}].deviation" value="${data!=null?data.samples[n-2].deviation:''}"></td>
+                  <td class="netContent">${n++}  <input type="hidden" name="data.samplesT[${n-2}].number" value="${n-1}"></td><td><input type="text" name="data.samplesT[${n-2}].totalWeight" value="${data!=null?data.samples[n-2].totalWeight:''}"></td><td><input type="text" name="data.samplesT[${n-2}].tare" value="${data!=null?data.samples[n-2].tare:''}"></td><td><input type="text" name="data.samplesT[${n-2}].netContent" value="${data!=null?data.samples[n-2].netContent:''}"></td><td><input type="text" name="data.samplesT[${n-2}].deviation" value="${data!=null?data.samples[n-2].deviation:''}"></td>
+              </tr>
+            %{ } }%
+            </tbody>
+        </table>
     </td>
-    #{set sample:data!=null?data.getSample(di.id):null/}
-    #{if di.splitSample==1}
-        <td colspan="4"><input type="text" value="${di.value}" readonly></td>
-    #{/if}
-    #{else}
-        <td colspan="2"><input type="text" name="data.samplesArray[${si}].sample1" value="${sample!=null?sample[0].sample1:''}"></td>
-        <td colspan="2"><input type="text" name="data.samplesArray[${si}].sample2" value="${sample!=null?sample[0].sample2:''}"></td>
-    #{/else}
-</tr>
-#{if di.resultSize>1}
-%{for(i in 1 .. (di.resultSize-1)) {
-   si++;
-}%
-<tr>
-    <input type="hidden"  name="data.samplesArray[${si}].item.id" value="${di.id}">
-    #{if di.splitSample==1}
-    <td colspan="4"><input type="text" value="${di.value}" readonly> </td>
-    #{/if}
-    #{else}
-    <td colspan="2"><input type="text" name="data.samplesArray[${si}].sample1" value="${sample!=null?sample[i].sample1:''}"></td>
-    <td colspan="2"><input type="text" name="data.samplesArray[${si}].sample2" value="${sample!=null?sample[i].sample2:''}"></td>
-    #{/else}
-</tr>
-%{ } }%
-#{/if}
-%{ si++;}%
-#{/list}
-<tr>
-    <td colspan="2" class="item-name">计算公式</td>
-    <td colspan="4"><input type="text" name="data.formula" value="${data!=null?data.formula:''}"></td>
 </tr>
 <tr>
-    <td colspan="2" class="item-name">结果值</td>
-    <td colspan="4"><input type="text" name="data.resultValue" value="${data!=null?data.resultValue:''}"></td>
+    <td colspan="2" class="item-name">超出偏差件数</td>
+    <td colspan="4"><input type="text" name="data.beyondDeviationSize" value="${data!=null?data.beyondDeviationSize:''}"></td>
 </tr>
 <tr>
-    <td colspan="2" class="item-name">平均值</td>
-    <td colspan="4"><input type="text" name="data.averageValue" value="${data!=null?data.averageValue:''}"></td>
+    <td colspan="2" class="item-name">平均偏差</td>
+    <td colspan="4"><input type="text" name="data.averageDeviation" value="${data!=null?data.averageDeviation:''}"></td>
 </tr>
 <tr>
-    <td colspan="2" class="item-name">样品执行标准要求</td>
+    <td colspan="2" class="item-name">执行标准及要求</td>
     <td colspan="4"><input type="text" name="data.standard" value="${data!=null?data.standard:''}"></td>
 </tr>
 <tr>

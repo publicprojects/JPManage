@@ -3,6 +3,7 @@ package models.quality;
 import play.db.jpa.Model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,6 +52,19 @@ public class Directions extends Model{
     @Transient
     public DirectionItemSample[] samplesArray;
 
+    public List<DirectionItemSample> getSample(Long directionItemId){
+        List<DirectionItemSample> sam=new ArrayList<DirectionItemSample>();
+        if(this.samples!=null){
+            for(DirectionItemSample s:this.samples){
+                if(s.item.id==directionItemId){
+                    sam.add(s);
+                }
+            }
+            return sam;
+        }
+        return null;
+    }
+
     /**计算公式*/
     public String formula;
 
@@ -72,6 +86,12 @@ public class Directions extends Model{
     /**检验日期*/
     public Date inspectDate;
 
+    /**检验员*/
+    public String inspector;
+
     /**校核日期*/
     public Date checkDate;
+
+    /**校核员*/
+    public String checkStaff;
 }

@@ -24,8 +24,4 @@ public class InspectionItemResult extends Model {
     /**单项结论*/
     @Column(name="single_conclusions")
     public String singleConclusions;
-
-    /**原始记录*/
-    @OneToOne
-    public Directions directions;
 }
