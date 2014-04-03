@@ -74,10 +74,17 @@
         <i class="icon-edit" style="color: #236aa1"></i> 出厂检验报告</h3>
 </div>
 <div class="modal-body">
+    <form method="post" class="report-form">
     <table border="1">
         <thead>
         <tr>
-            <th colspan="7">青岛胶平食品有限公司产品出厂检验报告</th>
+            <th colspan="7">青岛胶平食品有限公司产品出厂检验报告(${batch.product.productName})</th>
+            #{if data!=null}
+                <input type="hidden" name="data.id" value="${data.id}">
+            #{/if}
+            #{else }
+                <input type="hidden" name="data.batch.id" value="${batch.id}">
+            #{/else}
         </tr>
         </thead>
         <tbody>
@@ -85,36 +92,35 @@
             <th>样品名称</th>
             <td colspan="2"><input readonly type="text" value="${batch.product.productName}"/></td>
             <th>生产日期</th>
-            <td style="width: 150px"><input type="text" name="" readonly></td>
+            <td style="width: 150px"><input type="text" value="${batch.brandDate}" readonly></td>
             <th>样品批号</th>
             <td><input readonly type="text" value="${batch.batchNo}"></td>
         </tr>
         <tr>
             <th rowspan="2">使用主要仪器设备</th>
-            <th>名称</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th style="width: 60px">名称</th>
+            <td>#{if data!=null}<input type="hidden" name="instruments[0].id" value="${data.instruments[0].id}">#{/if}<input type="text" name="instruments[0].name" value="${data!=null?data.instruments[0].name:null}"></td>
+            <td>#{if data!=null}<input type="hidden" name="instruments[1].id" value="${data.instruments[1].id}">#{/if}<input type="text" name="instruments[1].name" value="${data!=null?data.instruments[1].name:null}"></td>
+            <td>#{if data!=null}<input type="hidden" name="instruments[2].id" value="${data.instruments[2].id}">#{/if}<input type="text" name="instruments[2].name" value="${data!=null?data.instruments[2].name:null}"></td>
+            <td>#{if data!=null}<input type="hidden" name="instruments[3].id" value="${data.instruments[3].id}">#{/if}<input type="text" name="instruments[3].name" value="${data!=null?data.instruments[3].name:null}"></td>
+            <td>#{if data!=null}<input type="hidden" name="instruments[4].id" value="${data.instruments[4].id}">#{/if}<input type="text" name="instruments[4].name" value="${data!=null?data.instruments[4].name:null}"></td>
         </tr>
         <tr>
             <th>精度</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            </td>
-            <td></td>
-            <td></td>
+            <td><input type="text" name="instruments[0].accuracy" value="${data!=null?data.instruments[0].accuracy:null}"></td>
+            <td><input type="text" name="instruments[1].accuracy" value="${data!=null?data.instruments[1].accuracy:null}"></td>
+            <td><input type="text" name="instruments[2].accuracy" value="${data!=null?data.instruments[2].accuracy:null}"></td>
+            <td><input type="text" name="instruments[3].accuracy" value="${data!=null?data.instruments[3].accuracy:null}"></td>
+            <td><input type="text" name="instruments[4].accuracy" value="${data!=null?data.instruments[4].accuracy:null}"></td>
         </tr>
         <tr>
             <th>执行标准</th>
-            <td colspan="6"></td>
+            <td colspan="6"><input type="text" name="data.instrumentsT[0].accuracy" value="${data!=null?data.instruments[0].accuracy:null}"></td>
         </tr>
         <tr>
             <th colspan="7">检验结果</th>
         </tr>
-        <tr>
+        <tr class="inspection-items-title">
             <th>序号</th>
             <th>检验项目</th>
             <th>单位</th>
@@ -122,92 +128,47 @@
             <th>检验结果</th>
             <th>单项结论</th>
         </tr>
+        #{if data!=null}
+            #{list data.itemResults,as:'ir'}
+            <tr id='${ir.itemStandard.id}' class='standard-one'><td class='standard-one-no'>${ir_index}</td><td>${ir.itemStandard.inspectionItem.name}</td><td>${ir.itemStandard.inspectionItem.unit}</td><td colspan='2'>${ir.itemStandard.standard}</td><td><input type='hidden' class='r-id' name='result[${ir_index-1}].id' value='${ir.id}'><input type='text' name='result[0].inspectionResults' class='conclusions' value='"+$(this).parent().attr("data-r")+"'></td><td><input type='text' name='result[0].singleConclusions' value='"+$(this).parent().attr("data-s")+"' class='single'></td></tr>
+            #{/list}
+        #{/if}
         <tr>
-            <td>1</td>
-            <td>感官</td>
-            <td></td>
-            <td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td>
-            <td></td>
-            <td></td>
+            <th>检验结论</th>
+            <td colspan="4"><input type="text" name="data.inspectionConclusions" value="${data!=null?data.inspectionConclusions:null}"></td>
+            <th>日期</th>
+            <td><input readonly type="text" name="data.inspectionDate" value="${data!=null?data.inspectionDate:null}"></td>
         </tr>
         <tr>
-            <td>2</td>
-            <td>水分</td>
-            <td>g/100g</td>
-            <td colspan="2"><=20</td>
-            <td></td>
-            <td></td>
+            <th>备注</th>
+            <td colspan="6"><input type="text" name="data.remark" value="${data!=null?data.remark:null}"></td>
         </tr>
         <tr>
-            <td>1</td>
-            <td>感官</td>
-            <td></td>
-            <td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>水分</td>
-            <td>g/100g</td>
-            <td colspan="2"><=20</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>感官</td>
-            <td></td>
-            <td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>水分</td>
-            <td>g/100g</td>
-            <td colspan="2"><=20</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>感官</td>
-            <td></td>
-            <td colspan="2">色泽均匀、显淡黄色，片状整齐、口味纯正、无杂质</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>水分</td>
-            <td>g/100g</td>
-            <td colspan="2"><=20</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>检验结论</td>
-            <td colspan="5"></td>
-            <td>日期</td>
-        </tr>
-        <tr>
-            <td>备注</td>
-            <td colspan="6"></td>
-        </tr>
-        <tr>
-            <td>检验员</td>
-            <td colspan="2"></td>
-            <td>校核员</td>
-            <td colspan="3"></td>
+            <th>检验员</th>
+            <td colspan="3"><input type="text" name="data.inspector" value="${data!=null?data.inspector:null}"></td>
+            <th>校核员</th>
+            <td colspan="2"><input type="text" name="data.checkStaff" value="${data!=null?data.checkStaff:null}"></td>
         </tr>
         </tbody>
     </table>
+        </form>
 </div>
 <div class="modal-footer">
     <span class="inspection-items">
         #{list standards,as:'s'}
-         <label><input type="checkbox" value="${s.id}"> ${s.inspectionItem.name}</label>
+            %{
+               if(data!=null){
+                  int l=data.itemResults.size();
+                  models.quality.InspectionItemResult r=null;
+                  loop:for(int i in 0..l){
+                      if(data.itemResults.get(i).itemStandard.id==s.id){
+                               r=data.itemResults.get(i);
+                               break loop;
+                      }
+                  }
+               }
+            }%
+         <label data-id="${data!=null?r.id:null}" data-standard="${s.standard}" data-unit="${s.inspectionItem.unit}" data-s="${data!=null?r.singleConclusions:null}" data-r="${data!=null?r.inspectionResults:null}"><input type="checkbox" value="${s.id}"> ${s.inspectionItem.name}</label>
         #{/list}
     </span>
     <span class="btn" id="cancel">取消</span>
@@ -216,6 +177,41 @@
 <script>
     $(function () {
         $(".modal").addClass("direction");
+        $("input[name='data.inspectionDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true,pickerPosition:"top"});
+        $("input[name='data.inspectionDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true,pickerPosition:"top"});
+        $(".inspection-items input[type=checkbox]").click(function(){
+            var id_=$(this).val();
+            if($(this).prop("checked")){
+                if($("#"+id_).length==0){
+                    $("tr.standard-one").each(function(i){
+                        $(this).find(".standard-one-no").html(i+2);
+                        $(this).find(".conclusions").attr("name","result["+(i+1)+"].inspectionResults");
+                        $(this).find(".r-id").attr("name","result["+(i+1)+"].id");
+                        $(this).find(".single").attr("name","result["+(i+1)+"].singleConclusions");
+                    });
+                    $("<tr id='"+$(this).val()+"' class='standard-one'><td class='standard-one-no'>1</td><td>"+$(this).parent().text()+"</td><td>"+$(this).parent().attr("data-unit")+"</td><td colspan='2'>"+$(this).parent().attr("data-standard")+"</td><td><input type='hidden' class='r-id' name='result[0].id' value='"+$(this).parent().attr("data-id")+"'><input type='text' name='result[0].inspectionResults' class='conclusions' value='"+$(this).parent().attr("data-r")+"'></td><td><input type='text' name='result[0].singleConclusions' value='"+$(this).parent().attr("data-s")+"' class='single'></td></tr>").insertAfter($(".inspection-items-title"));
+                }
+            }else{
+                $("#"+id_).remove();
+                $("tr.standard-one").each(function(i){
+                    $(this).find(".standard-one-no").html(i+1);
+                    $(this).find(".conclusions").attr("name","result["+(i)+"].inspectionResults");
+                    $(this).find(".r-id").attr("name","result["+(i)+"].id");
+                    $(this).find(".single").attr("name","result["+(i)+"].singleConclusions");
+                });
+            }
+        });
+        $("#ok").click(function(){
+            $(".report-form").ajaxSubmit({
+                url:"/manageQuality/inspection/saveReport",
+                dataType:"json",
+                success:function(res){
+                    modalJs.response(res,'报告记录保存完成');
+                },error:function(){
+                    alert("保存失败");
+                }
+            })
+        });
     });
 </script>
 </body>

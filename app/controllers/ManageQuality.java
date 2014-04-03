@@ -1,6 +1,8 @@
 package controllers;
 
 import models.Batchs;
+import models.Product;
+import models.ProductsTransits;
 import models.quality.*;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
@@ -23,7 +25,8 @@ public class ManageQuality extends Application {
     public static void inspection(Long batchId){
         Batchs batch=Batchs.findById(batchId);
         List<InspectionItemStandard> standards=batch.product.standards;
-        render("/testViews/inspection.html",standards,batch);
+        InspectionReport data=InspectionReport.find("batch_id=?",batchId).first();
+        render("/testViews/inspection.html",standards,batch,data);
     }
 
     public static void tbody(Long itemId,Long batchId){
@@ -198,5 +201,21 @@ public class ManageQuality extends Application {
             return new JsonResponse(-1,"无数据可保存！");
         }
         return new JsonResponse(0,"["+common.inspectionItemResult.itemStandard.inspectionItem.name+"]原始记录保存成功。");
+    }
+
+    public static void saveInspectionReport(InspectionReport data,List<InspectionItemResult> result,List<InspectionInstrument> instruments){
+        data.save();
+        for(InspectionItemResult re:result){
+            re.report=data;
+            JPA.em().merge(re).save();
+        }
+        for(InspectionInstrument ins:instruments){
+            ins.report=data;
+            JPA.em().merge(ins).save();
+        }
+        ProductsTransits pt= ProductsTransits.find("batch_id=?",data.batch.id).first();
+        pt.testState=1;
+        pt.save();
+        renderJSON(new JsonResponse(0, "报告保存成功！"));
     }
 }

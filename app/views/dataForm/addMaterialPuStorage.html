@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        <i class="icon-edit" style="color: #236aa1"></i>  原料入库</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" method="post">
+    #{if data!=null}
+        <input type="hidden" name="data.id" value="${data.id}">
+    #{/if}
+        <div class="control-group">
+            <label class="control-label">原料</label>
+            <div class="controls">
+                <select name="data.material.id" class="span3">
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">入库量</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.materiaCount" >
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">货车编号</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.trainNo" >
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">原料批次</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.materiaBatch" >
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">单位</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.unit" >
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">入库日期</label>
+            <div class="controls">
+                <input placeholder="入库日期" type="text" readonly name="data.createDate" class="span3"/>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">备注</label>
+            <div class="controls">
+                <textarea name="data.remark" class="span3" style="resize: none;height: 60px"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+        $("input[name='data.expenseDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true,pickerPosition:"top"});
+        getSuppler();
+        function getSuppler(){
+            $.ajax({
+                url:"/manageCenter/queryData/noPage/18",
+                dataType:"json",
+                type:"post",
+                success:function(res){
+                    if(res){
+                        $("select[name='data.supplier.id']").html("");
+                        for(var i in res){
+                            $("select[name='data.supplier.id']").append("<option value='"+res[i].id+"'>"+res[i].supplierName+"</option>");
+                        }
+                    }
+                },
+                error:function(){
+                    alert("获取供应商信息失败！");
+                }
+            })
+        }
+        getMaterial();
+        function getMaterial(){
+            $.ajax({
+                url:"/manageCenter/queryData/noPage/7",
+                dataType:"json",
+                type:"post",
+                success:function(res){
+                    if(res){
+                        $("select[name='data.material.id']").html("");
+                        for(var i in res){
+                            $("select[name='data.material.id']").append("<option value='"+res[i].id+"'>"+res[i].name+"</option>");
+                        }
+                    }
+                },
+                error:function(){
+                    alert("获取生产通知失败！");
+                }
+            })
+        }
+        $("#ok").click(function(){
+            var con=true;
+            $(".form-horizontal input").each(function(){
+                if($(this).val().isEmpty()){
+                    con=false;
+                    $(this).focus();
+                    return false;
+                }
+            });
+            if(con){
+                var url="${data==null?'/manageCenter/createData/15':''}";
+                $(".form-horizontal").ajaxSubmit({
+                    url:url,
+                    dataType:"json",
+                    success:function(res){
+                        modalJs.response(res,'',function(){
+                            dataTable.loadData();
+                        });
+                    },error:function(e){
+                        alert("error:"+e);
+                        modalJs.close();
+                    }
+                });
+            }
+        }) ;
+    });
+</script>
+</body>
+</html>

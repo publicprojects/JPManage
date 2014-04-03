@@ -34,6 +34,7 @@ GET     /manageQuality/direction/tbody/{itemId}/{batchId}      ManageQuality.tbo
 POST    /manageQuality/direction/save                ManageQuality.saveDirection
 
 GET     /manageQuality/inspection/{batchId}           ManageQuality.inspection
+POST    /manageQuality/inspection/saveReport          ManageQuality.saveInspectionReport
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

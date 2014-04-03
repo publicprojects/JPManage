@@ -19,6 +19,10 @@ public class ProduceNotice{
 		return ProduceNotices.getProduceNotices(page,current,key,val);
 	}
 
+    public static List<ProduceNotices> queryData(String[] key,String[] val){
+        return  ProduceNotices.getProduceNotices(key,val);
+    }
+
 	public static JsonResponse updateData(ProduceNotices data) {
 		return (ProduceNotices.updateProductNotice(data));
 	}

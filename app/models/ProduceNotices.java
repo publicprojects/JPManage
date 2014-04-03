@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.persistence.*;
 
+import models.storage.MaterialExpense;
+import models.storage.MaterialExpenses;
 import play.db.jpa.Model;
 import utils.JSONBuilder;
 import utils.JsonResponse;
@@ -27,6 +29,9 @@ public class ProduceNotices extends Model {
 	@Column(name = "is_handle")
 	public Integer isHandle=-1;
 
+    @OneToMany(mappedBy = "proNotice")
+    public List<MaterialExpenses> materialExpenseses;
+
 	public static List<ProduceNotices> getProduceNotices(Pagination page, int current, String[] key, String[] val) {
 		String keys = ManageUtils.genKeys(key, true);
 		Object[] val_ = ManageUtils.genVals(val);
@@ -45,6 +50,18 @@ public class ProduceNotices extends Model {
 		}
 		return list;
 	}
+
+    public static List<ProduceNotices> getProduceNotices(String[] key, String[] val) {
+        String keys = ManageUtils.genKeys(key, true);
+        Object[] val_ = ManageUtils.genVals(val);
+        List<ProduceNotices> list;
+        if (key == null) {
+            list = ProduceNotices.findAll();
+        } else {
+            list = ProduceNotices.find(keys, val_).fetch();
+        }
+        return list;
+    }
 
 	public static JsonResponse addProduceNotice(ProduceNotices data) {
 		ProduceNotices proNotice = ProduceNotices.find("batch_id=?", data.batch.id).first();

@@ -1,15 +1,15 @@
 package models;
 
 import controllers.ManageUtils;
+import models.storage.MaterialExpenses;
+import models.storage.MaterialPurchases;
+import models.storage.Suppliers;
 import play.db.jpa.Model;
 import utils.DateUtils;
 import utils.JsonResponse;
 import utils.Pagination;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +25,15 @@ public class Materials extends Model{
     public String priceUnit;
     @Column(name="create_date")
     public Date createAt;
-    @Column(name="material_supppler")
-    public String suppler;
+    @ManyToMany(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST})
+    @JoinTable(name = "t_materials_supplers",inverseJoinColumns =@JoinColumn(name="suppler_id"), joinColumns = @JoinColumn(name = "material_id"))
+    public List<Suppliers> supplers;
+
+    @OneToMany(mappedBy = "material")
+    public List<MaterialPurchases> materialPurchasese;
+
+    @OneToMany(mappedBy = "material")
+    public List<MaterialExpenses> materialExpensese;
 
     /**
      * 添加查询原料信息
