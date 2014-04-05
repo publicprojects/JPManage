@@ -52,8 +52,8 @@ public class AccessoriesStocks extends Model {
 	}
 
 	public static JsonResponse updateStockFromPurchase(AccessoriesPurchases data) {
-		AccessoriesStocks as = AccessoriesStocks.find("accessories=?",
-				data.accessories).first();
+		AccessoriesStocks as = AccessoriesStocks.find("accessories_id=?",
+				data.accessories.id).first();
 		if (null == as) {
 			AccessoriesStocks a = new AccessoriesStocks();
 			a.accessories = data.accessories;
@@ -63,23 +63,23 @@ public class AccessoriesStocks extends Model {
 			as.accessoriesStock = as.accessoriesStock + data.accessriesCount;
 			as.save();
 		}
-		return new JsonResponse(0, "[" + data.accessories.accessoriesName
-				+ "]库存量已成功更新");
+		return new JsonResponse(0, "已成功更新[" + data.accessories.accessoriesName
+				+ "]库存量。");
 	}
 
 	public static JsonResponse updateStockFromExpense(AccessoriesExpenses data) {
-		AccessoriesStocks ms = AccessoriesStocks.find("accessories=?",
-				data.accessories).first();
+		AccessoriesStocks ms = AccessoriesStocks.find("accessories_id=?",
+				data.accessories.id).first();
 		if (null == ms) {
-			return new JsonResponse(-1, "支出失败！");
+			return new JsonResponse(-1, "库存中不存在辅料["+data.accessories.accessoriesName+"]，支出失败！");
 		} else {
 			if (ms.accessoriesStock < data.expenseCount) {
 				return new JsonResponse(-1, " 库存量少于您所请求支出的数量！");
 			} else {
 				ms.accessoriesStock = ms.accessoriesStock - data.expenseCount;
 				ms.save();
-				return new JsonResponse(0, "["
-						+ data.accessories.accessoriesName + "]库存量已成功更新");
+				return new JsonResponse(0, "已成功更新["
+						+ data.accessories.accessoriesName + "]库存量。");
 			}
 		}
 	}

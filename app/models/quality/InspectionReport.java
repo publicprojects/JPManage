@@ -26,10 +26,11 @@ public class InspectionReport extends Model {
     @Transient
     public List<InspectionInstrument> instrumentsT;
     /**执行标准*/
-    @ManyToMany
+    @ManyToMany(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST})
+    @JoinTable(name = "t_inspection_reports_standards",inverseJoinColumns =@JoinColumn(name="standard_id"), joinColumns = @JoinColumn(name = "report_id"))
     public List<InspectionStandard> standards;
     /**检验结果*/
-    @OneToMany(mappedBy = "report",cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "report",cascade ={CascadeType.REFRESH})
     public List<InspectionItemResult> itemResults;
     /**检验结论*/
     @Column(name="conclusions")
@@ -46,4 +47,15 @@ public class InspectionReport extends Model {
     /**备注*/
     @Column(name="remark")
     public String remark;
+
+    public InspectionInstrument getInstrument(int index){
+        if(this.instruments!=null&&this.instruments.size()>=(index+1)){
+            try{
+                return this.instruments.get(index);
+            }catch (Exception e){
+                return null;
+            }
+        }
+        return null;
+    }
 }

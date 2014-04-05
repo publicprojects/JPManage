@@ -8,4 +8,11 @@ public class JsonResponse {
 		responseCode=code;
 		response=res;
 	}
+
+    public JsonResponse add(JsonResponse jr){
+        if(jr!=null){
+            this.response+=jr.response;
+        }
+        return this;
+    }
 }

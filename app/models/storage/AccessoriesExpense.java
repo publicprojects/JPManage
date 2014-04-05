@@ -23,8 +23,11 @@ public class AccessoriesExpense {
 		JsonResponse response = null;
 		String validateResult = validateForm(data);
 		if (null == validateResult) {
-			AccessoriesExpenses.addAccessoriesExpense(data);
-			AccessoriesStocks.updateStockFromExpense(data);
+            response=AccessoriesStocks.updateStockFromExpense(data);
+            if(response.responseCode==-1){
+                return response;
+            }
+			response.add(AccessoriesExpenses.addAccessoriesExpense(data));
 		} else {
 			response = new JsonResponse(-1, validateResult);
 		}

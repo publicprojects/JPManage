@@ -3,6 +3,7 @@ package models;
 import controllers.ManageUtils;
 import models.storage.MaterialExpenses;
 import models.storage.MaterialPurchases;
+import models.storage.MaterialStocks;
 import models.storage.Suppliers;
 import play.db.jpa.Model;
 import utils.DateUtils;
@@ -25,9 +26,8 @@ public class Materials extends Model{
     public String priceUnit;
     @Column(name="create_date")
     public Date createAt;
-    @ManyToMany(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST})
-    @JoinTable(name = "t_materials_supplers",inverseJoinColumns =@JoinColumn(name="suppler_id"), joinColumns = @JoinColumn(name = "material_id"))
-    public List<Suppliers> supplers;
+    @ManyToOne
+    public Suppliers suppler;
 
     @OneToMany(mappedBy = "material")
     public List<MaterialPurchases> materialPurchasese;
@@ -82,6 +82,10 @@ public class Materials extends Model{
         }
         data.createAt= DateUtils.getNowDate();
         data.save();
+        MaterialStocks ms=new MaterialStocks();
+        ms.material=data;
+        ms.materialStock=0;
+        ms.save();
         return new JsonResponse(0, "原料[" + data.name + "]已成功添加。");
     }
 

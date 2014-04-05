@@ -73,7 +73,7 @@ public class MaterialExpenses extends Model {
 
 	public static JsonResponse addMaterialExpenses(MaterialExpenses data) {
 		data.save();
-		return new JsonResponse(0, "[" + data.material + "]的原料 支出记录已成功添加");
+		return new JsonResponse(0, "已成功添加[" + data.material.name + "]的原料 支出记录。");
 	}
 
 }

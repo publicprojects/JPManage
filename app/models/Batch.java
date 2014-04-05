@@ -1,7 +1,5 @@
 package models;
 
-import controllers.Application;
-import models.Batchs;
 import utils.Pagination;
 
 import java.util.List;

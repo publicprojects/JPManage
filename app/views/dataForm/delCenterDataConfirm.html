@@ -28,17 +28,26 @@
         确定删除 <b>${data.produceDate}</b> 的生产[<b>${data.batch.product.productName}</b>]的日报记录？
 #{/elseif}
     #{elseif type==11}
-            确定删除原始记录检验项[ <b>${data.name}</b> ]
+            确定删除原始记录检验项[ <b>${data.name}</b> ]？
     #{/elseif}
     #{elseif type==12}
-        确定删除检验标准[ <b>${data.name}</b> ]
+        确定删除检验标准[ <b>${data.name}</b> ]？
     #{/elseif}
 #{elseif type==13}
-    确定删除出厂检验项[ <b>${data.name}</b> ]
+    确定删除出厂检验项[ <b>${data.name}</b> ]？
 #{/elseif}
 #{elseif type==14}
-    确定删除出厂检验项[ <b>${data.inspectionItem.name}</b> ]的标准要求[ <b>${data.standard}</b> ]
+    确定删除出厂检验项[ <b>${data.inspectionItem.name}</b> ]的标准要求[ <b>${data.standard}</b> ]？
 #{/elseif}
+    #{elseif type==16}
+              确定删除辅料[<b>${data.accessoriesName}</b>]？
+    #{/elseif}
+    #{elseif type==17}
+           确定删除辅料类型 [<b>${data.categoryName}</b>]？
+    #{/elseif}
+    #{elseif type==18}
+             确定删除供应商[<b>${data.supplierName}</b>]？
+    #{/elseif}
 </div>
 <div class="modal-footer">
     <span class="btn" id="cancel">取消</span>

@@ -78,7 +78,7 @@ public class MaterialPurchases extends Model {
 					+ "]批次的原料进货记录已经存在,请检查您的批次号是否正确");
 		}
 		data.save();
-		return new JsonResponse(0, "[" + data.materiaBatch + "]批次的原料进货记录已成功添加");
+		return new JsonResponse(0, "已成功添加[" + data.materiaBatch + "]批次的原料进货记录。");
 	}
 
 }

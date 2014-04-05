@@ -47,14 +47,14 @@ public class AccessoriesCategory {
 	}
 
 	public static JsonResponse deleteData(Long _id) {
-		return (Clients.deleteClient(_id));
+		return (AccessoriesCategorys.deleteIAccessoriesCategory(_id));
 	}
 
 	private static String validateForm(AccessoriesCategorys data) {
 		if (null == data) {
 			return "添加失败！";
 		}
-		if (null != data.categoryName)
+		if (null == data.categoryName)
 			return "分类名称不能为空！";
 
 		return null;

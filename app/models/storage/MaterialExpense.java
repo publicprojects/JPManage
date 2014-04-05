@@ -22,8 +22,11 @@ public class MaterialExpense {
 		JsonResponse response = null;
 		String validateResult = validateForm(data);
 		if (null == validateResult) {
-			MaterialExpenses.addMaterialExpenses(data);
-			MaterialStocks.updateStockFromExpense(data);
+            response=MaterialStocks.updateStockFromExpense(data);
+            if(response.responseCode==-1){
+                return  response;
+            }
+			response.add(MaterialExpenses.addMaterialExpenses(data));
 		} else {
 			response = new JsonResponse(-1, validateResult);
 		}

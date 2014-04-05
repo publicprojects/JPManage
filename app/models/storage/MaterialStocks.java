@@ -54,25 +54,24 @@ public class MaterialStocks extends Model {
 	}
 
 	public static JsonResponse updateStockFromPurchase(MaterialPurchases data) {
-		MaterialStocks ms = MaterialStocks.find("material=?", data.materia)
+		MaterialStocks ms = MaterialStocks.find("material_id=?", data.material.id)
 				.first();
 		if (null == ms) {
 			MaterialStocks m = new MaterialStocks();
-			m.material = data.materia;
+			m.material = data.material;
 			m.materialStock = data.materiaCount;
 			m.create();
 		} else {
 			ms.materialStock = ms.materialStock + data.materiaCount;
 			ms.save();
 		}
-		return new JsonResponse(0, "[" + data.materia.name + "]库存量已成功更新");
+		return new JsonResponse(0, "[" + data.material.name + "]库存量已成功更新");
 	}
 
 	public static JsonResponse updateStockFromExpense(MaterialExpenses data) {
-		MaterialStocks ms = MaterialStocks.find("material=?", data.material)
-				.first();
+		MaterialStocks ms = MaterialStocks.find("material_id=?", data.material.id).first();
 		if (null == ms) {
-			return new JsonResponse(-1, "支出失败！");
+			return new JsonResponse(-1, "库存中无原料["+data.material.name+"]，支出失败！");
 		} else {
 			if (ms.materialStock < data.expenseCount) {
 				return new JsonResponse(-1, " 库存量少于您所请求支出的数量！");

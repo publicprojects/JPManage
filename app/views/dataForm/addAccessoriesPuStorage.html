@@ -9,7 +9,7 @@
 <div class="modal-header">
     <button data-dismiss="modal" class="close" type="button"></button>
     <h3>
-        <i class="icon-edit" style="color: #236aa1"></i>  原料入库</h3>
+        <i class="icon-edit" style="color: #236aa1"></i>    辅料入库</h3>
 </div>
 <div class="modal-body">
     <form class="form-horizontal" method="post">
@@ -18,9 +18,9 @@
     #{/if}
         <input type="hidden" name="ep" value="1">
         <div class="control-group">
-            <label class="control-label">原料</label>
+            <label class="control-label">辅料</label>
             <div class="controls">
-                <select name="data.material.id" class="span3">
+                <select name="data.accessories.id" class="span3">
                 </select>
             </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="control-group">
             <label class="control-label">入库量/单位</label>
             <div class="controls">
-                <input type="text" class="span2" name="data.materiaCount" placeholder="入库量">
+                <input type="text" class="span2" name="data.accessriesCount" placeholder="入库量">
                 <input type="text" class="span1" name="data.unit" placeholder="单位">
             </div>
         </div>
@@ -45,9 +45,9 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label">原料批次</label>
+            <label class="control-label">辅料批次</label>
             <div class="controls">
-                <input type="text" class="span3" name="data.materiaBatch" >
+                <input type="text" class="span3" name="data.accessoriesBatch" >
             </div>
         </div>
         <div class="control-group">
@@ -76,7 +76,7 @@
             $.ajax({
                 url:"/manageCenter/queryData/noPage/18",
                 dataType:"json",
-                data:{"key[0]":"supplierType","val[0]":0},
+                data:{"key[0]":"supplierType","val[0]":1},
                 type:"post",
                 success:function(res){
                     if(res){
@@ -91,22 +91,22 @@
                 }
             })
         }
-        getMaterial();
-        function getMaterial(){
+        getAcc();
+        function getAcc(){
             $.ajax({
-                url:"/manageCenter/queryData/noPage/7",
+                url:"/manageCenter/queryData/noPage/16",
                 dataType:"json",
                 type:"post",
                 success:function(res){
                     if(res){
-                        $("select[name='data.material.id']").html("");
+                        $("select[name='data.accessories.id']").html("");
                         for(var i in res){
-                            $("select[name='data.material.id']").append("<option value='"+res[i].id+"'>"+res[i].name+"</option>");
+                            $("select[name='data.accessories.id']").append("<option value='"+res[i].id+"'>"+res[i].accessoriesName+"</option>");
                         }
                     }
                 },
                 error:function(){
-                    alert("获取生产通知失败！");
+                    alert("获取辅料信息失败！");
                 }
             })
         }
@@ -120,7 +120,7 @@
                 }
             });
             if(con){
-                var url="${data==null?'/manageCenter/createData/15':''}";
+                var url="${data==null?'/manageCenter/createData/19':''}";
                 if(!url){
                     return;
                 }

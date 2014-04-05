@@ -21,8 +21,11 @@ public class MaterialPurchase {
 		JsonResponse response = null;
 		String validateResult = validateForm(data);
 		if (null == validateResult) {
-			MaterialPurchases.addMateriaPurchases(data);
-			MaterialStocks.updateStockFromPurchase(data);
+			response=MaterialPurchases.addMateriaPurchases(data);
+            if(response.responseCode==-1){
+                return response;
+            }
+			response.add(MaterialStocks.updateStockFromPurchase(data));
 		} else {
 			response = new JsonResponse(-1, validateResult);
 		}
@@ -32,7 +35,7 @@ public class MaterialPurchase {
 	public static String validateForm(MaterialPurchases data) {
 		if (null == data)
 			return "添加失败";
-		if (null == data.materia)
+		if (null == data.material.name)
 			return "原料名称不能为空！";
 		if (null == data.supplier)
 			return "供货人不能为空！";

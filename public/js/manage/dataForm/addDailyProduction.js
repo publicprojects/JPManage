@@ -152,7 +152,7 @@ $(function(){
                         if(bno==null||bno=="null"){
                             continue;
                         }
-                        $("select.select-batch").append("<option value='"+data[i].id+"' "+(db&&db==data[i].id?"selected":"")+" >"+bno+"</option>");
+                        $("select.select-batch").append("<option value='"+data[i].id+"' "+(db&&db==data[i].id?"selected":"")+" >"+bno+"("+data[i].product.productName+")</option>");
                     }
                 }
             },

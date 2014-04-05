@@ -1,6 +1,10 @@
 <div class="tool-bar">
-    <span class="btn blue small" data-href="/map/dataForm/addMaterialExStorage/xhtml"><i class="icon-plus"></i>   新增出库记录</span>
-    <span class="btn blue small" data-href="/map/dataForm/addMaterialPuStorage/xhtml"><i class="icon-plus"></i>   新增入库记录</span>
+    <span style="display: none" class="btn blue small ex" data-href="/map/dataForm/addMaterialExStorage/xhtml"><i class="icon-plus"></i>   新增出库记录</span>
+    <span class="btn blue small pu" data-href="/map/dataForm/addMaterialPuStorage/xhtml"><i class="icon-plus"></i>   新增入库记录</span>
+    <div class="btn-group expu" data-toggle="buttons-radio">
+        <button type="button" data-type="pu" class="btn purple small active">入库记录</button>
+        <button type="button" data-type="ex" class="btn purple small">出库记录</button>
+    </div>
 </div>
 <div class="dataTable-container">
 </div>

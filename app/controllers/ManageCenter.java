@@ -30,6 +30,8 @@ public class ManageCenter extends Application {
     final static int TYPE_ACCESSORIES = 16;//辅料
     final static int TYPE_ACCESSORIES_CAT = 17;//辅料分类
     final static int TYPE_SUPPLER = 18;//供应商
+    final static int TYPE_ACCESSORIES_STORAGE=19;//辅料库管
+    final static int TYPE_PRODUCT_STORAGE=20;//产品库管
 
     public static void queryData(int type, int current, String[] key, String[] val) {
         Pagination page = Pagination.getInstance();
@@ -75,6 +77,31 @@ public class ManageCenter extends Application {
                     renderJSON(JSONBuilder.paginationList(page, MaterialPurchase.queryData(page, current, key, val), List.class));
                 }
                 break;
+            case TYPE_SUPPLER:
+                renderJSON(JSONBuilder.paginationList(page,Supplier.queryData(page,current,key,val),List.class));
+                break;
+            case TYPE_ACCESSORIES:
+                renderJSON(JSONBuilder.paginationList(page,Accessories.queryData(page,current,key,val),List.class));
+                break;
+            case TYPE_ACCESSORIES_CAT:
+                renderJSON(JSONBuilder.paginationList(page,AccessoriesCategory.queryData(page,current,key,val)));
+                break;
+            case TYPE_ACCESSORIES_STORAGE:
+                int aep = params.get("ep", Integer.class);
+                if (aep == 0) {
+                    renderJSON(JSONBuilder.paginationList(page, AccessoriesExpense.queryData(page, current, key, val), new String[]{"notice"}, List.class));
+                } else if (aep == 1) {
+                    renderJSON(JSONBuilder.paginationList(page, AccessoriesPurchase.queryData(page, current, key, val), List.class));
+                }
+                break;
+            case TYPE_PRODUCT_STORAGE:
+                int pep = params.get("ep", Integer.class);
+                if (pep == 0) {
+                    renderJSON(JSONBuilder.paginationList(page, ProductExpense.queryData(page, current, key, val), new String[]{"produceRecord", "order", "notice"}, List.class));
+                } else if (pep == 1) {
+                    renderJSON(JSONBuilder.paginationList(page, ProductPurchase.queryData(page, current, key, val), new String[]{"produceRecord", "order", "notice"}, List.class));
+                }
+                break;
         }
     }
 
@@ -87,7 +114,7 @@ public class ManageCenter extends Application {
                 renderJSON(JSONBuilder.build(List.class).toJson(Client.queryData(key, val)));
                 break;
             case TYPE_MATERIAL:
-                renderJSON(Material.queryData(key, val));
+                renderJSON(JSONBuilder.build(List.class).toJson(Material.queryData(key, val)));
                 break;
             case TYPE_PRODUCE_BATCH:
                 renderJSON(JSONBuilder.build("notice", "order", "produceRecord", "batchs").toJson(Batch.queryData(key, val)));
@@ -100,6 +127,15 @@ public class ManageCenter extends Application {
                 break;
             case TYPE_SUPPLER:
                 renderJSON(JSONBuilder.build(List.class).toJson(Supplier.queryData(key, val)));
+                break;
+            case TYPE_ACCESSORIES_CAT:
+                renderJSON(JSONBuilder.build(List.class).toJson(AccessoriesCategory.queryData(key,val)));
+                break;
+            case TYPE_ACCESSORIES:
+                renderJSON(JSONBuilder.build(List.class).toJson(Accessories.queryData(key,val)));
+                break;
+            case TYPE_PRODUCT_STORAGE:
+                renderJSON(JSONBuilder.build( new String[]{"produceRecord", "order", "notice"},List.class).toJson(ProductStock.queryData(key,val)));
                 break;
         }
     }
@@ -158,6 +194,38 @@ public class ManageCenter extends Application {
                     renderJSON(MaterialPurchase.addDate(mp));
                 }
                 break;
+            case TYPE_SUPPLER:
+                Suppliers sup=params.get("data",Suppliers.class);
+                renderJSON(Supplier.createData(sup));
+                break;
+            case TYPE_ACCESSORIES:
+                Accessoriess acc=params.get("data",Accessoriess.class);
+                renderJSON(Accessories.createData(acc));
+                break;
+            case TYPE_ACCESSORIES_CAT:
+                AccessoriesCategorys cat=params.get("data",AccessoriesCategorys.class);
+                renderJSON(AccessoriesCategory.createData(cat));
+                break;
+            case TYPE_ACCESSORIES_STORAGE:
+                int aep = params.get("ep", Integer.class);
+                if (aep == 0) {
+                    AccessoriesExpenses me = params.get("data", AccessoriesExpenses.class);
+                    renderJSON(AccessoriesExpense.addDate(me));
+                } else if (aep == 1) {
+                    AccessoriesPurchases mp = params.get("data", AccessoriesPurchases.class);
+                    renderJSON(AccessoriesPurchase.addDate(mp));
+                }
+                break;
+            case TYPE_PRODUCT_STORAGE:
+                int pep = params.get("ep", Integer.class);
+                if (pep == 0) {
+                    ProductExpenses me = params.get("data", ProductExpenses.class);
+                    renderJSON(ProductExpense.addDate(me));
+                } else if (pep == 1) {
+                    ProductPurchases mp = params.get("data", ProductPurchases.class);
+                    renderJSON(ProductPurchase.addDate(mp));
+                }
+                break;
         }
     }
 
@@ -200,6 +268,18 @@ public class ManageCenter extends Application {
                 data = InspectionItemStandard.findById(id);
                 render("/dataForm/addInspectionItemStandard.html", data);
                 break;
+            case TYPE_SUPPLER:
+                data = Suppliers.findById(id);
+                render("/dataForm/addSuplier.html",data);
+                break;
+            case TYPE_ACCESSORIES_CAT:
+                data=AccessoriesCategorys.findById(id);
+                render("/dataForm/addAccessoriesCat.html",data);
+                break;
+            case TYPE_ACCESSORIES:
+                data=Accessoriess.findById(id);
+                render("/dataForm/addAccessories.html",data);
+                break;
         }
     }
 
@@ -239,6 +319,14 @@ public class ManageCenter extends Application {
                 InspectionItemStandard iitemStandard = params.get("data", InspectionItemStandard.class);
                 renderJSON(iitemStandard.updateStandard(remove, add));
                 break;
+            case TYPE_ACCESSORIES_CAT:
+                AccessoriesCategorys cat=params.get("data",AccessoriesCategorys.class);
+                renderJSON(AccessoriesCategory.updateData(cat));
+                break;
+            case TYPE_ACCESSORIES:
+                Accessoriess acc=params.get("data",Accessoriess.class);
+                renderJSON(Accessories.updateData(acc));
+                break;
         }
     }
 
@@ -267,6 +355,15 @@ public class ManageCenter extends Application {
                 break;
             case TYPE_INSPECTION_ITEMS_STANDARD:
                 renderJSON(InspectionItemStandard.delData(id));
+                break;
+            case TYPE_ACCESSORIES_CAT:
+                renderJSON(AccessoriesCategory.deleteData(id));
+                break;
+            case TYPE_ACCESSORIES:
+                renderJSON(Accessories.deleteData(id));
+                break;
+            case TYPE_SUPPLER:
+                renderJSON(Supplier.deleteData(id));
                 break;
         }
     }
@@ -297,6 +394,15 @@ public class ManageCenter extends Application {
                 break;
             case TYPE_INSPECTION_ITEMS_STANDARD:
                 data = InspectionItemStandard.findById(id);
+                break;
+            case TYPE_ACCESSORIES_CAT:
+                data=AccessoriesCategorys.findById(id);
+                break;
+            case TYPE_ACCESSORIES:
+                data=Accessoriess.findById(id);
+                break;
+            case TYPE_SUPPLER:
+                data=Suppliers.findById(id);
                 break;
         }
         render("/dataForm/delCenterDataConfirm.html", data, type, id);

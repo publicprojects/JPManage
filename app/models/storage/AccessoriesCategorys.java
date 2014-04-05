@@ -1,12 +1,12 @@
 package models.storage;
 
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import play.db.jpa.Model;
+import utils.DateUtils;
 import utils.JsonResponse;
 import utils.Pagination;
 import controllers.ManageUtils;
@@ -23,6 +23,12 @@ public class AccessoriesCategorys extends Model {
 
 	@Column(name = "category_name")
 	public String categoryName;
+
+    @Column(name = "create_date")
+    public Date createAt;
+
+    @OneToMany(cascade = {CascadeType.REFRESH,CascadeType.MERGE},mappedBy = "category")
+    public List<Accessoriess> accessoriesses;
 
 	public static List<AccessoriesCategorys> getAccessoriesCategorys(
 			Pagination page, int current, String[] key, String[] val) {
@@ -68,14 +74,15 @@ public class AccessoriesCategorys extends Model {
 			return new JsonResponse(-1, "辅料类别[" + data.categoryName
 					+ "]已经存在，请重新输入");
 		}
+        data.createAt= DateUtils.getNowDate();
 		data.create();
 		return new JsonResponse(0, "辅料类别[" + data.categoryName + "]已成功添加");
 	}
 
 	public static JsonResponse updateAccessoriesCategory(
 			AccessoriesCategorys data) {
-		AccessoriesCategorys ac = AccessoriesCategorys.find("categoryName=?",
-				data.categoryName).first();
+		AccessoriesCategorys ac = AccessoriesCategorys.find("categoryName=? and id!=?",
+				data.categoryName,data.id).first();
 		if (ac != null) {
 			return new JsonResponse(-1, "辅料类别[<b>" + data.categoryName
 					+ "</b>]已经存在。");
@@ -89,7 +96,7 @@ public class AccessoriesCategorys extends Model {
 		try {
 			ac.delete();
 		} catch (Exception e) {
-			return new JsonResponse(-1, "辅料类别删除失败。");
+			return new JsonResponse(-1, "辅料类别删除失败，可能原因是存在该类别的辅料。");
 		}
 		return new JsonResponse(0, "辅料类别[" + ac.categoryName + "]已成功删除");
 	}

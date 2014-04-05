@@ -4,12 +4,16 @@ import models.Batchs;
 import models.Product;
 import models.ProductsTransits;
 import models.quality.*;
+import models.storage.ProductPurchases;
+import models.storage.ProductStock;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
+import utils.DateUtils;
 import utils.JsonResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -216,6 +220,17 @@ public class ManageQuality extends Application {
         ProductsTransits pt= ProductsTransits.find("batch_id=?",data.batch.id).first();
         pt.testState=1;
         pt.save();
-        renderJSON(new JsonResponse(0, "报告保存成功！"));
+        ProductPurchases pp=ProductPurchases.find("batch_id",data.batch.id).first();
+        if(pp==null){
+            pp=new ProductPurchases();
+            pp.batch=data.batch;
+            pp.productCount=pt.productCount;
+            pp.defectiveCount=pt.defectiveCount;
+            pp.remark=pt.remark;
+            pp.createDate= DateUtils.getNowUtilDate();
+            pp.save();
+            ProductStock.updateStockFromPurchase(pp);
+        }
+        renderJSON(new JsonResponse(0, "报告保存成功！该产品成功已入库。"));
     }
 }

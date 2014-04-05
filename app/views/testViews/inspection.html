@@ -99,23 +99,23 @@
         <tr>
             <th rowspan="2">使用主要仪器设备</th>
             <th style="width: 60px">名称</th>
-            <td>#{if data!=null}<input type="hidden" name="instruments[0].id" value="${data.instruments[0].id}">#{/if}<input type="text" name="instruments[0].name" value="${data!=null?data.instruments[0].name:null}"></td>
-            <td>#{if data!=null}<input type="hidden" name="instruments[1].id" value="${data.instruments[1].id}">#{/if}<input type="text" name="instruments[1].name" value="${data!=null?data.instruments[1].name:null}"></td>
-            <td>#{if data!=null}<input type="hidden" name="instruments[2].id" value="${data.instruments[2].id}">#{/if}<input type="text" name="instruments[2].name" value="${data!=null?data.instruments[2].name:null}"></td>
-            <td>#{if data!=null}<input type="hidden" name="instruments[3].id" value="${data.instruments[3].id}">#{/if}<input type="text" name="instruments[3].name" value="${data!=null?data.instruments[3].name:null}"></td>
-            <td>#{if data!=null}<input type="hidden" name="instruments[4].id" value="${data.instruments[4].id}">#{/if}<input type="text" name="instruments[4].name" value="${data!=null?data.instruments[4].name:null}"></td>
+            %{
+               for(int i in 0..4){
+            }%
+            <td>#{if data!=null}<input type="hidden" name="instruments[${i}].id" value="${data.getInstrument(i)!=nul?data.getInstrument(i).id:null}">#{/if}<input type="text" name="instruments[${i}].name" value="${data!=null&&data.getInstrument(i)!=nul?data.getInstrument(i).name:null}"></td>
+            %{}}%
         </tr>
         <tr>
             <th>精度</th>
-            <td><input type="text" name="instruments[0].accuracy" value="${data!=null?data.instruments[0].accuracy:null}"></td>
-            <td><input type="text" name="instruments[1].accuracy" value="${data!=null?data.instruments[1].accuracy:null}"></td>
-            <td><input type="text" name="instruments[2].accuracy" value="${data!=null?data.instruments[2].accuracy:null}"></td>
-            <td><input type="text" name="instruments[3].accuracy" value="${data!=null?data.instruments[3].accuracy:null}"></td>
-            <td><input type="text" name="instruments[4].accuracy" value="${data!=null?data.instruments[4].accuracy:null}"></td>
+        %{
+            for(int i in 0..4){
+            }%
+            <td><input type="text" name="instruments[${i}].accuracy" value="${data!=null&&data.getInstrument(i)!=null?data.getInstrument(i).accuracy:null}"></td>
+        %{}}%
         </tr>
         <tr>
             <th>执行标准</th>
-            <td colspan="6"><input type="text" name="data.instrumentsT[0].accuracy" value="${data!=null?data.instruments[0].accuracy:null}"></td>
+            <td colspan="6" style="height: 30px"></td>
         </tr>
         <tr>
             <th colspan="7">检验结果</th>
@@ -130,7 +130,7 @@
         </tr>
         #{if data!=null}
             #{list data.itemResults,as:'ir'}
-            <tr id='${ir.itemStandard.id}' class='standard-one'><td class='standard-one-no'>${ir_index}</td><td>${ir.itemStandard.inspectionItem.name}</td><td>${ir.itemStandard.inspectionItem.unit}</td><td colspan='2'>${ir.itemStandard.standard}</td><td><input type='hidden' class='r-id' name='result[${ir_index-1}].id' value='${ir.id}'><input type='text' name='result[0].inspectionResults' class='conclusions' value='"+$(this).parent().attr("data-r")+"'></td><td><input type='text' name='result[0].singleConclusions' value='"+$(this).parent().attr("data-s")+"' class='single'></td></tr>
+            <tr id='${ir.itemStandard.id}' class='standard-one'><td class='standard-one-no'>${ir_index}</td><td>${ir.itemStandard.inspectionItem.name}</td><td>${ir.itemStandard.inspectionItem.unit}</td><td colspan='2'>${ir.itemStandard.standard}</td><td><input type='hidden' class='r-id' name='result[${ir_index-1}].id' value='${ir.id}'><input type='text' name='result[${ir_index-1}].inspectionResults' class='conclusions' value='${ir.inspectionResults}'></td><td><input type="hidden" name="result[${ir_index-1}].itemStandard.id" value="${ir.itemStandard.id}"><input type='text' name='result[${ir_index-1}].singleConclusions' value='${ir.singleConclusions}' class='single'></td></tr>
             #{/list}
         #{/if}
         <tr>
@@ -160,22 +160,33 @@
                if(data!=null){
                   int l=data.itemResults.size();
                   models.quality.InspectionItemResult r=null;
-                  loop:for(int i in 0..l){
+                  if(l>0)
+                  loop:for(int i in 0..(l-1)){
                       if(data.itemResults.get(i).itemStandard.id==s.id){
                                r=data.itemResults.get(i);
+                       }%
+            <label data-sid="${s.id}" data-id="${r.id}" data-standard="${s.standard}" data-unit="${s.inspectionItem.unit}" data-s="${r.singleConclusions}" data-r="${r.inspectionResults}"><input type="checkbox" value="${s.id}"> ${s.inspectionItem.name}</label>
+                       %{
                                break loop;
                       }
                   }
                }
             }%
-         <label data-id="${data!=null?r.id:null}" data-standard="${s.standard}" data-unit="${s.inspectionItem.unit}" data-s="${data!=null?r.singleConclusions:null}" data-r="${data!=null?r.inspectionResults:null}"><input type="checkbox" value="${s.id}"> ${s.inspectionItem.name}</label>
         #{/list}
     </span>
+    <span class="alert" style="display: none;vertical-align: middle;padding: 6px;"></span>
     <span class="btn" id="cancel">取消</span>
     <span class="btn blue" id="ok">保存</span>
 </div>
 <script>
     $(function () {
+        if($(".inspection-items label").length==0){
+            $(".modal-footer").find(".alert").show().html("请先完成原始记录化验。");
+        }
+        $("tr.standard-one").each(function(){
+            var id=$(this).attr("id");
+            $("label[data-sid="+id+"]").find("input").prop("checked",true);
+        })
         $(".modal").addClass("direction");
         $("input[name='data.inspectionDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true,pickerPosition:"top"});
         $("input[name='data.inspectionDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true,pickerPosition:"top"});
@@ -202,6 +213,10 @@
             }
         });
         $("#ok").click(function(){
+            if($(".inspection-items label").length==0){
+                $(this).parent().find(".alert").css("color","#C06453").html("请先完成原始记录化验。");
+                return;
+            }
             $(".report-form").ajaxSubmit({
                 url:"/manageQuality/inspection/saveReport",
                 dataType:"json",

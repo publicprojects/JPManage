@@ -19,11 +19,14 @@ public class AccessoriesPurchase {
 	}
 
 	public static JsonResponse addDate(AccessoriesPurchases data) {
-		JsonResponse response = null;
+		JsonResponse response;
 		String validateResult = validateForm(data);
 		if (null == validateResult) {
-			AccessoriesPurchases.addAccessoriesPurchases(data);
-			AccessoriesStocks.updateStockFromPurchase(data);
+			response=AccessoriesPurchases.addAccessoriesPurchases(data);
+            if(response.responseCode==-1){
+                return response;
+            }
+			response.add(AccessoriesStocks.updateStockFromPurchase(data));
 		} else {
 			response = new JsonResponse(-1, validateResult);
 		}

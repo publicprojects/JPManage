@@ -1,5 +1,6 @@
 package models.storage;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 
 import controllers.ManageUtils;
 import play.db.jpa.Model;
+import utils.DateUtils;
 import utils.JsonResponse;
 import utils.Pagination;
 
@@ -29,6 +31,9 @@ public class Accessoriess extends Model {
 
 	@Column(name = "accessories_name")
 	public String accessoriesName;
+
+    @Column(name = "create_date")
+    public Date createAt;
 
 	public static List<Accessoriess> getAccessories(Pagination page,
 			int current, String[] key, String[] val) {
@@ -71,13 +76,14 @@ public class Accessoriess extends Model {
 			return new JsonResponse(-1, "辅料[" + data.accessoriesName
 					+ "]已经存在，请重新输入");
 		}
+        data.createAt= DateUtils.getNowDate();
 		data.create();
 		return new JsonResponse(0, "辅料[" + data.accessoriesName + "]已成功添加");
 	}
 
 	public static JsonResponse updateAccessories(Accessoriess data) {
-		Accessoriess ac = Accessoriess.find("accessoriesName=?",
-				data.accessoriesName).first();
+		Accessoriess ac = Accessoriess.find("accessoriesName=? and id!=?",
+				data.accessoriesName,data.id).first();
 		if (ac != null) {
 			return new JsonResponse(-1, "辅料[<b>" + data.accessoriesName
 					+ "</b>]已经存在。");

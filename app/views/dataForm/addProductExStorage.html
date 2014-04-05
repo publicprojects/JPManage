@@ -9,7 +9,7 @@
 <div class="modal-header">
     <button data-dismiss="modal" class="close" type="button"></button>
     <h3>
-        <i class="icon-edit" style="color: #236aa1"></i>  原料出库</h3>
+        <i class="icon-edit" style="color: #236aa1"></i> 产品出库</h3>
 </div>
 <div class="modal-body">
     <form class="form-horizontal" method="post">
@@ -18,9 +18,9 @@
         #{/if}
             <input type="hidden" name="ep" value="0">
         <div class="control-group">
-            <label class="control-label">原料</label>
+            <label class="control-label">产品</label>
             <div class="controls">
-                <select name="data.material.id" class="span3">
+                <select name="data.batch.id" class="span3">
                 </select>
             </div>
         </div>
@@ -31,9 +31,9 @@
                 </div>
             </div>
         <div class="control-group">
-            <label class="control-label">用于生产产品</label>
+            <label class="control-label">客户</label>
             <div class="controls">
-                <select name="data.proNotice.id" class="span3">
+                <select name="data.client.clientId" class="span3">
                 </select>
             </div>
         </div>
@@ -58,41 +58,42 @@
 <script>
     $(function(){
         $("input[name='data.expenseDate']").datepicker({format:"yyyy-mm-dd",language:"zh-cn","autoclose":true,pickerPosition:"top"});
-        getNotes();
-        function getNotes(){
+        getProduct();
+        function getProduct(){
             $.ajax({
-                url:"/manageCenter/queryData/noPage/6",
+                url:"/manageCenter/queryData/noPage/20",
+                data:{"key[0]":">productStock","val[0]":"0"},
                 dataType:"json",
                 type:"post",
                 success:function(res){
                     if(res){
-                        $("select[name='data.proNotice.id']").html("");
+                        $("select[name='data.batch.id']").html("");
                         for(var i in res){
-                            $("select[name='data.proNotice.id']").append("<option value='"+res[i].id+"'>"+res[i].batch.product.productName+"("+res[i].batch.batchNo+")</option>");
+                            $("select[name='data.batch.id']").append("<option value='"+res[i].batch.id+"'>"+res[i].batch.product.productName+"("+res[i].batch.batchNo+")</option>");
                         }
                     }
                 },
                 error:function(){
-                    alert("获取生产通知失败！");
+                    alert("获取产品信息失败！");
                 }
             })
         }
-        getMaterial();
-        function getMaterial(){
+        getClient();
+        function getClient(){
             $.ajax({
-                url:"/manageCenter/queryData/noPage/7",
+                url:"/manageCenter/queryData/noPage/4",
                 dataType:"json",
                 type:"post",
                 success:function(res){
                     if(res){
-                        $("select[name='data.material.id']").html("");
+                        $("select[name='data.client.clientId']").html("");
                         for(var i in res){
-                            $("select[name='data.material.id']").append("<option value='"+res[i].id+"'>"+res[i].name+"</option>");
+                            $("select[name='data.client.clientId']").append("<option value='"+res[i].clientId+"'>"+res[i].clientName+"</option>");
                         }
                     }
                 },
                 error:function(){
-                    alert("获取生产通知失败！");
+                    alert("获取客户信息失败！");
                 }
             })
         }
@@ -106,7 +107,7 @@
                }
            });
            if(con){
-               var url="${data==null?'/manageCenter/createData/15':''}";
+               var url="${data==null?'/manageCenter/createData/20':''}";
                $(".form-horizontal").ajaxSubmit({
                    url:url,
                    dataType:"json",

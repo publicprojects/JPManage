@@ -1,5 +1,6 @@
 package models.storage;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import models.Material;
 import models.Materials;
 import play.db.jpa.Model;
+import utils.DateUtils;
 import utils.JsonResponse;
 import utils.Pagination;
 import controllers.ManageUtils;
@@ -28,9 +30,12 @@ public class Suppliers extends Model {
 	public String supplierPhone;
 
 	@Column(name = "supplier_type")
-	public Integer supplierType;
+	public Integer supplierType;//0:原料供应商 1:辅料供应商
 
-    @ManyToMany(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST},mappedBy="supplers")
+    @Column(name = "create_date")
+    public Date createAt;
+
+    @OneToMany(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST},mappedBy="suppler")
     public List<Materials> materials;
 
 	public static List<Suppliers> getSuppliers(Pagination page, int current,
@@ -46,6 +51,13 @@ public class Suppliers extends Model {
 			list = Suppliers.all().from(page.getStartRow())
 					.fetch(page.getDisplayCountOfPerPage());
 		} else {
+            int i=0;
+            for(String k:key){
+                if("supplierType".equals(k)){
+                    val_[i]=Integer.parseInt(val[i]);
+                }
+                i++;
+            }
 			count = (int) Suppliers.count(keys, val_);
 			page.setTotalRecord(count);
 			page.setCurrentPage(current);
@@ -62,6 +74,13 @@ public class Suppliers extends Model {
 		if (key == null) {
 			list = Suppliers.findAll();
 		} else {
+            int i=0;
+            for(String k:key){
+                if("supplierType".equals(k)){
+                     val_[i]=Integer.parseInt(val[i]);
+                }
+                i++;
+            }
 			list = Suppliers.find(keys, val_).fetch();
 		}
 		return list;
@@ -74,6 +93,7 @@ public class Suppliers extends Model {
 			return new JsonResponse(-1, "供货商[" + data.supplierName
 					+ "]已经存在，请重新输入。");
 		}
+        data.createAt= DateUtils.getNowDate();
 		data.save();
 		return new JsonResponse(0, "供货商[" + data.supplierName + "]已成功添加。");
 	}
@@ -84,7 +104,7 @@ public class Suppliers extends Model {
 	 * @param data
 	 */
 	public static JsonResponse updateSuppliers(Suppliers data) {
-		Suppliers product = Suppliers.find("supplierName=?", data.supplierName)
+		Suppliers product = Suppliers.find("supplierName=? and id!=?", data.supplierName,data.id)
 				.first();
 		if (product != null) {
 			return new JsonResponse(-1, "供货商[<b>" + data.supplierName

@@ -6,10 +6,7 @@ import utils.DateUtils;
 import utils.JsonResponse;
 import utils.Pagination;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class InspectionStandard extends Model {
     public String name;
     @Column(name="create_date")
     public Date createAt;
-    @ManyToMany
+    @ManyToMany(cascade={CascadeType.REFRESH,CascadeType.MERGE,CascadeType.PERSIST},mappedBy="standards")
     public List<InspectionReport> reports;
 
 

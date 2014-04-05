@@ -9,11 +9,14 @@ import java.util.Calendar;
 public class DateUtils {
     static SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 	public static Date getNowDate() {
-		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date utilDate = new java.util.Date();
 		Date sqlDate = new Date(utilDate.getTime());
 		return Date.valueOf(f.format(sqlDate));
 	}
+
+    public static java.util.Date getNowUtilDate(){
+        return new java.util.Date();
+    }
 
 	public static String getDaysNearStr(int near){
 		return f.format(getDaysNear(near));

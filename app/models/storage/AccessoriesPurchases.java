@@ -78,7 +78,7 @@ public class AccessoriesPurchases extends Model {
 					+ "]批次的辅料进货记录已经存在,请检查您的批次号是否正确");
 		}
 		data.save();
-		return new JsonResponse(0, "[" + data.accessoriesBatch + "]批次的辅料进货记录已成功添加");
+		return new JsonResponse(0, "已成功添加[" + data.accessoriesBatch + "]批次的辅料进货记录。");
 	}
 
 }

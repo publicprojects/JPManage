@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/public/js/specil/modal.js"></script>
+    <script src="/public/js/jquery.form.min.js"></script>
+    <title></title>
+</head>
+<body>
+<div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button"></button>
+    <h3>
+        #{if data==null}
+        <i class="icon-plus-sign-alt" style="color: #0ba11b"></i>       新增辅料   #{/if}
+        #{else}
+        <i class="icon-edit" style="color: #236aa1"></i> 编辑辅料
+        #{/else}
+    </h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" method="post">
+        #{if data!=null}
+          <input type="hidden" name="data.id" value="${data.id}">
+        #{/if}
+        <div class="control-group">
+            <label class="control-label">辅料名称</label>
+            <div class="controls">
+                <input type="text" class="span3" name="data.accessoriesName" placeholder="辅料名称" value="${data!=null?data.accessoriesName:''}" />
+            </div>
+        </div>
+            <div class="control-group">
+                <label class="control-label">辅料类型</label>
+                <div class="controls">
+                    <select class="span3" name="data.category.id" data-id="${data!=null?data.category.id:null}">
+                    </select>
+                </div>
+            </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <span class="btn" id="cancel">取消</span>
+    <span class="btn blue" id="ok">保存</span>
+</div>
+<script>
+    $(function(){
+        getAccCat();
+        function getAccCat(){
+            $.ajax({
+                url:"/manageCenter/queryData/noPage/17",
+                dataType:"json",
+                type:"post",
+                success:function(res){
+                    if(res){
+                        var sel=$("select[name='data.category.id']");
+                        sel.html("");
+                        var id=sel.attr("data-id");
+                        for(var i in res){
+                            $("select[name='data.category.id']").append("<option value='"+res[i].id+"' "+(id==res[i].id?"selected":"")+">"+res[i].categoryName+"</option>");
+                        }
+                    }
+                },
+                error:function(){
+                    alert("获取辅料分类失败！");
+                }
+            })
+        }
+       $("#ok").click(function(){
+           var uname=$("input[name='data.accessoriesName']");
+           if(uname.val().isEmpty()){
+               uname.val("");
+               uname.focus();
+               return;
+           }
+           var url="${data==null?'/manageCenter/createData/16':'/manageCenter/updateData/16'}";
+           $(".form-horizontal").ajaxSubmit({
+               url:url,
+               dataType:"json",
+               success:function(res){
+                   modalJs.response(res,'',function(){
+                       dataTable.loadData();
+                   });
+               },error:function(e){
+                   alert("error:"+e);
+                   modalJs.close();
+               }
+           });
+       }) ;
+    });
+</script>
+</body>
+</html>

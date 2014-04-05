@@ -44,7 +44,7 @@ public class Supplier {
 	}
 
 	public static JsonResponse deleteData(Long _id) {
-		return (Products.deleteProduct(_id));
+		return (Suppliers.deleteSuppliers(_id));
 	}
 
 	private static String validateForm(Suppliers data) {
